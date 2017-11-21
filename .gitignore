@@ -1,0 +1,14 @@
+.bundle
+Gemfile.lock
+*.html
+*.pdf
+build/
+html/
+node_modules
+
+#Java Projects
+*.class
+target/
+test/
+.idea
+*.iml

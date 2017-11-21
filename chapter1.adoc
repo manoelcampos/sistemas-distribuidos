@@ -1,0 +1,90 @@
+:imagesdir: images
+
+# Modelo Cliente/Servidor
+
+# Modelo Distribuído (Multicamadas)
+
+# RPC
+
+# RMI
+
+# DCOM
+
+# COM+
+
+# Corba
+
+# Peer-to-Peer
+
+# P2P
+
+Ver Peer-to-Peer.
+
+# Sockets: a base para comunicação em rede
+
+- Chat
+
+# Application Server (AS)
+
+## Connection Pooling
+## Load Balancer
+
+# Comunicação síncrona e assíncrona
+
+
+# Web Services
+
+## SOAP
+jax-ws: https://javaee.github.io/metro-jax-ws/
+jax-b: https://javaee.github.io/jaxb-v2/
+
+jax-b vs xml dom vs sax: https://dzone.com/articles/jaxb-sax-dom-performance
+
+
+## REST 
+
+Standard
+    jax-rs:
+        https://github.com/jersey/jersey (reference implementation)
+Non-Standard
+    http://resteasy.jboss.org
+    http://restfulie.caelum.com.br
+
+
+JSON-P: 
+    https://javaee.github.io/jsonp/
+
+JSON-B: 
+    http://json-b.net
+    https://github.com/javaee/jsonb-spec
+
+## GraphQL
+
+### Swagger e SwaggerHub
+
+http://blog.caelum.com.br/modelando-apis-rest-com-swagger/
+http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
+
+## Middleware
+
+## Service Discovery
+
+# Cloud Computing
+
+## Function as a Service (FaaS)
+
+# Microservices
+
+http://microservices.io
+
+# CQRS
+
+# Circuit Breaker
+https://martinfowler.com/bliki/CircuitBreaker.html
+
+# Architecture Patterns (ver livro na minha biblioteca digital)
+
+[bibliography]
+== Referências
+
+- [PP] Hunt, Andrew, and David Thomas. O Programador Pragmático: de aprendiz a mestre. Bookman Editora, 2009.

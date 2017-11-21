@@ -1,0 +1,33 @@
+## Sockets
+
+## RPC
+
+## RMI
+
+## DCOM
+
+## COM+
+
+## Corba
+
+## Peer-to-Peer
+
+## P2P
+
+Ver Peer-to-Peer.
+
+## Web Services
+
+## SOAP
+
+## REST
+
+## GraphQL
+
+## Swagger
+
+## Middleware
+
+## Service Discovery
+
+## Microservices
