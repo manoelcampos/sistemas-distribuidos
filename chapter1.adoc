@@ -1,90 +1,110 @@
 :imagesdir: images
 
-# Modelo Cliente/Servidor
+== Introdução
 
-# Modelo Distribuído (Multicamadas)
+Nas últimas décadas, a computação tem evoluído muito rapidamente. Tal evolução seguida da popularização da informática tem feito a demanda por recursos computacionais crescer de forma acelerada. Até a década de 80, os chamados _mainframes_ (computadores utilizados como *servidores*) eram grandes, caros e dificilmente eram conectados em rede <<SDPP>>. Antes da era das redes de computadores e da Internet, os _mainframes_ funcionavam de forma isolada, sem possibilitar que múltiplos usuários remotamente pudessem utilizar sua capacidade computacional. 
 
-# RPC
+Os _mainframes_ eram utilizados para realizar tarefas que demandavam alto poder de processamento, normalmente processadas em lote (https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zmainframe/zconc_batchproc.htm[batch processing]), como: 
 
-# RMI
+- processamento de folhas de pagamento de empresas;
+- processamento de declarações de imposto de renda;
+- processamento de imagens;
+- computação científica com a realização de cálculos complexos;
+- análise estatística de grande volume de dados como no caso de um censo;
+- etc.
 
-# DCOM
+Processamento em lote é caracterizado pela execução de um conjunto de tarefas (_jobs_), que após iniciadas, são executadas até o fim, sem a intervenção humana. No entanto, este modelo de processamento centralizado e desconectado impedia que o poder computacional de diversos _mainframes_ pudesse ser combinado para permitir a execução de tarefas cada vez maiores e mais complexas. A abordagem de dividir uma tarefa grande em tarefas menores é chamada de _Divide and Conquer_ ("Dividir para Conquistar" ou "Divisão e Conquista") <<PA>>. Tal divisão permite que estas tarefas menores possam ser executadas simultaneamente em múltiplos computadores. Isto aumenta a eficiência, possibilitando que a tarefa original seja finalizada em menos tempo.
 
-# COM+
+Com a popularização das redes de computadores, o advento da Internet e a crescente informatização, computadores começaram a ser inteligados e sistemas centralizados (monoprocessados) evoluíram para *sistemas distribuídos*. Estes são sistemas multiprocessdos, que executam simultaneamente em diversos computadores. 
 
-# Corba
+Existem várias definições de sistemas distribuídos, como <<SDPP>>:
 
-# Peer-to-Peer
+[quote, Tanenbaum e Steen 2008]
+Um sistema ditribuído é um conjunto de *computadores independentes* que se *apresenta a seus usuários como um sistema único* e coerente.
 
-# P2P
+e <<SDCP>>:
+[quote, Coulouris et. al. 2008]
+Um sistema distribuído é aquele no qual os componentes localizados em *computadores interligados em rede* se *comunicam* e *coordenam* suas ações apenas passando *mensagens*.
 
-Ver Peer-to-Peer.
+== Características de um Sistema Distribuído
 
-# Sockets: a base para comunicação em rede
+Tais definições de um sistema distribuído permitem que estes sistemas possuam características como:
 
-- Chat
+. compartilhamento de recursos;
+. escalabilidade;
+. disponibilidade;
+. abertura;
+. transparência.
 
-# Application Server (AS)
+=== Compartilhamento de Recursos
 
-## Connection Pooling
-## Load Balancer
+Um dos principais objetivos de um sistema distribuído é o compartilhamento de recursos, tanto físicos quanto lógicos. O compartilhamento de dispositivos físicos como impressoras e discos é um exemplo. Um sistema operacional pode permitir que tais dispositivos sejam utilizados por múltiplos usuários, trazendo otimização no uso de recursos e redução de despesas com aquisição de equipamentos (estas chamadas de despesas de capital ou https://www.investopedia.com/terms/c/capitalexpenditure.asp[Capital Expenditure] em inglês). 
+Uma vez que uma impressora não é utilizada o tempo todo por um usuário, ela pode ser compartilhada com outros usuários e assim maximizar o uso de tal equipamento, melhorando a relação custo/benefício.
 
-# Comunicação síncrona e assíncrona
+Exemplos de sistemas distribuídos para compartilhamento de recursos incluem o http://g.co/cloudprint[Google Cloud Print], https://pt.wikipedia.org/wiki/Network_File_System[Network File System (NFS)] e https://www.samba.org[Samba].
 
+.https://developers.google.com/cloud-print/docs/overview[Google Cloud Print]
+image:google-cloud-print.png[]
 
-# Web Services
+=== Escalabilidade
 
-## SOAP
-jax-ws: https://javaee.github.io/metro-jax-ws/
-jax-b: https://javaee.github.io/jaxb-v2/
+[quote, Coulouris et. al. 2008]
+Escalabilidade é a capacidade de um sistema de se permanecer eficiente quando há um aumento significativo no número de recursos e de usuários.
 
-jax-b vs xml dom vs sax: https://dzone.com/articles/jaxb-sax-dom-performance
+Um sistema pode ser escalável em 3 diferentes dimensões <<SDPP>>:
 
+- tamanho;
+- localização geográfica;
+- administração.
 
-## REST 
+Um sistema cujo tamanho é escalável indica que ele se mantém eficiente à medida que são adicionados mais recursos e usuários. A escalabilidade em relação à localização geográfica indica que o sistema continua funcionando, e de forma eficiente, mesmo que: a posição entre usuários e recursos mude e a distância entre eles aumente. Por fim, a escalabilidade administrativa indica que o esforço para administração do sistema ainda é baixo, mesmo com o aumento do número de usuários e recursos <<SDPP>>. Normalmente os profissionais que administram o sistema não devem perceber o impacto do aumento do sistema.
 
-Standard
-    jax-rs:
-        https://github.com/jersey/jersey (reference implementation)
-Non-Standard
-    http://resteasy.jboss.org
-    http://restfulie.caelum.com.br
+==== Problemas de Escalabilidade
 
+Para cada uma das 3 dimensões em que um sistema pode ser escalável, existem problemas associados quando uma dessas dimensões é alterada. 
 
-JSON-P: 
-    https://javaee.github.io/jsonp/
+===== Problemas de Escalabilidade de Tamanho
 
-JSON-B: 
-    http://json-b.net
-    https://github.com/javaee/jsonb-spec
+Quando um sistema aumenta a quantidade de usuários ou recursos, podemos ter limitações como <<SDPP>>:
 
-## GraphQL
+- serviços centralizados;
+- dados centralizados;
+- algoritmos centralizados.
 
-### Swagger e SwaggerHub
+Um serviço centralizado possui apenas um servidor para atender a todos os usuários e gerenciar todos os recursos. O problema desta modelo é que, a medida que o número de usuários ou recursos aumenta, o servidor pode ficar sobrecarregado e não conseguir atender com eficiência os usuários ou nem mesmo conseguir atender novos usuários. Assim, tal servidor pode se tornar um gargalo: um elemento do sistema que pode se tornar ineficiente com o aumento do número de usuários e recursos.
 
-http://blog.caelum.com.br/modelando-apis-rest-com-swagger/
-http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
+.Gargalo em um sistema (Fonte: http://bio1151.nicerweb.com/Locked/media/ch23/bottleneck.html[nicerweb.com]).
+image::bottleneck.jpg[]
 
-## Middleware
+Um exemplo claro deste problema ocorre em filas de bancos. Se há apenas um caixa atendendo os clientes, o tempo médio de espera pode aumentar muito à medida que novos clientes chegam. A medida que tal tempo aumenta, a fila tende a aumentar também, criando um https://pt.wikipedia.org/wiki/Círculo_vicioso[círculo vicioso]. Muitos usuários simplesmente deixarão de ser atendidos pois desistirão de entrar na fila ou porque o banco já não tem espaço para novos clientes. A solução obvia é então *aumentar o número de servidores* (caixas) para *distribuir o atendimento*.
 
-## Service Discovery
+O problema dos dados centralizados ocorre quando o aumento na quantidade de dados traz ineficiência ao sistema. Por exemplo, se o https://pt.wikipedia.org/wiki/Domain_Name_System[DNS] funcionasse ainda como um sistema centralizado, o tempo de busca do endereço IP para um determinado domínio teria inviabilizado a Internet ter escalado para as proporções de hoje <<SDPP>>. 
 
-# Cloud Computing
+O mesmo ocorre com Sistemas Gerenciadores de Bancos de Dados (SGBDs). Em uma aplicação que possui múltiplos usuários e apenas um servidor de banco de dados, tal servidor pode se tornar um gargalo com o aumento do número de usuários. Com a existência de um único servidor de banco de dados, os usuários podem começar a perceber a demora em obter dados.
 
-## Function as a Service (FaaS)
+Algoritmos centralizados possuem o problema de normalmente necessitar centralizar dados de diversos componentes do sistema e realizar o processamento desses dados. Por exemplo, em uma rede social como o Facebook, um algoritmo poderia ser responsável por encontrar sugestões de amizade para todos os usuários da rede. Isto iria requerer que tal algoritmo obtivesse os dados e conexões (contatos) de todos os usuários mundialmente, para depois encontrar as sugestões de amizade. Considerando que a http://www1.folha.uol.com.br/tec/2012/10/1163808-facebook-mostra-o-raio-x-de-1-bilhao-de-usuarios.shtml[rede contabilizou mais de 1 bilhão de usuários em 2012], executar um algoritmo centralizado sobre um número tão grande dados, sobrecarregaria recursos físicos como memória do servidor e rede (neste caso, quando os dados precisarem ser enviados para outros locais na rede). Adicionalmente, o processamento de um volumme tão grande de dados é inviável para um único servidor realizar, tornando inviável o tempo necessário para encontrar as sugestões de amizade de todas as pessoas da rede.
 
-# Microservices
+Nestes casos, algoritmos decentralizados devem ser usados. Tais algoritmos normalmente usam a técnica _Divide and Conquer_ falada anteriormente. Um algoritmo distribuído funciona da seguinte forma:
 
-http://microservices.io
+- os dados são divididos em subconjuntos;
+- cada servidor recebe e processa um subconjunto de dados de forma isolada e independente;
+- os resultados de cada servidor podem ser combinados e processados novamente;
+- o resultado final é gerado.
 
-# CQRS
+Um modelo de programação bastante utilizado atualmente para sistemas distribuídos é o MapReduce (Mapear/Reduzir). 
 
-# Circuit Breaker
-https://martinfowler.com/bliki/CircuitBreaker.html
+.Contando palavras em um texto utilizando o modelo MapReduce (Fonte: https://www.quora.com/After-the-map-phase-finishes-the-Hadoop-framework-does-“partitioning-shuffle-and-sort”-What-happens-in-this-phase[Quora])
+image::map-reduce-word-counting.png[]
 
-# Architecture Patterns (ver livro na minha biblioteca digital)
+O http://hadoop.apache.org[Apache Hadoop] é o framework mais popular para a construção de algoritmos seguindo este modelo.
+
+== Conclusão do Capítulo
+O amplo acesso à internet e dispositivos móveis como notebooks, smartphones, tablets e uma http://manoelcampos.com/invasao-equipamentos-smart/slides.html[infinidade de equipamentos inteligentes] tem tornado as exigências por recursos computacionais cada vez maiores.
+
 
 [bibliography]
 == Referências
 
-- [PP] Hunt, Andrew, and David Thomas. O Programador Pragmático: de aprendiz a mestre. Bookman Editora, 2009.
+- [SDPP] Tanenbaum, Andrew S. e Steen Maarten V. *Sistemas Distribuídos: princípios e paradigmas*. Pearson Education. 2ª edição. 2008.
+- [PA] Goodrich, Michael T. e Tamassia, Roberto. *Projeto de Algoritmos: fundamentos, análise e exemplos da Internet*. Bookman. 2008.
+- [SDCP] Coulouris, G. et. al. *Sistemas Distribuídos: conceitos e projeto*. Bookman. 4ª edição. 2008.

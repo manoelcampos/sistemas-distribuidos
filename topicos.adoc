@@ -1,0 +1,108 @@
+:imagesdir: images
+
+# Modelo Cliente/Servidor
+
+# Modelo Multicamadas
+
+## Middleware (mais complexo, normalmente pesado, faz muitas tarefas) / Broker (mais simples, normalmente uma parte de um middleware que faz uma tarefa bem específica)
+
+## Service Discovery
+
+# RPC
+
+# RMI / .Net Remoting (IPC)
+
+# DCOM
+
+# COM+
+
+# Corba
+
+# Peer-to-Peer (P2P)
+
+- WebSockets
+- sockets.io (js / node.js)
+- http://peerjs.com (WebRTC)
+- https://webrtc.org / https://ortc.org
+
+- Extensible Messaging and Presence Protocol (XMPP)
+- http://mqtt.org Message Queue Telemetry Transport (MQTT) / MQTT Broker https://mosquitto.org
+- AMQP / RabbitMQ
+
+- ZeroMQ (brokerless) http://zeromq.org
+- https://github.com/zeromq/jeromq
+
+- https://developer.apple.com/documentation/multipeerconnectivity
+- https://developer.android.com/guide/topics/connectivity/wifip2p.html
+
+# Sockets: a base para comunicação em rede
+
+- Chat
+
+# Application Server (AS)
+
+## Connection Pooling
+
+## Load Balancer
+
+# Comunicação síncrona e assíncrona
+
+
+# Web Services
+
+## SOAP
+http://www.webservicex.net/
+
+jax-ws: https://javaee.github.io/metro-jax-ws/
+jax-b: https://javaee.github.io/jaxb-v2/
+
+jax-b vs xml dom vs sax: https://dzone.com/articles/jaxb-sax-dom-performance
+
+
+## REST 
+
+Standard
+    jax-rs:
+        https://github.com/jersey/jersey (reference implementation)
+Non-Standard
+    http://resteasy.jboss.org
+    http://restfulie.caelum.com.br
+
+
+JSON-P: 
+    https://javaee.github.io/jsonp/
+
+JSON-B: 
+    http://json-b.net
+    https://github.com/javaee/jsonb-spec
+
+## GraphQL
+
+### Swagger e SwaggerHub
+
+http://blog.caelum.com.br/modelando-apis-rest-com-swagger/
+http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
+
+# SOA / Windows Communication Foundation (WCF)
+
+# Cloud Computing
+
+## Function as a Service (FaaS)
+
+# Microservices
+
+http://microservices.io
+
+# CQRS
+
+# Circuit Breaker
+https://martinfowler.com/bliki/CircuitBreaker.html
+
+# Architecture Patterns (ver livro na minha biblioteca digital)
+
+# Publish/Subscribe
+
+[bibliography]
+== Referências
+
+- [PP] Hunt, Andrew, and David Thomas. O Programador Pragmático: de aprendiz a mestre. Bookman Editora, 2009.

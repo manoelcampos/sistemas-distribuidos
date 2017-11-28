@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * Classe que permite enviar e receber mensagens por meio de um socket cliente.
+ * Permite enviar e receber mensagens por meio de um socket cliente.
+ * Tal classe é utilizada tanto pela aplicação cliente {@link ChatClient}
+ * quanto pelo servidor {@link ChatServer}.
  *
  * O servidor cria uma instância desta classe para cada cliente conectado, assim ele pode receber e enviar mensagens
  * para cada cliente.

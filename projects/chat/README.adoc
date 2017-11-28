@@ -1,0 +1,20 @@
+# Chat cliente/servidor utilizando Sockets em Java 8
+
+Este é um projeto Maven, composto por duas aplicações console:
+
+- link:src/main/java/ChatClient.java[Cliente]
+- link:src/main/java/ChatServer.java[Servidor]
+
+## Servidor
+
+O servidor escuta numa porta configurada por meio de uma constante em sua classe.
+Tal constante é utilizada pelo cliente para saber qual porta se conectar ao servidor.
+O servidor inicia e fica em loop infinito, aguardando conexões de clientes em tal porta.
+Para cada cliente conectado, o servidor cria uma Thread para atender as requisições do cliente.
+Para cada mensagem recebida do cliente, o servidor envia uma resposta de volta.
+
+## Cliente
+
+O cliente conecta na porta especificada na classe do servidor, no endereço definido em uma constante na classe do cliente. Ao iniciar o cliente solicite um login (nickname), que é enviado ao servidor para identificar o cliente. O usuário então pode digitar mensagens  que são enviadas ao servidor. 
+O cliente então aguarda a resposta do servidor e exibe na tela.
+A aplicação fica em loop até o usuário digitar "tchau" para sair.
