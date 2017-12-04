@@ -36,6 +36,7 @@
 - https://developer.android.com/guide/topics/connectivity/wifip2p.html
 
 # Sockets: a base para comunicação em rede
+https://www.javaworld.com/article/2853780/core-java/socket-programming-for-scalable-systems.html
 
 - Chat
 

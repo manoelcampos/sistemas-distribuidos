@@ -11,7 +11,7 @@ Um sistema pode ser escalável em 3 diferentes dimensões <<SDPP>>:
 - localização geográfica;
 - administração.
 
-Um sistema cujo tamanho é escalável indica que ele se mantém eficiente à medida que são adicionados mais recursos e usuários. A escalabilidade em relação à localização geográfica indica que o sistema continua funcionando, e de forma eficiente, mesmo que: a posição entre usuários e recursos mude e a distância entre eles aumente. Por fim, a escalabilidade administrativa indica que o esforço para administração do sistema ainda é baixo, mesmo com o aumento do número de usuários e recursos <<SDPP>>. Normalmente os profissionais que administram o sistema não devem perceber o impacto do aumento do sistema.
+Um sistema cujo *tamanho* é escalável indica que ele se mantém eficiente à medida que são adicionados mais recursos e usuários. A escalabilidade em relação à *localização geográfica* indica que o sistema continua funcionando, e de forma eficiente, mesmo que: a posição entre usuários e recursos mude e a distância entre eles aumente. Por fim, a *escalabilidade administrativa* indica que o esforço para administração do sistema ainda é baixo, mesmo com o aumento do número de usuários e recursos <<SDPP>>. Normalmente os profissionais que administram o sistema não devem perceber o impacto do aumento do sistema.
 
 == Problemas de Escalabilidade
 
@@ -38,13 +38,13 @@ Um exemplo claro deste problema ocorre em filas de bancos. Se há apenas um caix
 
 O problema dos dados centralizados ocorre quando o aumento na quantidade de dados traz ineficiência ao sistema. Por exemplo, se o https://pt.wikipedia.org/wiki/Domain_Name_System[DNS] funcionasse ainda como um sistema centralizado, o tempo de busca do endereço IP para um determinado domínio teria inviabilizado a Internet ter escalado para as proporções de hoje <<SDPP>>. 
 
-O mesmo ocorre com Sistemas Gerenciadores de Bancos de Dados (SGBDs). Em uma aplicação que possui múltiplos usuários e apenas um servidor de banco de dados, tal servidor pode se tornar um gargalo com o aumento do número de usuários. Com a existência de um único servidor de banco de dados, os usuários podem começar a perceber a demora em obter dados.
+O mesmo ocorre com Sistemas Gerenciadores de Bancos de Dados (SGBDs). Em uma aplicação que possui múltiplos usuários e apenas um servidor de banco de dados, tal servidor pode se tornar um gargalo com o aumento do número de usuários. Com a existência de um único servidor de banco de dados, os usuários podem começar a perceber a demora em obter dados em horários de pico. Isto normalmente ocorre se, para cada usuário do sistema, uma nova conexão ao banco de dados é aberta. 
 
 ==== Algoritmos Centralizados
 
 Algoritmos centralizados possuem o problema de normalmente necessitar centralizar dados de diversos componentes do sistema e realizar o processamento desses dados. Por exemplo, em uma rede social como o Facebook, um algoritmo poderia ser responsável por encontrar sugestões de amizade para todos os usuários da rede. Isto iria requerer que tal algoritmo obtivesse os dados e conexões (contatos) de todos os usuários mundialmente, para depois encontrar as sugestões de amizade. Considerando que a http://www1.folha.uol.com.br/tec/2012/10/1163808-facebook-mostra-o-raio-x-de-1-bilhao-de-usuarios.shtml[rede contabilizou mais de 1 bilhão de usuários em 2012], executar um algoritmo centralizado sobre um número tão grande de dados, sobrecarregaria recursos físicos como memória do servidor e rede (neste caso, quando os dados precisarem ser enviados para outros locais na rede). Adicionalmente, o processamento de um volumme tão grande de dados é inviável para um único servidor realizar, tornando inviável o tempo necessário para encontrar as sugestões de amizade de todas as pessoas da rede.
 
-Nestes casos, algoritmos decentralizados devem ser usados. Tais algoritmos normalmente usam a técnica _Divide and Conquer_ falada anteriormente. Um algoritmo distribuído funciona da seguinte forma:
+Nestes casos, *algoritmos decentralizados* devem ser usados. Tais algoritmos normalmente usam a técnica _Divide and Conquer_ falada anteriormente. Um algoritmo distribuído funciona da seguinte forma:
 
 - os dados são divididos em subconjuntos;
 - cada servidor recebe e processa um subconjunto de dados de forma isolada e independente;
@@ -57,3 +57,26 @@ Um modelo de programação bastante utilizado atualmente para sistemas distribu�
 image::map-reduce-word-counting.png[]
 
 O http://hadoop.apache.org[Apache Hadoop] é o framework mais popular para a construção de algoritmos seguindo este modelo.
+
+=== Problemas de Escalabilidade Geográfica
+
+Antes da popularização da internet, os sistemas de uma empresa eram acessados apenas dentro da rede local (LAN). Os problemas de atraso, congestionamento e quebra de conexão eram muito menores. Usuários acessavam a aplicação por meio de uma interface desktop (instalada localmente em cada computador) ou web (por meio de um navegador). 
+
+Tais aplicações faziam *requisições síncronas* a um servidor dentro da rede local, onde a requisição era enviada ao servidor e a aplicação ficava bloqueada, aguardando até obter uma resposta <<SDPP>><<SDCP>>. De fato, quando uma requisição síncrona é enviada, a _thread_ que a executou é que fica bloqueada aguardando a resposta. Em aplicação mono-thread (que não foi projetada para executar tarefas em paralelo), toda a aplicação fica então inoperante enquanto uma resposta não for obtida ou não ocorrer um _timeout_ (tempo expirado).
+
+A criação de múltiplas _threads_ resolve o problema do bloqueio da aplicação, pois somente a _thread_ que fez a requisição fica aguardando uma resposta. No entanto, dependendo da linguagem de programação, a criação de _threads_ pode não ser trivial. Mesmo em linguagens como Java onde é muito simples criar _threads_, construção de aplicações multi-thread pode ser desafiador.
+
+Apesar dos problemas apresentados, requisições síncronas são mais fáceis de programar e o código é mais fácil de entender. Isto se deve ao fato de podermos seguir o paradigma de programação estruturada, onde instruções são executadas de forma sequencial. Dentro do código fonte de uma aplicação, pode-se, na linha imediatamente após ao envio da requisição, processar facilmente a resposta de tal requisição.
+
+Por outro lado, as *requisições assíncronas* são uma solução mais eficiente para resolver o problema das requisições síncronas. Uma função que envia uma requisição assíncrona retorna imediatamente, liberando a execução da _thread_. A _thread_ é então notificada por meio de um evento, utilizando o padrão de projeto  https://en.wikipedia.org/wiki/Observer_pattern[_Observer_], também conhecido como https://en.wikipedia.org/wiki/Event_(computing)[_Event Listener_]. Neste modelo, o servidor irá chamar uma função no cliente para notificá-lo da resposta da requisição. 
+
+Tecnologias como http://www.wikiwand.com/en/Ajax_(programming)[Ajax (_Asynchronous JavaScript And XML_)], https://en.wikipedia.org/wiki/XMLHttpRequest[possibilitada por recursos dos navegadores web], popularizaram a utilização de chamadas assíncronas em aplicações web.
+
+Normalmente, requisições assíncronas são viabilizadas pelo uso de _threads_. A diferença é que se a bibioteca, framework ou ferramenta utilizada para realizar tal requisição já for nativamente assíncrona(o), o programador não tem que se preocupar em criar tais _threads_. Uma excelente fonte para entender mais como chamadas síncronas e assíncronas funcionam é o livro https://books.google.com.br/books?id=G7rBCQAAQBAJ[JavaScript with Promises: Managing Asynchronous Code].
+
+
+
+
+
+== Técnicas de Escalabilidade
+
