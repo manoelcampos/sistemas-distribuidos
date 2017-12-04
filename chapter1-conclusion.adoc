@@ -1,0 +1,12 @@
+:imagesdir: images
+
+== Conclusão do Capítulo
+O amplo acesso à internet e dispositivos móveis como notebooks, smartphones, tablets e uma http://manoelcampos.com/invasao-equipamentos-smart/slides.html[infinidade de equipamentos inteligentes] tem tornado as exigências por recursos computacionais cada vez maiores.
+
+
+[bibliography]
+== Referências
+
+- [SDPP] Tanenbaum, Andrew S. e Steen Maarten V. *Sistemas Distribuídos: princípios e paradigmas*. Pearson Education. 2ª edição. 2008.
+- [PA] Goodrich, Michael T. e Tamassia, Roberto. *Projeto de Algoritmos: fundamentos, análise e exemplos da Internet*. Bookman. 2008.
+- [SDCP] Coulouris, G. et. al. *Sistemas Distribuídos: conceitos e projeto*. Bookman. 4ª edição. 2008.

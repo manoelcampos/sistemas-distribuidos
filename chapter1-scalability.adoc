@@ -1,0 +1,59 @@
+:imagesdir: images
+
+== Escalabilidade
+
+[quote, Coulouris et. al. 2008]
+Escalabilidade é a capacidade de um sistema de se permanecer eficiente quando há um aumento significativo no número de recursos e de usuários.
+
+Um sistema pode ser escalável em 3 diferentes dimensões <<SDPP>>:
+
+- tamanho;
+- localização geográfica;
+- administração.
+
+Um sistema cujo tamanho é escalável indica que ele se mantém eficiente à medida que são adicionados mais recursos e usuários. A escalabilidade em relação à localização geográfica indica que o sistema continua funcionando, e de forma eficiente, mesmo que: a posição entre usuários e recursos mude e a distância entre eles aumente. Por fim, a escalabilidade administrativa indica que o esforço para administração do sistema ainda é baixo, mesmo com o aumento do número de usuários e recursos <<SDPP>>. Normalmente os profissionais que administram o sistema não devem perceber o impacto do aumento do sistema.
+
+== Problemas de Escalabilidade
+
+Para cada uma das 3 dimensões em que um sistema pode ser escalável, existem problemas associados quando uma dessas dimensões é alterada. 
+
+=== Problemas de Escalabilidade de Tamanho
+
+Quando um sistema aumenta a quantidade de usuários ou recursos, podemos ter limitações como <<SDPP>>:
+
+- serviços centralizados;
+- dados centralizados;
+- algoritmos centralizados.
+
+==== Serviços Centralizados
+
+Um serviço centralizado possui apenas um servidor para atender a todos os usuários e gerenciar todos os recursos. O problema desta modelo é que, a medida que o número de usuários ou recursos aumenta, o servidor pode ficar sobrecarregado e não conseguir atender com eficiência os usuários ou nem mesmo conseguir atender novos usuários. Assim, tal servidor pode se tornar um gargalo: um elemento do sistema que pode se tornar ineficiente com o aumento do número de usuários e recursos.
+
+.Gargalo em um sistema (Fonte: http://bio1151.nicerweb.com/Locked/media/ch23/bottleneck.html[nicerweb.com]).
+image::bottleneck.jpg[]
+
+Um exemplo claro deste problema ocorre em filas de bancos. Se há apenas um caixa atendendo os clientes, o tempo médio de espera pode aumentar muito à medida que novos clientes chegam. A medida que tal tempo aumenta, a fila tende a aumentar também, criando um https://pt.wikipedia.org/wiki/Círculo_vicioso[círculo vicioso]. Muitos usuários simplesmente deixarão de ser atendidos pois desistirão de entrar na fila ou porque o banco já não tem espaço para novos clientes. A solução obvia é então *aumentar o número de servidores* (caixas) para *distribuir o atendimento*.
+
+==== Dados Centralizados
+
+O problema dos dados centralizados ocorre quando o aumento na quantidade de dados traz ineficiência ao sistema. Por exemplo, se o https://pt.wikipedia.org/wiki/Domain_Name_System[DNS] funcionasse ainda como um sistema centralizado, o tempo de busca do endereço IP para um determinado domínio teria inviabilizado a Internet ter escalado para as proporções de hoje <<SDPP>>. 
+
+O mesmo ocorre com Sistemas Gerenciadores de Bancos de Dados (SGBDs). Em uma aplicação que possui múltiplos usuários e apenas um servidor de banco de dados, tal servidor pode se tornar um gargalo com o aumento do número de usuários. Com a existência de um único servidor de banco de dados, os usuários podem começar a perceber a demora em obter dados.
+
+==== Algoritmos Centralizados
+
+Algoritmos centralizados possuem o problema de normalmente necessitar centralizar dados de diversos componentes do sistema e realizar o processamento desses dados. Por exemplo, em uma rede social como o Facebook, um algoritmo poderia ser responsável por encontrar sugestões de amizade para todos os usuários da rede. Isto iria requerer que tal algoritmo obtivesse os dados e conexões (contatos) de todos os usuários mundialmente, para depois encontrar as sugestões de amizade. Considerando que a http://www1.folha.uol.com.br/tec/2012/10/1163808-facebook-mostra-o-raio-x-de-1-bilhao-de-usuarios.shtml[rede contabilizou mais de 1 bilhão de usuários em 2012], executar um algoritmo centralizado sobre um número tão grande de dados, sobrecarregaria recursos físicos como memória do servidor e rede (neste caso, quando os dados precisarem ser enviados para outros locais na rede). Adicionalmente, o processamento de um volumme tão grande de dados é inviável para um único servidor realizar, tornando inviável o tempo necessário para encontrar as sugestões de amizade de todas as pessoas da rede.
+
+Nestes casos, algoritmos decentralizados devem ser usados. Tais algoritmos normalmente usam a técnica _Divide and Conquer_ falada anteriormente. Um algoritmo distribuído funciona da seguinte forma:
+
+- os dados são divididos em subconjuntos;
+- cada servidor recebe e processa um subconjunto de dados de forma isolada e independente;
+- os resultados de cada servidor podem ser combinados e processados novamente;
+- o resultado final é gerado.
+
+Um modelo de programação bastante utilizado atualmente para sistemas distribuídos é o MapReduce (Mapear/Reduzir). 
+
+.Contando palavras em um texto utilizando o modelo MapReduce (Fonte: https://www.quora.com/After-the-map-phase-finishes-the-Hadoop-framework-does-“partitioning-shuffle-and-sort”-What-happens-in-this-phase[Quora])
+image::map-reduce-word-counting.png[]
+
+O http://hadoop.apache.org[Apache Hadoop] é o framework mais popular para a construção de algoritmos seguindo este modelo.

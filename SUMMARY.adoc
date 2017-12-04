@@ -2,4 +2,7 @@
 
 . link:README.adoc[Introdução]
 . link:chapter1.adoc[Capítulo 1]
+.. link:chapter1-resource-sharing.adoc[Compartilhamento de Recursos]
+.. link:chapter1-scalability.adoc[Escalabilidade]
+.. link:chapter1-conclusion.adoc[Conclusão]
 . link:GLOSSARY.adoc[Glossário]
