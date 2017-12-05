@@ -5,4 +5,5 @@
 .. link:chapter1-resource-sharing.adoc[Compartilhamento de Recursos]
 .. link:chapter1-scalability.adoc[Escalabilidade]
 .. link:chapter1-conclusion.adoc[Conclusão]
+. link:chapter2.adoc[Capítulo 2]
 . link:GLOSSARY.adoc[Glossário]

@@ -1,0 +1,14 @@
+:imagesdir: images
+
+== Arquitetura de Sistemas Distribuídos
+
+=== Estilos Arquitetônicos
+- Em camadas
+- Baseada em objetos
+- Baseada em eventos (publish/subscribe)
+
+=== Arquitetura de Sistemas
+
+- Centralizada
+    - cliente/servidor
+    - multicamadas: interface de usuário, regras de negócio e acesso à dados

@@ -72,7 +72,14 @@ Por outro lado, as *requisições assíncronas* são uma solução mais eficient
 
 Tecnologias como http://www.wikiwand.com/en/Ajax_(programming)[Ajax (_Asynchronous JavaScript And XML_)], https://en.wikipedia.org/wiki/XMLHttpRequest[possibilitada por recursos dos navegadores web], popularizaram a utilização de chamadas assíncronas em aplicações web.
 
-Normalmente, funções assíncronas são implementadas internamente com uso de _threads_. A diferença é o programador que usa tais funções não tem que se preocupar em criar _threads_. Uma excelente fonte para entender mais como chamadas síncronas e assíncronas funcionam é o livro https://books.google.com.br/books?id=G7rBCQAAQBAJ[JavaScript with Promises: Managing Asynchronous Code].
+Normalmente, funções assíncronas são implementadas internamente com uso de _threads_. A diferença é o programador que usa tais funções não tem que se preocupar em criar _threads_. Uma excelente fonte para entender mais como chamadas síncronas e assíncronas funcionam é o capítulo 1 do livro https://books.google.com.br/books?id=G7rBCQAAQBAJ[JavaScript with Promises: Managing Asynchronous Code].
 
 == Técnicas de Escalabilidade
 
+- Chamadas Assíncronas
+- Distribuição de Componentes (Divide and Conquer)
+- Replicação de Componentes / Cache
+
+// https://martinfowler.com/bliki/TwoHardThings.html
+
+== Problemas de Escalabilidade Administrativa
