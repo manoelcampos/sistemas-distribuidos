@@ -1,0 +1,9 @@
+= Chat Java
+
+- Criar uma estrutura de dados para armazenar as conexões dos clientes no servidor
+  e assim permitir que o servidor possa se comunicar com todos os clientes conectados
+
+- Incluir um recurso de login (sem senha) para identificar cada cliente.
+- Fazer o cliente enviar mensagem pro servidor e este encaminhar
+  tal mensagem para todos os outros clientes (exceto quem enviou)
+- Fazer um cliente enviar mensagem para um outro cliente específico.

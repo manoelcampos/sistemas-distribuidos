@@ -1,27 +1,25 @@
-:imagesdir: images
+= Modelo Cliente/Servidor
 
-# Modelo Cliente/Servidor
+= Modelo Multicamadas
 
-# Modelo Multicamadas
+== Middleware (mais complexo, normalmente pesado, faz muitas tarefas) / Broker (mais simples, normalmente uma parte de um middleware que faz uma tarefa bem específica)
 
-## Middleware (mais complexo, normalmente pesado, faz muitas tarefas) / Broker (mais simples, normalmente uma parte de um middleware que faz uma tarefa bem específica)
+== Service Discovery
 
-## Service Discovery
+= RPC
 
-# RPC
+= RMI / .Net Remoting (IPC)
 
-# RMI / .Net Remoting (IPC)
+= DCOM
 
-# DCOM
+= COM+
 
-# COM+
+= Corba
 
-# Corba
-
-# Peer-to-Peer (P2P)
+= Peer-to-Peer (P2P)
 
 - WebSockets
-- sockets.io (js / node.js)
+- https://socket.io (js / node.js)
 - http://peerjs.com (WebRTC)
 - https://webrtc.org / https://ortc.org
 
@@ -35,23 +33,22 @@
 - https://developer.apple.com/documentation/multipeerconnectivity
 - https://developer.android.com/guide/topics/connectivity/wifip2p.html
 
-# Sockets: a base para comunicação em rede
+= Sockets: a base para comunicação em rede
 https://www.javaworld.com/article/2853780/core-java/socket-programming-for-scalable-systems.html
 
 - Chat
 
-# Application Server (AS)
+= Application Server (AS)
 
-## Connection Pooling
+== Connection Pooling
 
-## Load Balancer
+== Load Balancer
 
-# Comunicação síncrona e assíncrona
+= Comunicação síncrona e assíncrona
 
+= Web Services
 
-# Web Services
-
-## SOAP
+== SOAP
 http://www.webservicex.net/
 
 jax-ws: https://javaee.github.io/metro-jax-ws/
@@ -59,49 +56,66 @@ jax-b: https://javaee.github.io/jaxb-v2/
 
 jax-b vs xml dom vs sax: https://dzone.com/articles/jaxb-sax-dom-performance
 
-
-## REST 
+== REST 
 
 Standard
     jax-rs:
-        https://github.com/jersey/jersey (reference implementation)
+       Implementado e disponível no GlassFish
+            https://github.com/jersey/jersey (reference implementation)
+            https://jersey.github.io
+       Implementado e disponível no JBoss
+            http://resteasy.jboss.org
+
+    resteasy
+        Implementando classes proxy automaticamente no cliente para consumir serviços
+        (sem precisar escrever ou gerar o código no NetBeans)
+        https://dennis-xlc.gitbooks.io/restful-java-with-jax-rs-2-0-2rd-edition/content/en/part1/chapter16/resteasy_client_proxies.html
+        https://dzone.com/articles/jsonb-java-api-for-json-binding
+        
+
 Non-Standard
-    http://resteasy.jboss.org
     http://restfulie.caelum.com.br
 
+https://dzone.com/articles/jsonb-java-api-for-json-binding
+https://www.quora.com/What-is-the-difference-between-Java-API-for-JSON-processing-JSON-P-and-Java-API-for-JSON-Binding-JSON-B-Dont-they-have-an-overlapping-job
+    JSON-P:  construir JSON manualmente via Java (adicionando cada chave individualmente. A home page abaixo mostra um exemplo claro)
+        https://javaee.github.io/jsonp/
 
-JSON-P: 
-    https://javaee.github.io/jsonp/
+    JSON-B: uma forma mais automática de pegar objetos java e converter para JSON e vice-versa 
+        (sem precisar percorrer cada atributo do objeto individualmente)
+        http://json-b.net
+        https://github.com/javaee/jsonb-spec
 
-JSON-B: 
-    http://json-b.net
-    https://github.com/javaee/jsonb-spec
+== GraphQL
 
-## GraphQL
-
-### Swagger e SwaggerHub
+=== Swagger, SwaggerHub, SwaggerUI
 
 http://blog.caelum.com.br/modelando-apis-rest-com-swagger/
 http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
 
-# SOA / Windows Communication Foundation (WCF)
+= SOA / Windows Communication Foundation (WCF)
 
-# Cloud Computing
+= Cloud Computing
 
-## Function as a Service (FaaS)
+== Function as a Service (FaaS)
 
-# Microservices
+= Microservices
 
 http://microservices.io
 
-# CQRS
+= CQRS
 
-# Circuit Breaker
+= Circuit Breaker
 https://martinfowler.com/bliki/CircuitBreaker.html
 
-# Architecture Patterns (ver livro na minha biblioteca digital)
+= Architecture Patterns (ver livro na minha biblioteca digital)
 
-# Publish/Subscribe
+= Padrão de mensagens e modelo de entrega
+
+- Publish/Subscribe como padrão de mensagens. 
+    * https://aws.amazon.com/pub-sub-messaging/
+    * https://cloud.google.com/pubsub/docs/overview
+- Push/Pull como modelo de entrega
 
 [bibliography]
 == Referências

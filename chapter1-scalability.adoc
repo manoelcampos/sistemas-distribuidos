@@ -77,8 +77,9 @@ Normalmente, funções assíncronas são implementadas internamente com uso de _
 == Técnicas de Escalabilidade
 
 - Chamadas Assíncronas
-- Distribuição de Componentes (Divide and Conquer)
-- Replicação de Componentes / Cache
+- Distribuição de Componentes (_Divide and Conquer_)
+- Replicação de Componentes 
+    - Cache (Redis https://redis.io[1] https://aws.amazon.com/pt/elasticache/what-is-redis/[2], http://www.ehcache.org[Ehcache] e outros)
 
 // https://martinfowler.com/bliki/TwoHardThings.html
 

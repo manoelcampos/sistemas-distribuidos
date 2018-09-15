@@ -15,7 +15,7 @@ Os _mainframes_ eram utilizados para realizar tarefas que demandavam alto poder 
 
 Processamento em lote é caracterizado pela execução de um conjunto de tarefas (_jobs_), que após iniciadas, são executadas até o fim, sem a intervenção humana. No entanto, este modelo de processamento centralizado e desconectado impedia que o poder computacional de diversos _mainframes_ pudesse ser combinado para permitir a execução de tarefas cada vez maiores e mais complexas. A abordagem de dividir uma tarefa grande em tarefas menores é chamada de _Divide and Conquer_ ("Dividir para Conquistar" ou "Divisão e Conquista") <<PA>>. Tal divisão permite que estas tarefas menores possam ser executadas simultaneamente em múltiplos computadores. Isto aumenta a eficiência, possibilitando que a tarefa original seja finalizada em menos tempo.
 
-Com a popularização das redes de computadores, o advento da Internet e a crescente informatização, computadores começaram a ser inteligados e sistemas centralizados (monoprocessados) evoluíram para *sistemas distribuídos*. Estes são sistemas multiprocessdos, que executam simultaneamente em diversos computadores. 
+Com a popularização das redes de computadores, o advento da Internet e a crescente informatização, computadores começaram a ser inteligados e sistemas centralizados (monoprocessados) evoluíram para *sistemas distribuídos*. Estes são sistemas multiprocessados, que executam simultaneamente em diversos computadores. 
 
 Existem várias definições de sistemas distribuídos, como <<SDPP>>:
 

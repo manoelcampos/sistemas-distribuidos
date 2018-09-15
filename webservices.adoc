@@ -1,0 +1,16 @@
+= Ferramentas
+
+- JDK 8
+- NetBeans 8.2
+- Glass Fish 5
+- https://chrome.google.com/webstore/detail/restlet-client-rest-api-t/aejoelaoggembcahagimdiliamlcdmfm[Restlet Client Chrome Extension]
+- https://www.soapui.org[SoapUI]
+- GlassFish 5.0 - Full Platform[https://javaee.github.io/glassfish/download]
+- MySQL Connector[https://dev.mysql.com/downloads/connector/j/]
+
+= SOAP
+
+- https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl[Busca de Endereço dos Correios (Gratuito)]
+- https://www.correios.com.br/para-sua-empresa/logistica-integrada/correioslog-comercio-eletronico/pdf/CorreiosWebServicePadresTcnicosdeComunicaodoServioefulfillmentv1_1.pdf[WebService Pagos dos Correios]
+
+= REST: Representational State Transfer

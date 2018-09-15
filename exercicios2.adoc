@@ -1,0 +1,8 @@
+= Chat WebSockets
+
+- Adicionar suporte para nicknames.
+- Notificar usuários quando alguém conectar ou desconectar.
+- Não enviar a mesma mensagem para o usuário que a enviou. No lugar, exibir tal mensagem imadiatamente após o usuário pressionar enter.
+- Adicionar recurso "{usuário} está digitando".
+- Mostrar quem está online.
+- Adicionar mensagens privadas.
