@@ -1,0 +1,30 @@
+= Cliente e Servidor de Chat utilizando WebSocket com NodeJS
+
+== Estrutura do Projeto
+
+- link:index.js[index.js]: representa o servidor NodeJS que permitirá aos clientes interagirem no chat.
+- link:index.html[index.html]: página web que será disponibilizada aos clientes quando eles acessarem o 
+                               servidor por meio do navegador. Tal página representa a parte cliente
+                               do chat. Por meio dela os usuários podem interagir entre si, utilizando
+                               o servidor como intermediário.
+
+== Instalação em Linux
+
+Para instalar o http://nodejs.org::[NodeJS] para rodar o servidor e o http://npmjs.com::[npm] para gerenciar pacotes
+utilizados pela aplicação, execute `make install`.
+
+O comando também instala o https://nodemon.io::[nodemon] para permitir monitorar alterações no código do servidor e reiniciar a aplicação automaticamente. Isto facilita muito o desenvolvimento.
+
+== Executando a Aplicação
+
+=== Servidor
+Para iniciar o servidor, podemos executar `node index.js`.
+Porém, utilizando o nodemon, basta fazer `nodemon` que ele vai procurar um arquivo `index.js` e iniciá-lo automaticamente.
+
+=== Cliente
+
+Após iniciar o servidor, ele vai mostrar no terminal o endereço que a aplicação pode ser acessada pelo navegador.
+O endereço padrão é http://localhost:3000.
+Cada aba ou janela do navegador aberta em tal endereço representará um usuário do chat.
+
+
