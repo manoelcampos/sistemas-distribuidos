@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Arquivo não é mais obrigatório a partir do JavaEE 7.
+O beans-discovery-mode foi alterado para "all" para permitir
+que qualquer objeto possa ser injetado via CDI e não
+apenas os que tiverem uma anotação e escopo como @RequestScoped.
+-->
 <beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
-       bean-discovery-mode="annotated">
+       bean-discovery-mode="all">
 </beans>

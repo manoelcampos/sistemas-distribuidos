@@ -1,0 +1,8 @@
+= Cadastro com Banco de Dados MySQL utilizando WebService SOAP
+
+Esta aplicação criar um servidor SOAP que fornece um WebService para
+permitir a realização de cadastros em um banco de dados MySQL.
+
+O arquivo link:criar-banco.sh[criar-banco.sh] conecta ao MySQL e criar o banco de dados "cadastro_soap" caso ele não exista.
+Certifique-se de editar o arquivo para fornecer a senha de root do seu servidor MySQL.
+O arquivo pode ser executado no terminal com `sh criar-banco.sh`

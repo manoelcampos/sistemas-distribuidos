@@ -1,3 +1,5 @@
+package com.manoelcampos.chat;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,25 +21,25 @@ public class ClientSocket {
     /**
      * Socket que representa a conexão do cliente com o servidor.
      */
-    private Socket socket;
+    private final Socket socket;
 
     /**
-     *  Stream que permite ler mensagens recebidas ou enviadas pelo cliente.
+     *  Permite ler mensagens recebidas ou enviadas pelo cliente.
      *  Se o {@link ClientSocket} foi criado pela aplicação {@link ChatServer}, tal atributo permite ao {@link ChatServer}
      *  ler mensagens enviadas pelo cliente.
      *  Se o {@link ClientSocket} foi criado pela aplicação {@link ChatClient}, tal atributo
      *  permite ao {@link ChatClient} ler mensagens enviadas pelo servidor.
      */
-    private BufferedReader in;
+    private final BufferedReader in;
 
     /**
-     *  Stream que permite enviar mensagens do cliente para o servidor ou do servidor para o cliente.
+     *  Permite enviar mensagens do cliente para o servidor ou do servidor para o cliente.
      *  Se o {@link ClientSocket} foi criado pela aplicação {@link ChatServer}, tal atributo permite ao {@link ChatServer}
      *  enviar mensagens ao cliente.
      *  Se o {@link ClientSocket} foi criado pela aplicação {@link ChatClient}, tal atributo
      *  permite ao {@link ChatClient} enviar mensagens ao servidor.
      */
-    private PrintWriter out;
+    private final PrintWriter out;
 
     /**
      * Login que o cliente usa para conectar ao servidor.

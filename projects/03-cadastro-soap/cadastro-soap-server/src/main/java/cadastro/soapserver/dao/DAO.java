@@ -1,7 +1,6 @@
 package cadastro.soapserver.dao;
 
 import cadastro.soapserver.model.Entidade;
-import javax.persistence.EntityManager;
 
 /**
  *
