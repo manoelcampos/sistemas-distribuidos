@@ -23,3 +23,10 @@ Depois disso, basta executar o projeto clicando no botão "Play" (F6). Se nenhum
 vai abrir um assistente para que um seja configurado.
 
 Se tudo correr bem, o NetBeans abrirá o navegador no endereço http://localhost:8080/cadastro-soap-server/.
+A página index.html incluída possui um link para a página de teste do WebService.
+Tal página também pode ser acessada pelo NetBeans, clicando com o botão
+direito em qualquer Web Service disponibilizado na pasta Web Services.
+
+=== Aplicação Cliente para consumir os Web Services
+
+A ser implementada (por enquanto os WebServices podem ser consumidos a partir das páginas de teste, como mostrado acima).

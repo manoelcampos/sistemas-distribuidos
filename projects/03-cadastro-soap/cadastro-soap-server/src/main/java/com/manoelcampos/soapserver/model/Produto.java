@@ -11,9 +11,9 @@ import javax.validation.constraints.NotNull;
  *
  * @author Manoel Campos da Silva Filho
  */
-@Entity(name = "produto")
+@Entity
 public class Produto implements Cadastro {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @NotNull

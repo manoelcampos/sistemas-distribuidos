@@ -8,7 +8,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Classe que produz objetos complexos
+ * como {@link EntityManager} e
+ * {@link DAO}. Tais objetos não podem ser instanciados
+ * por injeção de dependência,
+ * usando a anotação {@link javax.inject.Inject} pois seus construtores requerem
+ * alguns parâmetros.
+ * 
+ * Sempre que uma instância desses objetos for solicitada
+ * via anotação {@link javax.inject.Inject}, os produtores
+ * nesta classe são automaticamente executados
+ * para adequadamente criar e retornar tais objetos.
+ * Se você olhar o construtor da classe {@link com.manoelcampos.soapserver.dao.JpaDAO}
+ * verá que ela é complexa de ser criada uma vez que não tem um construtor padrão.
+ * 
  * @author Manoel Campos da Silva Filho
  */
 public class Producers {

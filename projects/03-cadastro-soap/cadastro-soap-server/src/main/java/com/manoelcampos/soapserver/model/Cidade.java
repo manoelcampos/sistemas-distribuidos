@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Cidade implements Cadastro {
     @Id 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @NotNull

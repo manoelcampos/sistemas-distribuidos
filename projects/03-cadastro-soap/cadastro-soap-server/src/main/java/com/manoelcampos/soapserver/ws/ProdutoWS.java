@@ -9,7 +9,10 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 
 /**
- *
+ * Classe que publica um Web Service com métodos que podem ser chamados 
+ * remotamente via protocolo SOAP.
+ * A anotação {@link WebService} é que permite tal funcionalidade.
+ * 
  * @author Manoel Campos da Silva Filho
  * 
  * @see https://www.developer.com/java/creating-soap-web-services-with-jax-ws.html

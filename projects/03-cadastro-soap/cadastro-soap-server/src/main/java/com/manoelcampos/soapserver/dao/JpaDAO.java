@@ -5,9 +5,16 @@ import javax.persistence.EntityManager;
 import com.manoelcampos.soapserver.model.Cadastro;
 
 /**
- *
+ * Uma implementação da interface {@link DAO} 
+ * que utiliza JPA para acesso ao banco de dados.
+ * 
  * @author Manoel Campos da Silva Filho
- * @param <T>
+ * @param <T> classe de negócio que será manipulada
+ *            pelo objeto DAO.
+ *            Tais classes percentem ao pacote {@link com.manoelcampos.soapserver.model}.
+ *            Cada instância de um DAO precisa estar associada a uma classe destas.
+ *            Se ela estiver associada à classe Produto, isto indica
+ *            que manipulará objetos produto obtidos do banco de dados.
  */
 public class JpaDAO<T extends Cadastro> implements DAO<T> {
     private final EntityManager em;

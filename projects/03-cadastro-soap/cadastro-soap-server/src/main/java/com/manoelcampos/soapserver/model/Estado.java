@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Estado implements Cadastro {
     @Id 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     
