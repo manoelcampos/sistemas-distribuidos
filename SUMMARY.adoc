@@ -1,9 +1,9 @@
 = Índice
 
 . link:README.adoc[Introdução]
-. link:chapter1.adoc[Capítulo 1]
-.. link:chapter1-resource-sharing.adoc[Compartilhamento de Recursos]
-.. link:chapter1-scalability.adoc[Escalabilidade]
-.. link:chapter1-conclusion.adoc[Conclusão]
-. link:chapter2.adoc[Capítulo 2]
+. link:chapter01.adoc[Capítulo 1]
+.. link:chapter01a-resource-sharing.adoc[Compartilhamento de Recursos]
+.. link:chapter01b-scalability.adoc[Escalabilidade]
+.. link:chapter01c-conclusion.adoc[Conclusão]
+. link:chapter02.adoc[Capítulo 2]
 . link:GLOSSARY.adoc[Glossário]
