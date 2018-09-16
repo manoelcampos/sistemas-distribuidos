@@ -1,15 +1,21 @@
-package cadastro.soapserver.dao;
+package com.manoelcampos.soapserver.dao;
 
-import cadastro.soapserver.model.Entidade;
 import java.lang.reflect.ParameterizedType;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
+import com.manoelcampos.soapserver.model.Cadastro;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Manoel Campos da Silva Filho
  */
-public class DaoProducer {
+public class Producers {
+    @Produces
+    @PersistenceContext()
+    private EntityManager em;
+
     /**
      * Instancia um objeto JpaDAO por meio de injeção de dependência CDI.
      *
@@ -21,11 +27,9 @@ public class DaoProducer {
      * @return Uma instância do JpaDAO solicitado no ponto de injeção.
      */
     @Produces
-    public <T extends Entidade> DAO<T> create(InjectionPoint ip) {
+    public <T extends Cadastro> DAO<T> getDao(InjectionPoint ip){
         ParameterizedType t = (ParameterizedType) ip.getType();
         Class classe = (Class) t.getActualTypeArguments()[0];
-
-        return new JpaDAO<>(classe);
-    }
-
+        return new JpaDAO(em, classe);
+    }    
 }

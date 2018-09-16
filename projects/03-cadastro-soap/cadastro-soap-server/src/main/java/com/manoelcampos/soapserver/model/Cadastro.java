@@ -1,4 +1,4 @@
-package cadastro.soapserver.model;
+package com.manoelcampos.soapserver.model;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author Manoel Campos da Silva Filho
  */
-public interface Entidade extends Serializable {
+public interface Cadastro extends Serializable {
     Long getId();
     void setId(Long id);
 }

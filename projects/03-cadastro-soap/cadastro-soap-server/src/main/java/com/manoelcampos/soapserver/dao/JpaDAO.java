@@ -1,26 +1,20 @@
-package cadastro.soapserver.dao;
+package com.manoelcampos.soapserver.dao;
 
 
-import cadastro.soapserver.model.Entidade;
-import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import com.manoelcampos.soapserver.model.Cadastro;
 
 /**
  *
  * @author Manoel Campos da Silva Filho
  * @param <T>
  */
-@Transactional
-@Dependent
-public class JpaDAO<T extends Entidade> implements DAO<T> {
-    @PersistenceContext
-    private EntityManager em;
+public class JpaDAO<T extends Cadastro> implements DAO<T> {
+    private final EntityManager em;
+    private final Class<T> entityClass;
     
-    private Class<T> entityClass;
-    
-    public JpaDAO(Class<T> entityClass){
+    public JpaDAO(EntityManager em, Class<T> entityClass){
+        this.em = em;
         this.entityClass = entityClass;
     }
 

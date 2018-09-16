@@ -1,10 +1,9 @@
-package cadastro.soapserver.model;
+package com.manoelcampos.soapserver.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -12,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * @author Manoel Campos da Silva Filho
  */
 @Entity
-public class Cidade implements Entidade {
+public class Marca implements Cadastro {
     @Id 
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -20,9 +19,6 @@ public class Cidade implements Entidade {
     @NotNull
     private String nome;
     
-    @NotNull @ManyToOne
-    private Estado estado;
-
     @Override
     public Long getId() {
         return id;
@@ -39,13 +35,5 @@ public class Cidade implements Entidade {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
     }
 }

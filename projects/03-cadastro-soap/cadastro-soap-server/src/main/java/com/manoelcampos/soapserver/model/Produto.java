@@ -1,4 +1,4 @@
-package cadastro.soapserver.model;
+package com.manoelcampos.soapserver.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
  *
  * @author Manoel Campos da Silva Filho
  */
-@Entity
-public class Produto implements Entidade {
+@Entity(name = "produto")
+public class Produto implements Cadastro {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
