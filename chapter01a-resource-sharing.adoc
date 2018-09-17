@@ -2,10 +2,13 @@
 
 == Compartilhamento de Recursos
 
-Um dos principais objetivos de um sistema distribuído é o compartilhamento de recursos, tanto físicos quanto lógicos. O compartilhamento de dispositivos físicos como impressoras e discos é um exemplo. Um sistema operacional pode permitir que tais dispositivos sejam utilizados por múltiplos usuários, trazendo otimização no uso de recursos e redução de despesas com aquisição de equipamentos (estas chamadas de despesas de capital ou https://www.investopedia.com/terms/c/capitalexpenditure.asp[Capital Expenditure] em inglês). 
-Uma vez que uma impressora não é utilizada o tempo todo por um usuário, ela pode ser compartilhada com outros usuários e assim maximizar o uso de tal equipamento, melhorando a relação custo/benefício.
+Um dos principais objetivos de um sistema distribuído é o compartilhamento de recursos, tanto físicos quanto lógicos. O compartilhamento de dispositivos físicos como impressoras e discos é um exemplo. Um sistema operacional pode permitir que tais dispositivos sejam utilizados por múltiplos usuários, trazendo otimização no uso de recursos e redução de despesas com aquisição de equipamentos (estas chamadas de despesas de capital ou https://www.investopedia.com/terms/c/capitalexpenditure.asp[Capital Expenditure, CAPEX] em inglês). <<SDPP>> 
+
+Uma vez que uma impressora não é utilizada o tempo todo por um usuário, ela pode ser compartilhada com outros e assim maximizar o uso de tal equipamento, melhorando a relação custo/benefício. <<SDPP>> Servidores com alta capacidade computacional também podem ser compartilhados entre vários usuários para: otimizar o uso de recursos e permitir, permitir o acesso à dados e aplicações a partir de diferentes locais, reduzir o tempo de execução de tarefas que demandem maiores recursos computacionais. O uso de um servidor por vários usuários também é mais eficiente em termos de consumo de energia, uma vez que https://doi.org/10.1016/j.jpdc.2017.08.010[pesquisas mostram que uma máquina ociosa consome 70% de energia].
 
 Exemplos de sistemas distribuídos para compartilhamento de recursos incluem o http://g.co/cloudprint[Google Cloud Print], https://pt.wikipedia.org/wiki/Network_File_System[Network File System (NFS)] e https://www.samba.org[Samba].
 
 .https://developers.google.com/cloud-print/docs/overview[Google Cloud Print]
 image:google-cloud-print.png[]
+
+Adicionalmente, o compartilhamento de recursos possibilita a colaboração <<SDPP>> e o trabalho remoto, como é o caso do uso de ferramentas como o https://gsuite.google.com.br[GSuite] da Google. No entanto, todas essas facilidades levantam questões de segurança que precisam ser tratadas pelos sistemas distribuídos. Alguns dos problemas comuns são a invasão de privacidade e o rastreamento da navegação do usuário para montar perfis utilizados para fornecimento de anúncios <<SDPP>>. Felizmente, muitos navegadores atuais como o https://developer.mozilla.org/pt-BR/docs/Mozilla/Firefox/Privacidade/Proteção_de_rastreamento[Firefox permitem bloquear este tipo de rastreamento].

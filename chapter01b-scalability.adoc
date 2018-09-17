@@ -11,7 +11,11 @@ Um sistema pode ser escalável em 3 diferentes dimensões <<SDPP>>:
 - localização geográfica;
 - administração.
 
-Um sistema cujo *tamanho* é escalável indica que ele se mantém eficiente à medida que são adicionados mais recursos e usuários. A escalabilidade em relação à *localização geográfica* indica que o sistema continua funcionando, e de forma eficiente, mesmo que: a posição entre usuários e recursos mude e a distância entre eles aumente. Por fim, a *escalabilidade administrativa* indica que o esforço para administração do sistema ainda é baixo, mesmo com o aumento do número de usuários e recursos <<SDPP>>. Normalmente os profissionais que administram o sistema não devem perceber o impacto do aumento do sistema.
+Um sistema cujo *tamanho* é escalável indica que ele se mantém eficiente à medida que são adicionados mais recursos e usuários. A escalabilidade em relação à *localização geográfica* indica que o sistema continua funcionando, e de forma eficiente, mesmo que: a posição entre usuários e recursos mude e a distância entre eles aumente. Por fim, a *escalabilidade administrativa* indica que o esforço para administração do sistema ainda é baixo, mesmo com o aumento de usuários e recursos <<SDPP>>. Normalmente os profissionais que administram o sistema não devem perceber o impacto do aumento do tamanho.
+
+Tornar um sistema escalável em uma ou mais dimensões é um grande desafio, uma vez que é preciso fazer um balanço entre benefícios e desvantagens. Uma das desvantagens é que o aumenta da escala para atender mais usuários pode trazer perdas de desempenho em geral <<SDPP>>. 
+
+A partir do momento que mais computadores são adicionados para atender uma maior demanda de usuários, isto pode aumentar a troca de mensagens e o tempo de resposta, fazendo com que o desempenho geral seja reduzido. Isto ocorre principalmente quando estes computadores estão geograficamente distantes. Aumentar a escala em qualquer dimensão normalmente envolve custos adicionais, que podem ser tanto financeiros quanto operacionais. Tudo isso precisa ser levado em consideração no momento de escalar um sistema distribuído.
 
 == Problemas de Escalabilidade
 
