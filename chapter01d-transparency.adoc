@@ -1,0 +1,86 @@
+:imagesdir: images
+
+== Transparência de Distribuição
+
+Como visto anteriormente, parte da definição de sistemas distribuídos é que eles normalmente se apresentam como um sistema único aos usuários, ocultando o fato de processos e recursos estarem fisica e muitas vezes geograficamente distribuídos <<SDPP>>. Tal característica define o sistema como transparente. Transparência neste contexto então significa que o programador e/ou usuário não pode ver ou identificar que o sistema é distribuído . As principais formas de transparência são: acesso, localização, migração/mobilidade, relocação, replicação, concorrência e falha. <<SDCP>> <<SDPP>>
+
+=== Transparência de Acesso
+
+Visa ocultar diferenças na representação de dados e acesso a recursos quando estes são transmitidos de uma máquina para outra com arquiteturas e/ou sistemas operacionais diferentes <<SDPP>>. Diferentes sistemas e arquiteturas de hardware podem adotar padrões diferentes de dados (como no caso do big endian e little endian que define da ordem de bits em um byte). Processadores intel adotaram little endian e muitos outros seguiram este padrão. TCP/IP segue o big endian.
+
+Por exemplo o valor binário equivalente a 8 decimal poderia ser representando em diferentes ordem de bits (considerando que o bit da posição zero está à direita): 
+. 1000, sendo representado do bit menos significativo pro mais (litlte endian) (este é o formato que nós humanos usamos pra representar e ler números);
+. 0001, sendo representado do bit mais significativo pro menos (big endian).
+
+Sem saber qual a ordem em que os bits estão representados, o valor decimal 8, se representado em little endian (1000) mas lido em big endian (0001) será igual a 1 decimal.
+
+Como podem ver, a transmissão de dados usando TCP/IP é feito em big endian mas os processadores como intel usam little endian. No entanto, ao usar ferramentas de alto nível como middlewares, não temos que nos preocupar com isso. Desta forma, tais middlwares fornecem transparência de acesso. Se estivessemos capturando dados diretamente da camada de rede (ou que foram obtidos de tal camada e gravados em arquivo), aí sim teríamos tais preocupações.
+
+Diferentes linguagens de programação podem ter formatos distintos para números, strings, booleans e outros dados. Por exemplo, em C, boolean é representado como um número inteiro. Em Java temos um tipo boolean específico. Strings em C são um vetor de caracteres terminados com `\0`. Em Java não há tal caractere no final das Strings.
+
+Em <<SDCP>> ainda é citado que a transparência de acesso permite que não haja distinção nas operações para acesso a recursos locais ou remotos. Desta forma, nem o programador tem que usar operações (funções) diferentes para tais acessos.
+
+Conveções de nomes de arquivos também devem ser ocultados de usuários e aplicações <<SDPP>>. Servidores web fazem isso. Por exemplo, no Windows é usada \ para separar diretórios, enquanto no Linux é usada /. Mas na web, o padrão é / independente de qual seja o sistema operacional.
+
+=== Transparência de Localização
+
+Visa ocultar dos usuários e aplicações a localização de um recurso <<SDPP>>, ou seja, sem conhecimento de sua localização física ou na rede (endereço IP) <<SDCP>>. A localização física inclui localização geográfica e o servidor onde o recurso está disponível.
+
+Uma das formas de se conseguir transparência de localização é atribuindo nomes lógicos aos recursos <<SDPP>>, que funcionam como apelidos (_alias_). Os endereços https://pt.wikipedia.org/wiki/URL[URL] (_Uniform Resource Locator_) são a forma mais conhecida para se obter transparência de localização. Um endereço como http://ifto.edu.br/index.html não indica: qual servidor hospeda o arquivo index.html, se tal arquivo sempre esteve neste servidor <<SDPP>>, ou até mesmo se o arquivo está hospedado em vários servidores e o servidor mais próximo do usuário ou menos sobrecarregado atendeu à solicitação de acesso ao arquivo. 
+
+== Transparência de Migração/Mobilidade e Relocação
+
+Visa permitir que um recurso seja movido para outra localização sem afetar a forma como os usuários acessam tal recurso <<SDPP>> nem o funcionamento de programas <<SDCP>>. Se o recurso puder ser movido enquanto estiver em uso, sem que usuários ou aplicações percebam tal operação, então temos transparência de relocação <<SDPP>>.
+
+Servidores web por meio do protocolo HTTP permitem transparência de migração. Ao acessarmos uma página web como http://palmas.ifto.edu.br/cursos.html, se o arquivo cursos.html foi movido /cursos/index.html, podemos utilizar o código https://pt.wikipedia.org/wiki/HTTP_301[HTTP 301] para indicar que a página foi movida e redirecionar automaticamente o usuário para o novo endereço.
+
+Uma das grandes vantagens da computação em nuvem é transparência de migração e de relocação. Provedores de computação em nuvem tradicionalmente utilizam tecnologia de virtualização para permitir que um servidor seja compartilhado por múltiplos clientes. Tal tecnologia utiliza máquinas virtuais (VMs) para permitir que cada cliente possa instalar as aplicações que desejar, sem interferir no ambiente de outros clientes. Os provedores realizam a migração de máquinas virtuais de um servidor para outro, garantindo que os usuários vão continuar acessando tais VMs da mesma forma que antes, tendo então transparência de migração.
+
+NOTE: Lembre-se que compartilhamento de recursos é uma das características de sistemas distribuídos.
+
+Migração de VMs (_VM migration_) é uma tarefa rotineina na nuvem para permitir um uso mais eficiente dos recursos computacionais.
+Por exemplo, se um servidor onde uma VM ou conjunto de VMs está executando está subutilizado, tais VMs podem ser migradas para outro servidor, desligando-se o anterior. Com isto, diminuimos a quantidade de servidores ligados e consequentemente custos com consumo de energia. Adicionalmente, o recurso de migração ao vivo de VMs (_live VM migration_) permite que uma VM seja migrada para outro servidor enquanto ela está em uso, garantindo transparência de relocação.
+
+Em <SDPP>> é comentado que o uso de dispositivos móveis como laptops é um exemplo de transparência de relocação, onde os usuários podem ir de um lugar a outro sem ao menos se desconectar. No entanto, isto é mais uma realidade de dispositivos como smartphones conectados a redes móveis como 3G/4G. No caso de laptops usando WiFi, comumente a conexão cai ao sair de um AP para outro e o usuário realmente percebe a queda da conexão. Trabalhos como o http://repositorio.unb.br/bitstream/10482/10766/1/2012_ClaudiodeCastroMonteiro.pdf[protocolo SMIP] permitem mobilidade em redes WiFi e 3G/4G para evitar a perda de conexão.
+
+== Transparência de Replicação
+
+Visa criar cópias de um recurso em diferentes locais para aumentar a disponibilidade ou desempenho, colocando uma cópia do recurso perto de onde ele é acessado, sem que os usuários, programadores ou aplicativos tenham conhecimento das réplicas <<SDPP>> <<SDCP>>. Isto implica que a transparência de replicação normalmente requer transparência de localização <<SDPP>>.
+
+Transparência de replicação é outro recurso fundamental da computação em nuvem. Em provedores que fornecem Software como Serviço (_Software as a Service - SaaS_), como é o caso da Google e seus diversos aplicativos, máquinas virtuais executando os softwares podem ser replicadas para atender a um aumento da demanda de usuários. No entanto, os usuários das aplicações não tem conhecimento da replicação de tais VMs. Um usuário do Brasil ao acessar um serviço como o GMail pode ser atendido por uma VM executando em um servidor no Brasil, enquanto um usuário na europa pode ser atendido por uma VM na europa. Mesmo dentro da europa, a solicitação de acesso à um serviço pode ser direcionada para uma VM no país mais próximo do usuário.
+
+== Transparência de Concorrência
+
+Já sabemos que o compartilhamento de recursos em sistemas distribuídos traz muitas vantagens. Um exemplo é o compartilhamento colaborativo <<SDPP>> como o Google Docs. No entanto, determinados recursos precisam ser compartilhados de forma competitiva (concorrente) <<SDPP>>. Recursos escassos normalmente são compartilhados desta forma. Exemplos incluem recursos físicos como CPU. Em geral, um mesmo núcleo de uma CPU não pode ser usado simultaneamente por dois processos. Uma excessão são as CPUs atuais com tecnologia como https://pt.wikipedia.org/wiki/Hyper-threading[Hyper Threading], que pemitem a um núcleo executar mais de uma tarefa simultaneamente (com suas devidas limitações). Como a quantidade de tarefas executadas por um sistema operacional é sempre maior que a quantidade de núcleos de CPU existentes, as tarefas precisam concorrer para usar a CPU. Tradicionalmente o sistema operacional permite que uma tarefa use a CPU por um determinado período de tempo. Quando o tempo expira, a tarefa é pausada e outra tarefa então passa a usar aquele núcleo. Desta forma, a execução das tarefas é feita de forma alternada, que chamamos de https://pt.wikipedia.org/wiki/Preemptividade[preemptiva]. No caso dos sistemas operacionais, eles tornam transparentes esta concorrência pela CPU. 
+
+Acesso à arquivos e bancos de dados também é feito de forma concorrente quando múltiplos usuários tentam acessar um mesmo arquivo ou registro no banco. A transparência de concorrência faz com que um usuário não perceba que um recurso está sendo utilizado por outro usuário. Este acesso concorrente fica mais óbvio quando vários usuários tentam alterar simultaneamente um mesmo arquivo ou registro. <<SDPP>> As alterações precisam ser sincronizadas para garantir que os dados se mantenham consistentes <<SDPP>> e que as alterações de um usuário não interfiram nas de outro. Considere que dois usuários alteraram simultaneamente um arquivo e precisam salvar tais alterações como mostrado a seguir:
+
+|===
+|*Documento Original* |*Alterações do Usuário 1* |*Alterações do Usuário 2*
+|AAAAAAA +
+ BBBBBBB +
+ CCCCCCC +
+ DDDDDDD +
+|1111111 +
+ BBBBBBB +
+ CCCCCCC +
+ DDDDDDD +
+|AAAAAAA +
+ 2222222 +
+ CCCCCCC +
+ DDDDDDD
+|===
+
+Como podem ver, o usuário 1 alterou a primeira linha enquanto o usuário 2 alterou a segunda linha do arquivo. A concorrência neste caso pode fazer com que, o último usuário a salvar o arquivo faça as alterações do primeiro serem perdidas. O que poderíamos esperar é que as alterações de ambos os usuários fossem incluídas no arquivo, como mostrado a seguir.
+
+|===
+|*Documento com as alterações de ambos os usuários*
+|1111111 +
+2222222 +
+CCCCCCC +
+DDDDDDD
+|===
+
+A transparência de concorrência precisa lidar com tais tipos de problemas. Ela precisa ainda garantir que o recurso (neste caso o arquivo) se mantenha consistente <<SDPP>>. Por exemplo, a tentativa de alterações simultâneas *não* pode corromper o arquivo, tornando impossível ler seu conteúdo.
+
+Travas de acesso (locks) são muito utilizadas para dar acesso exclusivo a um recurso para um usuário <<SDPP>>, criando uma fila de espera para tal recurso. O uso de locks evitar os problemas apresentados acima, porém, traz uma grande perda de desempenho pois não podemos atender vários usuários simulataneamente. Isto prejudica enormente a escalabilidade do sistema. Um recurso mais adequado são as transações, no entanto implementar tal recurso em sistemas distribuídos é bastante desafiador <<SDPP>>. Transações são muito conhecidas em bancos de dados e permitem que um conjunto de alterações sejam realizadas todas com sucesso ou nenhuma das alterações é confirmada.

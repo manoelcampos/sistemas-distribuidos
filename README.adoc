@@ -4,7 +4,7 @@
 :allow-uri-read:
 :safe: unsafe
 :numbered:
-:listing-caption: Listing
+:listing-caption: Listagem
 :experimental:
 
 ifdef::env-github[]
@@ -25,9 +25,9 @@ endif::[]
 
 == Objetivos
 
+Apresentar o histórico de sistemas distribuídos, necessidades para criação de sistemas distribuídos, suas características, tipos, desafios e tendências. Apresentar tecnologias atuais e implementar sistemas utilizando tais tecnologias.
 
 == Pré-requisitos
 
-
-== Motivação
+Programação Orientada a Objetos em Java.
 
