@@ -31,12 +31,12 @@ Quando um sistema aumenta a quantidade de usuários ou recursos, podemos ter lim
 
 ==== Serviços Centralizados
 
-Um serviço centralizado possui apenas um servidor para atender a todos os usuários e gerenciar todos os recursos. O problema desta modelo é que, a medida que o número de usuários ou recursos aumenta, o servidor pode ficar sobrecarregado e não conseguir atender com eficiência os usuários ou nem mesmo conseguir atender novos usuários. Assim, tal servidor pode se tornar um gargalo: um elemento do sistema que pode se tornar ineficiente com o aumento do número de usuários e recursos.
+Um serviço centralizado possui apenas um servidor para atender a todos os usuários e gerenciar todos os recursos. O problema desta modelo é que, a medida que o número de usuários ou recursos aumenta, o servidor pode ficar sobrecarregado e não conseguir atender com eficiência os usuários atuais ou nem mesmo conseguir atender novos usuários. Assim, tal servidor pode se tornar um gargalo: um elemento do sistema que pode se tornar ineficiente com o aumento da demanda.
 
 .Gargalo em um sistema (Fonte: http://bio1151.nicerweb.com/Locked/media/ch23/bottleneck.html[nicerweb.com]).
 image::bottleneck.jpg[]
 
-Um exemplo claro deste problema ocorre em filas de bancos. Se há apenas um caixa atendendo os clientes, o tempo médio de espera pode aumentar muito à medida que novos clientes chegam. A medida que tal tempo aumenta, a fila tende a aumentar também, criando um https://pt.wikipedia.org/wiki/Círculo_vicioso[círculo vicioso]. Muitos usuários simplesmente deixarão de ser atendidos pois desistirão de entrar na fila ou porque o banco já não tem espaço para novos clientes. A solução obvia é então *aumentar o número de servidores* (caixas) para *distribuir o atendimento*.
+Um exemplo claro deste problema ocorre em filas de bancos. Se há apenas um caixa atendendo os clientes, o tempo médio de espera pode aumentar muito à medida que novos clientes chegam. A medida que tal tempo aumenta, a fila tende a aumentar também, criando um https://pt.wikipedia.org/wiki/Círculo_vicioso[círculo vicioso]. Muitos usuários simplesmente deixarão de ser atendidos pois desistirão de entrar na fila ou porque o banco já não tem espaço para novos clientes. Uma solução imediata é então *aumentar o número de servidores* (caixas) para *distribuir o atendimento*.
 
 ==== Dados Centralizados
 
@@ -57,7 +57,7 @@ Nestes casos, *algoritmos decentralizados* devem ser usados. Tais algoritmos nor
 
 Um modelo de programação bastante utilizado atualmente para sistemas distribuídos é o MapReduce (Mapear/Reduzir). 
 
-.Contando palavras em um texto utilizando o modelo MapReduce (Fonte: https://www.quora.com/After-the-map-phase-finishes-the-Hadoop-framework-does-“partitioning-shuffle-and-sort”-What-happens-in-this-phase[Quora])
+.Contando palavras em um texto utilizando o modelo MapReduce
 image::map-reduce-word-counting.png[]
 
 O http://hadoop.apache.org[Apache Hadoop] é o framework mais popular para a construção de algoritmos seguindo este modelo.
@@ -66,24 +66,47 @@ O http://hadoop.apache.org[Apache Hadoop] é o framework mais popular para a con
 
 Antes da popularização da internet, os sistemas de uma empresa eram acessados apenas dentro da rede local (LAN). Os problemas de atraso, congestionamento e quebra de conexão eram muito menores. Usuários acessavam a aplicação por meio de uma interface desktop (instalada localmente em cada computador) ou web (por meio de um navegador). 
 
-Tais aplicações faziam *requisições síncronas* a um servidor dentro da rede local, onde a requisição era enviada ao servidor e a aplicação ficava bloqueada, aguardando até obter uma resposta <<SDPP>><<SDCP>>. De fato, quando uma requisição síncrona é enviada, a https://pt.wikipedia.org/wiki/Thread_(ciência_da_computação)[_thread_] que a executou é que fica bloqueada aguardando a resposta. Em aplicação mono-thread (que não foi projetada para executar tarefas em paralelo), toda a aplicação fica então inoperante enquanto uma resposta não for obtida ou não ocorrer um _timeout_ (tempo expirado).
+Tais aplicações faziam *requisições síncronas* a um servidor dentro da rede local, onde a requisição era enviada ao servidor e a aplicação ficava bloqueada, aguardando até obter uma resposta <<SDPP>> <<SDCP>>. De fato, quando uma requisição síncrona é enviada, a https://pt.wikipedia.org/wiki/Thread_(ciência_da_computação)[_thread_] que a executou é que fica bloqueada aguardando a resposta. Em aplicações mono-thread (que não foram projetadas para executar tarefas em paralelo), toda a aplicação fica então inoperante enquanto uma resposta não for obtida ou não ocorrer um _timeout_ (tempo expirado).
 
-A criação de múltiplas _threads_ resolve o problema do bloqueio da aplicação, pois somente a _thread_ que fez a requisição fica aguardando uma resposta. No entanto, dependendo da linguagem de programação, a criação de _threads_ pode não ser trivial. Mesmo em linguagens como Java onde é muito simples criar _threads_, a construção de aplicações multi-thread que funcionem adequadamente pode ser desafiador.
+Requisições síncronas são uma realidade em muitas aplicações web onde o usuário envia uma requisição e a aplicação fica à espera de uma resposta. Dependendo da sobrecarga e tráfego de rede, a resposta pode demorar, enquanto a aplicação fica parada à espera. Apesar dos problemas apresentados, requisições síncronas são mais fáceis de programar e o código é mais fácil de entender. Isto se deve ao fato de podermos seguir o paradigma de programação estruturada, onde instruções são executadas de forma sequencial. Dentro do código fonte de uma aplicação, pode-se, na linha imediatamente após ao envio da requisição, processar facilmente a resposta de tal requisição.
 
-Apesar dos problemas apresentados, requisições síncronas são mais fáceis de programar e o código é mais fácil de entender. Isto se deve ao fato de podermos seguir o paradigma de programação estruturada, onde instruções são executadas de forma sequencial. Dentro do código fonte de uma aplicação, pode-se, na linha imediatamente após ao envio da requisição, processar facilmente a resposta de tal requisição.
+Um exemplo de tais requisições é uma aplicação web que possui um formulário cujos dados são enviados e validados do lado do servidor, como mostra o vídeo abaixo.
 
-Por outro lado, as *requisições assíncronas* são uma solução mais eficiente para resolver o problema das requisições síncronas. Uma função assíncrona é aquela que retorna imediatamente, liberando a execução da _thread_. A _thread_ é então notificada por meio de um evento, utilizando o padrão de projeto  https://en.wikipedia.org/wiki/Observer_pattern[_Observer_], também conhecido como https://en.wikipedia.org/wiki/Event_(computing)[_Event Listener_]. Neste modelo, o servidor irá chamar uma função no cliente para notificá-lo da resposta da requisição. 
+video::cio72koqbZg[youtube, width=640, height=480]
 
-Tecnologias como http://www.wikiwand.com/en/Ajax_(programming)[Ajax (_Asynchronous JavaScript And XML_)], https://en.wikipedia.org/wiki/XMLHttpRequest[possibilitada por recursos dos navegadores web], popularizaram a utilização de chamadas assíncronas em aplicações web.
-
-Normalmente, funções assíncronas são implementadas internamente com uso de _threads_. A diferença é o programador que usa tais funções não tem que se preocupar em criar _threads_. Uma excelente fonte para entender mais como chamadas síncronas e assíncronas funcionam é o capítulo 1 do livro https://books.google.com.br/books?id=G7rBCQAAQBAJ[JavaScript with Promises: Managing Asynchronous Code].
+O usuário digita apenas parte dos dados requeridos, clica no botão "Enviar" e uma requisição é feita ao servidor. Enquanto isso o usuário deve esperar por uma resposta. O servidor verifica que os dados não foram todos preenchidos e retorna uma mensagem de erro ao cliente (navegador). O cliente então preenche os dados restantes e envia nova requisição. Uma vez que todos os dados estão corretos, o servidor envia resposta indicando que os dados foram recebidos (e possivelmente armazenados) com sucesso. No entanto, foram necessárias duas mensagens de ida e volta pela rede para finalizar o processo de envio dos dados.
+Durante o processo de envio da requisição, a página é recarregada e dependendo das condições da rede e sobrecarga do sistema, ela pode ficar totalmente branca até uma resposta ser obtida.
 
 == Técnicas de Escalabilidade
 
-- Chamadas Assíncronas
-- Distribuição de Componentes (_Divide and Conquer_)
-- Replicação de Componentes 
-    - Cache (Redis https://redis.io[1] https://aws.amazon.com/pt/elasticache/what-is-redis/[2], http://www.ehcache.org[Ehcache] e outros)
+Para resolver os problemas de escalabilidade apresentados, podemos utilizar algumas técnicas mostradas a seguir.
+
+=== Chamadas Assíncronas
+
+As *requisições assíncronas* são uma solução mais eficiente para resolver o problema das requisições síncronas. Uma função assíncrona é aquela que retorna imediatamente, liberando a execução da _thread_. A _thread_ é então notificada por meio de um evento, utilizando o padrão de projeto https://en.wikipedia.org/wiki/Observer_pattern[_Observer_], também conhecido como https://en.wikipedia.org/wiki/Event_(computing)[_Event Listener_]. Neste modelo, o servidor irá chamar uma função no cliente para notificá-lo da resposta da requisição. 
+
+O uso de requisições assíncronas depende da linguagem de programação e bibliotecas sendo utilizadas. Tecnologias como AJAX (_Asynchronous JavaScript And XML_) [https://en.wikipedia.org/wiki/XMLHttpRequest[1], http://www.wikiwand.com/en/Ajax_(programming)[2]] e WebSockets popularizaram a utilização de chamadas assíncronas em aplicações web. Mais recentemente, Programação Reativa tem se tornado um paradigma de programação utilizado para o desenvolvimento de aplicações assíncronas em geral. Ferramentas como https://reactjs.org[ReactJS], https://reactivex.io[ReactiveX] e https://vertx.io[Vert.x] são utilizadas para este fim.
+
+Se a linguagem utilizada não provê funções assíncronas, a criação de múltiplas _threads_ resolve o problema do bloqueio da aplicação, pois somente a _thread_ que fez a requisição fica aguardando uma resposta. No entanto, a criação de _threads_ pode não ser trivial. Mesmo em linguagens como Java onde é muito simples criar _threads_, a construção de aplicações multi-thread que funcionem adequadamente pode ser desafiador.
+
+Normalmente, funções assíncronas são implementadas internamente com uso de _threads_. A diferença é que o programador utilizando tais funções não tem que se preocupar em criar _threads_ manualmente: elas serão criadas automaticamente quando necessário. Uma excelente fonte para entender mais como chamadas síncronas e assíncronas funcionam é o Capítulo 1 do livro https://books.google.com.br/books?id=G7rBCQAAQBAJ[JavaScript with Promises: Managing Asynchronous Code].
+
+No entanto, nem sempre é viável utilizar chamadas síncronas, como é o caso de aplicações interativas onde o usuário não tem nada melhor a fazer do que esperar. Nestes casos, uma alternativa é mover parte do processamento para o cliente <<SDPP>>, como é feito com validação de dados utilizando JavaScript. O vídeo abaixo demonstra esse processo.
+
+video::eVI8XsiaHlc[youtube, width=640, height=480]
+
+O usuário preenche apenas parte dos dados e clica em "Enviar". Um código JavaScript executado pelo navegador informa que nem todos os dados foram preenchidos. Desta forma, a requisição não é enviada e assim temos uma resposta instantânea, uma vez que não houve troca de mensagens pela rede. Quando o usuário digita todos os dados e clica em "Enviar" novamente, o código JavaScript verifica que os dados estão corretos e só então envia a requisição para o servidor. O servidor recebe a requisição e normalmente verifica os dados mais uma vez (por questões de segurança, uma vez que o usuário pode desabilitar o JavaScript no navegador). Estando os dados corretos, o servidor responde informando que o cadastro foi realizado com sucesso. Com isto, enviamos apenas uma mensagem de ida e volta pela rede. No entanto, como podem ver no vídeo, enquanto a resposta não é obtida, a página é recarregada e normalmente fica totalmente branca até o navegador receber a resposta.
+
+Com o uso de tecnologias como AJAX, podemos fazer a validação no lado do cliente (navegador), enviar a requisição e permitir que o usuário continue navegando enquanto a resposta não é enviada pelo servidor. O vídeo abaixo demonstra esse processo.
+
+video::9dDVBrKLN4E[youtube, width=640, height=480]
+
+Observe que depois que os dados são enviados, uma outra página é exibida para o usuário poder continuar navegando. Quando a resposta é recebida uma notificação é exibida no topo de tal página.
+
+=== Distribuição de Componentes (_Divide and Conquer_)
+
+=== Replicação de Componentes 
+- Cache (Redis https://redis.io[1] https://aws.amazon.com/pt/elasticache/what-is-redis/[2], http://www.ehcache.org[Ehcache] e outros)
 
 // https://martinfowler.com/bliki/TwoHardThings.html
 

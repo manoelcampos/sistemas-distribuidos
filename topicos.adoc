@@ -18,12 +18,15 @@
 
 = Peer-to-Peer (P2P)
 
+- Java Sync Sockets (ServerSocket)
+  e Async Sockets com NIO2 (https://www.baeldung.com/java-nio2-async-socket-channel)
+
 - WebSockets
 - https://socket.io (js / node.js)
 - http://peerjs.com (WebRTC)
 - https://webrtc.org / https://ortc.org
 
-- Extensible Messaging and Presence Protocol (XMPP)
+- Extensible Messaging and Presence Protocol (XMPP): usado pelo WhatsApp (https://xmpp.org/uses/instant-messaging.html)
 - http://mqtt.org Message Queue Telemetry Transport (MQTT) / MQTT Broker https://mosquitto.org
 - AMQP / RabbitMQ
 

@@ -42,10 +42,10 @@ image::middleware.png[title=Camada de middleware em sistemas distribuídos (Adap
 
 Tais definições de um sistema distribuído permitem que estes possuam características como:
 
-. compartilhamento de recursos;
-. escalabilidade;
-. disponibilidade;
-. abertura;
-. transparência.
+- compartilhamento de recursos;
+- escalabilidade;
+- disponibilidade;
+- abertura;
+- transparência.
 
 Tais características são apresentadas a seguir.
