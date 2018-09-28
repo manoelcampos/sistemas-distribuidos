@@ -6,6 +6,7 @@
 :numbered:
 :listing-caption: Listagem
 :experimental:
+:figure-caption: Figura
 
 ifdef::env-github[]
 :outfilesuffix: .adoc

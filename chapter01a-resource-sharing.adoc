@@ -2,7 +2,7 @@
 
 == Compartilhamento de Recursos
 
-Um dos principais objetivos de um sistema distribuído é o compartilhamento de recursos, tanto físicos quanto lógicos. O compartilhamento de dispositivos físicos como impressoras e discos é um exemplo. Um sistema operacional pode permitir que tais dispositivos sejam utilizados por múltiplos usuários, trazendo otimização no uso de recursos e redução de despesas com aquisição de equipamentos (estas chamadas de despesas de capital ou https://www.investopedia.com/terms/c/capitalexpenditure.asp[Capital Expenditure, CAPEX] em inglês). <<SDPP>> 
+Um dos principais objetivos de um sistema distribuído é o compartilhamento de recursos, tanto físicos quanto lógicos. O compartilhamento de dispositivos físicos como impressoras e discos é um exemplo. Um sistema operacional pode permitir que tais dispositivos sejam utilizados por múltiplos usuários, trazendo otimização no uso de recursos e redução de despesas com aquisição de equipamentos (estas são chamadas de despesas de capital ou https://www.investopedia.com/terms/c/capitalexpenditure.asp[Capital Expenditure, CAPEX] em inglês). <<SDPP>> 
 
 Uma vez que uma impressora não é utilizada o tempo todo por um usuário, ela pode ser compartilhada com outros e assim maximizar o uso de tal equipamento, melhorando a relação custo/benefício. <<SDPP>> 
 

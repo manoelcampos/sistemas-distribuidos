@@ -31,7 +31,7 @@ Quando um sistema aumenta a quantidade de usuários ou recursos, podemos ter lim
 
 ==== Serviços Centralizados
 
-Um serviço centralizado possui apenas um servidor para atender a todos os usuários e gerenciar todos os recursos. O problema desta modelo é que, a medida que o número de usuários ou recursos aumenta, o servidor pode ficar sobrecarregado e não conseguir atender com eficiência os usuários atuais ou nem mesmo conseguir atender novos usuários. Assim, tal servidor pode se tornar um gargalo: um elemento do sistema que pode se tornar ineficiente com o aumento da demanda.
+Um serviço centralizado possui apenas um servidor para atender a todos os usuários e gerenciar todos os recursos. O problema deste modelo é que, a medida que o número de usuários ou recursos aumenta, o servidor pode ficar sobrecarregado e não conseguir atender com eficiência os usuários atuais, ou nem mesmo conseguir atender novos usuários. Assim, tal servidor pode se tornar um gargalo: um elemento do sistema que pode se tornar ineficiente com o aumento da demanda.
 
 .Gargalo em um sistema (Fonte: http://bio1151.nicerweb.com/Locked/media/ch23/bottleneck.html[nicerweb.com]).
 image::bottleneck.jpg[]
@@ -42,25 +42,40 @@ Um exemplo claro deste problema ocorre em filas de bancos. Se há apenas um caix
 
 O problema dos dados centralizados ocorre quando o aumento na quantidade de dados traz ineficiência ao sistema. Por exemplo, se o https://pt.wikipedia.org/wiki/Domain_Name_System[DNS] funcionasse ainda como um sistema centralizado, o tempo de busca do endereço IP para um determinado domínio teria inviabilizado a Internet ter escalado para as proporções de hoje <<SDPP>>. 
 
-O mesmo ocorre com Sistemas Gerenciadores de Bancos de Dados (SGBDs). Em uma aplicação que possui múltiplos usuários e apenas um servidor de banco de dados, tal servidor pode se tornar um gargalo com o aumento do número de usuários. Com a existência de um único servidor de banco de dados, os usuários podem começar a perceber a demora em obter dados em horários de pico. Isto normalmente ocorre se, para cada usuário do sistema, uma nova conexão ao banco de dados é aberta. 
+O mesmo ocorre com Sistemas Gerenciadores de Bancos de Dados (SGBDs). Em uma aplicação que possui múltiplos usuários e apenas um servidor de banco de dados, tal servidor pode se tornar um gargalo com o aumento do número de usuários. Com a existência de um único servidor, os usuários podem começar a perceber lentidão de acesso em horários de pico. A situação ainda piora se, para cada usuário do sistema, uma nova conexão ao banco de dados é aberta. 
 
 ==== Algoritmos Centralizados
 
-Algoritmos centralizados possuem o problema de normalmente necessitar centralizar dados de diversos componentes do sistema e realizar o processamento desses dados. Por exemplo, em uma rede social como o Facebook, um algoritmo poderia ser responsável por encontrar sugestões de amizade para todos os usuários da rede. Isto iria requerer que tal algoritmo obtivesse os dados e conexões (contatos) de todos os usuários mundialmente, para depois encontrar as sugestões de amizade. Considerando que a http://www1.folha.uol.com.br/tec/2012/10/1163808-facebook-mostra-o-raio-x-de-1-bilhao-de-usuarios.shtml[rede contabilizou mais de 1 bilhão de usuários em 2012], executar um algoritmo centralizado sobre um número tão grande de dados, sobrecarregaria recursos físicos como memória do servidor e rede (neste caso, quando os dados precisarem ser enviados para outros locais na rede). Adicionalmente, o processamento de um volumme tão grande de dados é inviável para um único servidor realizar, tornando inviável o tempo necessário para encontrar as sugestões de amizade de todas as pessoas da rede.
+Um algoritmo centralizado possue o problema de normalmente necessitar centralizar dados de diversos componentes do sistema para realizar o processamento desses dados. Por exemplo, em uma rede social como o Facebook, um algoritmo poderia ser responsável por encontrar sugestões de amizade para todos os usuários da rede. Isto exigiria que tal algoritmo obtivesse os dados e conexões (contatos) de todos os usuários mundialmente, para depois encontrar as sugestões de amizade. Considerando que a http://www1.folha.uol.com.br/tec/2012/10/1163808-facebook-mostra-o-raio-x-de-1-bilhao-de-usuarios.shtml[rede contabilizou mais de 1 bilhão de usuários em 2012] e https://code.fb.com/data-center-engineering/2017-year-in-review-data-centers/[2 bilhões de acessos mensais em 2017], executar um algoritmo centralizado sobre um número tão grande de dados, sobrecarregaria recursos físicos como memória do servidor e rede (neste caso, quando os dados precisarem ser enviados para outros locais na rede). Adicionalmente, o processamento de tal volume de dados por um único servidor tornaria inviável o tempo necessário para encontrar as sugestões de amizade de todas as pessoas da rede.
 
-Nestes casos, *algoritmos decentralizados* devem ser usados. Tais algoritmos normalmente usam a técnica _Divide and Conquer_ falada anteriormente. Um algoritmo distribuído funciona da seguinte forma:
+Nestes casos, *algoritmos decentralizados* (distribuído) devem ser usados. Tais algoritmos normalmente usam a técnica _Divide and Conquer_ (falada anteriormente) e funcionam da seguinte forma:
 
 - os dados são divididos em subconjuntos;
 - cada servidor recebe e processa um subconjunto de dados de forma isolada e independente;
 - os resultados de cada servidor podem ser combinados e processados novamente;
 - o resultado final é gerado.
 
-Um modelo de programação bastante utilizado atualmente para sistemas distribuídos é o MapReduce (Mapear/Reduzir). 
+Um modelo de programação bastante utilizado atualmente para sistemas deste tipo é o MapReduce (Mapear/Reduzir). 
+Considere que precisamos escrever um algoritmo para contar quantas vezes cada palavra se repete em uma determinado texto.
+Se o tamanho do texto for pequeno, podemos fazer um algoritmo simples, utilizando um laço de repetição, que
+percorre todas as palavras e conta. Um algorimo deste tipo é extremamente simples e provavelmente você já fez algo semelhante em aulas de lógica de programação. Então, se o algoritmo não é complexo, o que justifica o uso de sistemas distribuídos neste caso?
+Se a quantidade de dados for muito grande, neste caso a quantidade de palavras, pode ser necessário criar um sistema distribuído para conseguir obter o resultado final (a quantidade de vezes que cada palavra se repete) em tempo hábil.
+
+A figura abaixo mostra um exemplo de algoritmo distribuído utilizando o modelo MapReduce. O algoritmo então funciona em várias etapas, cada etapa sendo executada normalmente por um conjunto de computadores. 
 
 .Contando palavras em um texto utilizando o modelo MapReduce
 image::map-reduce-word-counting.png[]
 
-O http://hadoop.apache.org[Apache Hadoop] é o framework mais popular para a construção de algoritmos seguindo este modelo.
+As etapas são apresentadas a seguir:
+
+1. o algoritmo recebe um conjunto de dados completo (que devemos considerar que é muito grande para ser processado por uma única máquina); 
+2. os dados são divididos em partes que serão processadas pro aplicações executando normalmente em diferentes computadores;
+3. os dados recebidos por cada processo na fase 2 são mapeados, isto é processados/transformados em fases intermediárias. Neste caso, o mapeamento é apenas a contagem das palavras recebidas por cada processo;
+4. os resultados parciais então são agrupados (ordenados) para facilitar obter sub-totais;
+5. a partir dos subtotais obtidos na fase anterior, tais resultados parciais são somados para obtermos os resultados finais contendo o total de vezes que cada palavra aparece no texto de entrada;
+6. por fim, os totais de cada palavra são agrupados e exibidos como resultado final.
+
+O http://hadoop.apache.org[Apache Hadoop] é o framework mais popular para a construção de algoritmos seguindo o modelo MapReduce. Com o fantástico recurso de https://www.oracle.com/technetwork/pt/articles/java/streams-api-java-8-3410098-ptb.html[Streams do Java 8], por exemplo, tal modelo pode ser utilizada para construção de aplicações paralelas que fazem uso de vários núcleos de um processador em uma mesma máquina.
 
 === Problemas de Escalabilidade Geográfica
 
@@ -72,7 +87,7 @@ Requisições síncronas são uma realidade em muitas aplicações web onde o us
 
 Um exemplo de tais requisições é uma aplicação web que possui um formulário cujos dados são enviados e validados do lado do servidor, como mostra o vídeo abaixo.
 
-video::cio72koqbZg[youtube, width=640, height=480]
+video::cio72koqbZg[youtube, width=640, height=300]
 
 O usuário digita apenas parte dos dados requeridos, clica no botão "Enviar" e uma requisição é feita ao servidor. Enquanto isso o usuário deve esperar por uma resposta. O servidor verifica que os dados não foram todos preenchidos e retorna uma mensagem de erro ao cliente (navegador). O cliente então preenche os dados restantes e envia nova requisição. Uma vez que todos os dados estão corretos, o servidor envia resposta indicando que os dados foram recebidos (e possivelmente armazenados) com sucesso. No entanto, foram necessárias duas mensagens de ida e volta pela rede para finalizar o processo de envio dos dados.
 Durante o processo de envio da requisição, a página é recarregada e dependendo das condições da rede e sobrecarga do sistema, ela pode ficar totalmente branca até uma resposta ser obtida.
@@ -93,13 +108,13 @@ Normalmente, funções assíncronas são implementadas internamente com uso de _
 
 No entanto, nem sempre é viável utilizar chamadas síncronas, como é o caso de aplicações interativas onde o usuário não tem nada melhor a fazer do que esperar. Nestes casos, uma alternativa é mover parte do processamento para o cliente <<SDPP>>, como é feito com validação de dados utilizando JavaScript. O vídeo abaixo demonstra esse processo.
 
-video::eVI8XsiaHlc[youtube, width=640, height=480]
+video::eVI8XsiaHlc[youtube, width=640, height=300]
 
 O usuário preenche apenas parte dos dados e clica em "Enviar". Um código JavaScript executado pelo navegador informa que nem todos os dados foram preenchidos. Desta forma, a requisição não é enviada e assim temos uma resposta instantânea, uma vez que não houve troca de mensagens pela rede. Quando o usuário digita todos os dados e clica em "Enviar" novamente, o código JavaScript verifica que os dados estão corretos e só então envia a requisição para o servidor. O servidor recebe a requisição e normalmente verifica os dados mais uma vez (por questões de segurança, uma vez que o usuário pode desabilitar o JavaScript no navegador). Estando os dados corretos, o servidor responde informando que o cadastro foi realizado com sucesso. Com isto, enviamos apenas uma mensagem de ida e volta pela rede. No entanto, como podem ver no vídeo, enquanto a resposta não é obtida, a página é recarregada e normalmente fica totalmente branca até o navegador receber a resposta.
 
 Com o uso de tecnologias como AJAX, podemos fazer a validação no lado do cliente (navegador), enviar a requisição e permitir que o usuário continue navegando enquanto a resposta não é enviada pelo servidor. O vídeo abaixo demonstra esse processo.
 
-video::9dDVBrKLN4E[youtube, width=640, height=480]
+video::9dDVBrKLN4E[youtube, width=640, height=300]
 
 Observe que depois que os dados são enviados, uma outra página é exibida para o usuário poder continuar navegando. Quando a resposta é recebida uma notificação é exibida no topo de tal página.
 
