@@ -33,7 +33,7 @@ public class ChatServer {
      * 
      * @throws IOException 
      */
-    public void start() throws IOException {
+    private void start() throws IOException {
         serverSocket = new ServerSocket(PORT);
         System.out.println(
                 "Servidor iniciado no endereço " + serverSocket.getInetAddress().getHostAddress() +
@@ -45,7 +45,7 @@ public class ChatServer {
     /**
      * Inicia o loop infinito de espera por conexões dos clientes.
      * Cada vez que um cliente conecta, uma {@link Thread} é criada
-     * para executar o método {@link #clienteMessageLoop(com.manoelcampos.chat.ClientSocket)}
+     * para executar o método {@link #clientMessageLoop(com.manoelcampos.chat.ClientSocket)}
      * que ficará esperando mensagens do cliente.
      * 
      * @throws IOException 
@@ -55,22 +55,68 @@ public class ChatServer {
             while (true) {
                 System.out.println("Aguardando conexão de novo cliente");
                 ClientSocket clientSocket = new ClientSocket(serverSocket.accept());
-                new Thread(() -> clienteMessageLoop(clientSocket)).start();
+                /*
+                Cria um novo Thread para permitir que o servidor não fique bloqueado enquanto
+                atende as requisições de um único cliente.
+                Sem o Thread, é como se o servidor fosse um caixa de banco: atende apenas
+                um cliente por vez.
+                Como o servidor é responsável por intermediar a comunicação
+                entre todos os clientes, sem o Thread isto não funcionaria.
+                Um cliente de banco sendo atendido no caixa não troca mensagens com outros clientes.
+                Assim, o caixa pode ficar bloqueado enquanto não finalizar o atendimento de tal cliente.
+                No caso da aplicação de chat, o servidor precisa atender múltiplos clientes
+                simultanamente. Para isso, ele precisa criar um Thread para cada cliente.
+
+                Observe que estamos utilizando uma sintaxa um pouco diferente para criar este
+                objeto Thread. Na chamada do construtor é incluído um par de parênteses vazios
+                seguido de uma seta e uma chamada do método clientMessageLoop.
+                Isto é um recurso do Java 8 chamado de Expressões Lambda.
+                Este tópico é um curso a parte, que se você procurar pelo assunto na
+                Internet encontrará muito conteúdo (principalmente no YouTube).
+                A questão de usar expressões lambda é que, neste caso, o construtor
+                da classe Thread requer um objeto Runnable. Mas Runnable é uma interface
+                não uma classe que podemos instanciar. Assim, quando escrevemos
+                new Runnable e pressionamos ctrl+espaço em algum IDE, ele vai
+                declarar uma classe naquele local e instanciar tal classe (pois não temos
+                como instanciar interfaces). No entanto, tal classe não tem um nome
+                (não temos algo como MinhaNovaClasse implements Runnable),
+                o que chamamos então de classe anônima.
+                O código para isso ficaria como abaixo:
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        clientMessageLoop(clientSocket);
+                    }
+                });
+
+                Como podem ver, este código é um tanto complicado.
+                Ele cria uma classe anônima que implementa a interface Runnable (isto está implicito).
+                Tal interface só possui o método run que é implementado dentro da classe anônima.
+                Dentro dele, incluímos manualmente a chamada do método clientMessageLoop que vai atender
+                as requisições e um cliente.
+
+                Para evitar toda essa burocracia de criar classes anônimas, podemos
+                utilizar o recurso de expressões lambda (representado pela seta),
+                como mostrado abaixo. O código fica bem mais reduzido.
+                Depois que vocês estudar lambda, entenderá toda a sintaxe do comando abaixo.
+                */
+                new Thread(() -> clientMessageLoop(clientSocket)).start();
             }
-        }finally{
+        } finally{
             stop();
         }
     }
 
     /**
-     * Método executado sempre que um cliente conectar no servidor.
+     * Método executado sempre que um cliente conectar ao servidor.
      * O método fica em loop aguardando mensagens do cliente,
      * até que este desconecte.
      * 
      * @param clientSocket socket do cliente, por meio do qual o servidor
      *                     pode se comunicar com ele.
      */
-    private void clienteMessageLoop(ClientSocket clientSocket){
+    private void clientMessageLoop(ClientSocket clientSocket){
         System.out.println("Cliente conectado");
         try {
             String msg;

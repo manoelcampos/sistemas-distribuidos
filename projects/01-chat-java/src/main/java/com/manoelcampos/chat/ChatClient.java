@@ -44,7 +44,7 @@ public class ChatClient {
      * entrando no loop de envio e recebimento de mensagens.
      * @throws IOException 
      */
-    public void start() throws IOException {
+    private void start() throws IOException {
         clientSocket = new ClientSocket(new Socket(SERVER_ADDRESS, ChatServer.PORT));
         System.out.println(
             "Cliente conectado ao servidor no endereço " + SERVER_ADDRESS +
