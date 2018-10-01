@@ -2,6 +2,9 @@ package com.manoelcampos.chat;
 
 import java.io.*;
 import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -12,6 +15,11 @@ import java.util.StringTokenizer;
 public class ChatServer {
     public static final int PORT = 1026;
     private ServerSocket serverSocket;
+
+    /**
+     * Lista de todos os cliente
+     */
+    private final List<ClientSocket> clientSocketList;
 
     /**
      * Executa a aplicação servidora que fica em loop infinito aguardando conexões
@@ -25,6 +33,10 @@ public class ChatServer {
         } catch (IOException e) {
             System.out.println("Erro ao iniciar servidor: " + e.getMessage());
         }
+    }
+
+    public ChatServer(){
+        clientSocketList = new ArrayList<>();
     }
 
     /**
@@ -55,6 +67,8 @@ public class ChatServer {
             while (true) {
                 System.out.println("Aguardando conexão de novo cliente");
                 ClientSocket clientSocket = new ClientSocket(serverSocket.accept());
+                clientSocketList.add(clientSocket);
+
                 /*
                 Cria um novo Thread para permitir que o servidor não fique bloqueado enquanto
                 atende as requisições de um único cliente.
@@ -122,18 +136,47 @@ public class ChatServer {
             String msg;
             while((msg = clientSocket.getMessage()) != null){
                 System.out.println("Mensagem recebida do cliente "+ clientSocket.getLogin()+": " + msg);
-                StringTokenizer tokenizer = new StringTokenizer(msg, " ");
-                if (tokenizer.nextElement().toString().startsWith("login")) {
-                    clientSocket.setLogin(tokenizer.nextElement().toString());
-                    clientSocket.sendMsg("Bem vindo " +  clientSocket.getLogin());
-                }
-                else if("tchau".equalsIgnoreCase(msg)){
+                if("sair".equalsIgnoreCase(msg)){
                     clientSocket.sendMsg("Tchau " + clientSocket.getLogin());
+                    return;
                 }
-                else {
-                    clientSocket.sendMsg("Comando '" + msg + "' desconhecido");
+
+                final StringTokenizer tokenizer = new StringTokenizer(msg, " ");
+                final String msgStart = tokenizer.nextElement().toString();
+                switch (msgStart) {
+                    case "login":
+                        clientSocket.setLogin(tokenizer.nextElement().toString());
+                        clientSocket.sendMsg("Bem vindo " + clientSocket.getLogin());
+                        break;
+                    case "msg":
+                        /*
+                        Se uma mensagem começando com a palavra msg foi recebida,
+                        envia tal mensagem para todos os clientes,
+                        exceto o emissor da mensagem.
+                         */
+                        final Iterator<ClientSocket> iterator = clientSocketList.iterator();
+                        int count = 0;
+                        while (iterator.hasNext()) {
+                            ClientSocket client = iterator.next();
+                            if (!client.equals(clientSocket)) {
+                                if(client.sendMsg(msg)) {
+                                    count++;
+                                }
+                                else {
+                                    /*Se não enviou a mensagem é porque o cliente desconectou,
+                                    então remove ele da lista de conexões*/
+                                    iterator.remove();
+                                }
+                            }
+                        }
+                        System.out.println("Mensagem encaminhada para " + count + " clientes");
+                        break;
+                    default:
+                        clientSocket.sendMsg("Comando '" + msg + "' desconhecido");
+                        break;
                 }
             }
+
             clientSocket.stop();
         } catch (IOException e) {
             System.out.println("Erro ao estabelecer conexão do cliente: " + e.getMessage());

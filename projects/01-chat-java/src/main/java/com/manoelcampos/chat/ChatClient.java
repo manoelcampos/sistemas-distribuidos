@@ -14,6 +14,7 @@ public class ChatClient {
 
     private final Scanner scanner;
     private ClientSocket clientSocket;
+    private boolean running;
 
     /**
      * Executa a aplicação cliente.
@@ -46,6 +47,7 @@ public class ChatClient {
      */
     private void start() throws IOException {
         clientSocket = new ClientSocket(new Socket(SERVER_ADDRESS, ChatServer.PORT));
+        running = true;
         System.out.println(
             "Cliente conectado ao servidor no endereço " + SERVER_ADDRESS +
             " e porta " + ChatServer.PORT);
@@ -60,14 +62,27 @@ public class ChatClient {
     private void messageLoop() throws IOException {
         System.out.print("Digite seu login: ");
         String msg = scanner.nextLine();
-        String resposta = clientSocket.sendMsgAndGetResponse("login " + msg);
+        final String resposta = clientSocket.sendMsgAndGetResponse("login " + msg);
         System.out.println("Servidor diz: " + resposta);
+
+        new Thread(this::waitMessages).start();
+
         do {
             System.out.print("Digite uma mensagem (ou 'sair' para encerrar): ");
             msg = scanner.nextLine();
-            resposta = clientSocket.sendMsgAndGetResponse(msg);
-            System.out.println("Servidor diz: " + resposta);
+            clientSocket.sendMsg("msg " + msg);
         } while(!"sair".equalsIgnoreCase(msg));
+        running = false;
         clientSocket.stop();
-    }    
+    }
+
+    /**
+     * Aguarda mensagens do servidor
+     */
+    private void waitMessages() {
+        String msg;
+        while(running && (msg = clientSocket.getMessage())!=null) {
+            System.out.println("\nServidor diz: " + msg + "\n");
+        }
+    }
 }

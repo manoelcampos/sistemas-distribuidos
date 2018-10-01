@@ -16,9 +16,6 @@ import java.net.Socket;
  * @author Manoel Campos da Silva Filho
  */
 public class ClientSocket {
-    /**
-     * Socket que representa a conexão do cliente com o servidor.
-     */
     private final Socket socket;
 
     /**
@@ -128,10 +125,12 @@ public class ClientSocket {
     /**
      * Envia uma mensagem e <b>não</b> espera por uma resposta.
      * @param msg mensagem a ser enviada
+     * @return true se o socket ainda estava aberto e a mensagem foi enviada, false caso contrário
      * @throws IOException
      */
-    public void sendMsg(String msg) throws IOException {
+    public boolean sendMsg(String msg) {
         out.println(msg);
+        return !out.checkError();
     }
 
     /**
@@ -139,8 +138,12 @@ public class ClientSocket {
      * @return a mensagem obtida
      * @throws IOException
      */
-    public String getMessage() throws IOException {
-        return in.readLine();
+    public String getMessage() {
+        try {
+            return in.readLine();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     public void stop() throws IOException {
@@ -153,4 +156,11 @@ public class ClientSocket {
     public void setLogin(String login){ this.login = login; }
 
     public String getLogin(){ return login; }
+
+    /**
+     * Socket que representa a conexão do cliente com o servidor.
+     */
+    public Socket getSocket() {
+        return socket;
+    }
 }

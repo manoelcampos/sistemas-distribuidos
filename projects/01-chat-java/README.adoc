@@ -25,3 +25,16 @@ O servidor deve ser iniciado a partir da classe link:src/main/java/com/manoelcam
 Isto pode ser feito no NetBeans, abrindo tal classe e pressionando `SHIFT+F6`.
 
 Depois de iniciado o servidor, pode-se executar várias instâncias do cliente para representar diversos usuários conectados ao chat. No NetBeans, basta abrir a classe link:src/main/java/com/manoelcampos/chat/ChatClient.java[Cliente] e pressionar `SHIFT+F6` para cada cliente que desejar executar.
+
+=== AVISO
+
+Durante o processo de desenvolvimento, após executar a aplicação múltiplas vezes,
+você pode se deparar com um erro como "Address already in use" (Endereço já em uso).
+Isto indica que há outra instância do servidor rodando (utilizando a porta indicada)
+ou que a porta escolhida já está sendo utilizada por outra aplicação.
+
+No primeiro caso, a forma mais fácil de resolver é matar os processos Java em execução
+digitando no terminal `sudo killall -9 java` (em sistemas Linux).
+
+No último caso, precisa alterar o número da porta indicado na constante na classe
+ChatServer.
