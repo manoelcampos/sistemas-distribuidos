@@ -16,3 +16,4 @@ test/
 *.iml
 /projects/cadastro-soap-ejb/nbproject/private/
 /projects/cadastro-rest-cli/nbproject/private/
+/aulas/

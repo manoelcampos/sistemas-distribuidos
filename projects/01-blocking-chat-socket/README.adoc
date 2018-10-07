@@ -1,9 +1,19 @@
 = Chat cliente/servidor utilizando Sockets em Java 8
 
-Este é um projeto Maven, composto por duas aplicações console:
+Este é um projeto Java que mostra a forma mais básica
+de criar uma aplicação cliente/servidor utilizando as
+classes `ServerSocket` e `Socket` que vêm desde a primeira versão 
+da linguagem Java.
+
+O projeto é composto por duas aplicações console:
 
 - link:src/main/java/com/manoelcampos/chat/ChatClient.java[Cliente]
 - link:src/main/java/com/manoelcampos/chat/ChatServer.java[Servidor]
+
+As classes utilizadas só permitem requisições bloqueantes (blocking),
+ou seja requisições síncronas onde a apliação fica parada à espera
+de uma resposta. Desta forma, os métodos utilizados para realizar uma
+conexão, enviar e receber mensagens são bloqueantes.
 
 == Servidor
 
