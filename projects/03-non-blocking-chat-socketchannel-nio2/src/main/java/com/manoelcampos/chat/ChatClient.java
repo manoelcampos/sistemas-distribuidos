@@ -11,12 +11,14 @@ import java.util.Scanner;
 import java.util.Set;
 
 /**
+ * Cliente de chat não bloqueante utilizando a API NIO.2 do Java 7.
+ *
  * @author Manoel Campos da Silva Filho
  */
-public class ChatClient {
+public class ChatClient implements Runnable {
     private final Scanner scanner;
     private final Selector selector;
-    private SocketChannel clientChannel;
+    private final SocketChannel clientChannel;
     private final ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 
     public ChatClient() throws IOException {
@@ -29,36 +31,46 @@ public class ChatClient {
     }
 
     public void start() throws IOException {
-        String msg;
         try {
-            //espera pelo primeiro evento indicando o sucesso da conexão
+            /* Espera pelo primeiro evento, que só pode ser indicando o sucesso da conexão.
+            *  O método bloqueia até uma resposta ser obtida ou timeout ocorrer
+            *  após 1 segundo. */
             selector.select(1000);
             processConnectionAccept();
 
-            //Espera por eventos por no máximo 1 segundo até dar timeout
-            while(selector.select(1000) > 0) {
-                Set<SelectionKey> selectionKeys = selector.selectedKeys();
-                Iterator<SelectionKey> iterator = selectionKeys.iterator();
-                while(iterator.hasNext()) {
-                    SelectionKey selectionKey = iterator.next();
-                    if (selectionKey.isReadable())
-                        processRead();
-                    sendMessage();
-                    iterator.remove();
-                }
-            }
+            /* Cria um novo thread para ficar a guardando mensagens enviadas pelo servidor,
+            *  paralelamente ao envio de mensagens.
+            *  Como o construtor da classe Thread solicita um objeto Runnable
+            *  e nossa classe ChatClient implementa a interface Runnable,
+            *  passamos this como parâmetro para o construtor para indicar
+            *  que o nosso objeto atual da classe ChatClient é o objeto
+            *  que possui um método run() que será executado pelo Thread
+            *  (possivelmente em um novo núcleo de CPU).*/
+            new Thread(this).start();
+            sendMessageLoop();
         }finally{
             clientChannel.close();
+            selector.close();
         }
     }
 
-    private void sendMessage() throws IOException {
+    /**
+     * Entra no loop de envio de mensagens pro servidor.
+     * @throws IOException
+     */
+    private void sendMessageLoop() throws IOException {
         String msg;
-        System.out.print("Digite uma mensagem (ou sair para finalizar): ");
-        msg = scanner.nextLine();
-        clientChannel.write(ByteBuffer.wrap(msg.getBytes()));
+        do {
+            System.out.print("Digite uma mensagem (ou sair para finalizar): ");
+            msg = scanner.nextLine();
+            clientChannel.write(ByteBuffer.wrap(msg.getBytes()));
+        }while(!msg.equalsIgnoreCase("sair"));
     }
 
+    /**
+     * Processa mensagens recebidas do servidor.
+     * @throws IOException
+     */
     private void processRead() throws IOException {
         buffer.clear();
         int bytesRead = clientChannel.read(buffer);
@@ -73,6 +85,11 @@ public class ChatClient {
         }
     }
 
+    /**
+     * Processa a aceitação da conexão do cliente pelo servidor,
+     * que indica que o cliente conectou com sucesso.
+     * @throws IOException
+     */
     private void processConnectionAccept() throws IOException {
         System.out.println("Cliente conectado ao servidor");
         if(clientChannel.isConnectionPending()) {
@@ -89,6 +106,40 @@ public class ChatClient {
             client.start();
         } catch (IOException e) {
             System.err.println("Erro ao inicializar cliente: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Método a ser executado num novo {@link Thread}
+     * para ficar a espera de mensagens enviadas pelo servidor.
+     *
+     * A aplicação cliente tem um processo invariavelmente
+     * bloqqueante para o envio de mensagens para o servidor
+     * (pois o programa para à espera do usuário digitar o que
+     * deseja enviar).
+     * Neste caso, mesmo tendo configurado o {@link #clientChannel}
+     * para modo não-bloqueante, não temos como esperar o usuário digitar
+     * e ao mesmo tempo receber novas mensagens sem usar um novo Thread.
+     * Se a aplicação cliente não tivesse interação com o usuário,
+     * poderíamos executar as tarefas de receber e enviar dados de forma
+     * assíncrona sem usar um novo Thread.
+     */
+    @Override
+    public void run() {
+        try {
+            /*Espera por eventos por no máximo 1 segundo */
+            while (selector.select(1000) > 0) {
+                Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                Iterator<SelectionKey> iterator = selectionKeys.iterator();
+                while (iterator.hasNext()) {
+                    SelectionKey selectionKey = iterator.next();
+                    if (selectionKey.isReadable())
+                        processRead();
+                    iterator.remove();
+                }
+            }
+        }catch(IOException e){
+            System.err.println("Erro ao ler dados enviados pelo servidor: " + e.getMessage());
         }
     }
 }

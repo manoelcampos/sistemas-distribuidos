@@ -41,6 +41,9 @@ public class ChatServer {
         System.out.println("Servidor iniciado no endereço " + HOSTNAME + " na porta " + PORT);
     }
 
+    /**
+     * Inicia o loop a espera de requisições dos clientes.
+     */
     public void start() {
         while(true) {
             try {
