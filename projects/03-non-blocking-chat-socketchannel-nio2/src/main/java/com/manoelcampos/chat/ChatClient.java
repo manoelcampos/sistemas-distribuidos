@@ -6,8 +6,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
@@ -19,8 +17,7 @@ public class ChatClient {
     private final Scanner scanner;
     private final Selector selector;
     private SocketChannel clientChannel;
-    private ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
-    private CharsetDecoder decoder = Charset.defaultCharset().newDecoder();
+    private final ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 
     public ChatClient() throws IOException {
         selector = Selector.open();
@@ -57,19 +54,23 @@ public class ChatClient {
 
     private void sendMessage() throws IOException {
         String msg;
-        System.out.print("Digite uma mensgem (ou sair para finalizar): ");
+        System.out.print("Digite uma mensagem (ou sair para finalizar): ");
         msg = scanner.nextLine();
         clientChannel.write(ByteBuffer.wrap(msg.getBytes()));
     }
 
     private void processRead() throws IOException {
+        buffer.clear();
         int bytesRead = clientChannel.read(buffer);
+        /*Altera o buffer do modo de gravação (cuja posição
+         atual indica a última posição preenchida) para o modo de leitura
+         (resetando a posição inicial para 0 para permitir ler os dados desde o início do buffer).*/
         buffer.flip();
-        if (bytesRead > 0)
-            System.out.println("Mensagem recebida do servidor: " + decoder.decode(buffer));
-        if (buffer.hasRemaining())
-            buffer.compact();
-        else buffer.clear();
+        if (bytesRead > 0) {
+            byte data[] = new byte[bytesRead];
+            buffer.get(data);
+            System.out.println("Mensagem recebida do servidor: " + new String(data));
+        }
     }
 
     private void processConnectionAccept() throws IOException {

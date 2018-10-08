@@ -10,11 +10,11 @@ import java.nio.channels.SocketChannel;
 import java.util.*;
 
 /**
- * Servidor de chat não bloqueante utilizando
- * a API NIO.2 do Java 7.
+ * Servidor de chat não bloqueante utilizando a API NIO.2 do Java 7.
  *
  * @author Manoel Campos da Silva Filho
- * @see https://www.baeldung.com/java-nio-selector
+ * @see <a href="https://www.baeldung.com/java-nio-selector">Java NIO Selector</a>
+ * @see <a href="https://www.apress.com/us/book/9781430240112">Pro Java 7 NIO.2</a>
  */
 public class ChatServer {
     public static final int PORT = 4000;
@@ -22,8 +22,9 @@ public class ChatServer {
 
     private final Selector selector;
     private final ServerSocketChannel serverChannel;
-    private final Map<SocketChannel, List<byte[]>> sendData;
-    private ByteBuffer buffer = ByteBuffer.allocate(1024);
+
+    //https://stackoverflow.com/questions/5670862/bytebuffer-allocate-vs-bytebuffer-allocatedirect
+    private final ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 
     public ChatServer() throws IOException {
         selector = Selector.open();
@@ -32,17 +33,12 @@ public class ChatServer {
         serverChannel.bind(new InetSocketAddress(HOSTNAME, PORT));
 
         /*Registra o canal para ser monitorado pelo selector quando operações
-        * como solicitações de conexão (OP_ACCEPT), recebimento de dados do cliente
-        * (OP_READ) e envio de dados pros clientes (OP_WRITE) ocorrerem.
-        * Utilizando serverChannel.validOps() estamos dizendo que queremos que o selector
-        * monitore todas as operações válidas para o servidor.
-        * Neste caso, não não definimos nenhuma operação
-        * usando serverChannel.setOption(), as operações
-        * padrões listadas acima serão monitoradas.
+        * de aceitação de conexão de clientes (OP_ACCEPT) ocorrerem.
+        * As operações de leitura de dados enviados pelos clientes são monitoradas
+        * nos canais dos clientes.
         */
-        serverChannel.register(selector, serverChannel.validOps());
+        serverChannel.register(selector, SelectionKey.OP_ACCEPT);
         System.out.println("Servidor iniciado no endereço " + HOSTNAME + " na porta " + PORT);
-        sendData = new HashMap<>();
     }
 
     public void start() {
@@ -54,25 +50,35 @@ public class ChatServer {
                 * app continuar.
                 * O método retorna o número de selectionKey's que possuem
                 * operações prontas para serem processadas.
-                * Como só temos um channnel registrado (o serverChannel),
-                * o método retorna no máximo 1 quando tal channel
-                * tiver alguma operação a ser processada.
+                * Como registramos o canal do servidor o canal de cada cliente
+                * para serem monitorados pelo selector, se existirem eventos a serem
+                * processados em mais de um canal, o método select retornará um valor maior que 1.
                 * */
                 selector.select();
 
-                /* Cada SelectionKey representa o registro de um channel para ser monitorado
-                 * por um selector. Cada selectedKey permitirá processar um evento que esteja pronto para isso
+                /* Cada objecto SelectionKey representa o registro de um canal para ser monitorado
+                 * por um selector. Tal objeto permitirá processar um evento que esteja pronto para isso
                  * (como a leitura de dados já recebidos do cliente).
                  * O total de elementos em selector.selectedKeys() então é igual ao retorno
                  * de selector.select().*/
-                processEvents(selector.selectedKeys().iterator());
+                processEvents(selector.selectedKeys());
             } catch (IOException e){
                 System.err.println(e.getMessage());
             }
         }
     }
 
-    private void processEvents(Iterator<SelectionKey> iterator) throws IOException {
+    /**
+     * Processa os diferentes tipos de eventos que foram registrados
+     * para serem monitorados pelo {@link #selector} dentro do construtor da classe.
+     *
+     * @param selectionKeys conjunto onde cada element ({@link SelectionKey}) representa
+     *                      o registro de monitoramente de um canal (como o canal do servidor e os canais de cada cliente)
+     *                      pelo {@link #selector}.
+     * @throws IOException
+     */
+    private void processEvents(Set<SelectionKey> selectionKeys) throws IOException {
+        Iterator<SelectionKey> iterator = selectionKeys.iterator();
         while (iterator.hasNext()) {
             //Obtém o evento a ser processado
             SelectionKey selectionKey = iterator.next();
@@ -90,21 +96,29 @@ public class ChatServer {
                 processConnectionAccept(selector);
             } else if (selectionKey.isReadable()) {
                 processRead(selectionKey);
-            } else if(selectionKey.isWritable()){
-                processWrite(selectionKey);
             }
         }
     }
 
+    /**
+     * Processa aceitações de conexões do cliente pelo servidor.
+     * Quando a conexão do cliente é aceita, envia mensagem de boas
+     * vindas e fica monitorando quando dados enviados pelo cliente
+     * estiverem prontos para serem lidos.
+     *
+     * @param selector objeto que permitirá monitorar eventos do canal do cliente
+     *                 conectado (como quando dados enviados pelo cliente estiverem prontos para serem lidos pelo servidor)
+     * @throws IOException
+     */
     private void processConnectionAccept(Selector selector) throws IOException {
         SocketChannel clientChannel = serverChannel.accept();
         System.out.println("Cliente " + clientChannel.getRemoteAddress() + " conectado.");
 
-        //Envia dados de forma não bloqueante (assíncrona)
+        //Configura o canal do cliente para funcionar de forma não-bloqueante (assíncrona)
         clientChannel.configureBlocking(false);
+        /*A operação só bloqueia se tiver outro thread gravando no mesmo canal.
+        * Como não temos vários threads no servidor, então não teremos tal situação.*/
         clientChannel.write(ByteBuffer.wrap("Bem vindo ao chat.\n".getBytes()));
-
-        sendData.put(clientChannel, new ArrayList<>());
 
         /*Registra o canal para ser monitorarado pelo selector quando
         dados enviados pelo cliente estiverem disponíveis para serem lidos*/
@@ -116,7 +130,9 @@ public class ChatServer {
      * O método só é chamado quando existem dados prontos para serem lidos.
      * Assim, a aplicação não fica travada à espera do envio de dados.
      *
-     * @param selectionKey
+     * @param selectionKey representa o registro de monitoramente do canal de um cliente
+     *                     pelo {@link #selector}. Tal canal possui dados enviados pelo
+     *                     cliente que estão prontos para serem lidos pelo servidor.
      */
     private void processRead(SelectionKey selectionKey) throws IOException {
         /*Sem fazer o cast para SocketChannel, não temos acesso a métodos como o read()
@@ -124,14 +140,17 @@ public class ChatServer {
         * Como sabemos que nosso channel é um SocketChannel, não há problema
         * em fazer um cast.*/
         SocketChannel clientChannel = (SocketChannel) selectionKey.channel();
+        buffer.clear();
+
         int bytesRead;
         try {
             bytesRead = clientChannel.read(buffer);
+            /* Altera do modo de escrita (onde a posição estava no final do buffer) para o de leitura
+            * (resetando a posição do buffer para 0)*/
         } catch (IOException e) {
             System.err.println(
                     "Não pode ler dados. Conexão fechada pelo cliente " +
                     clientChannel.getRemoteAddress() + ": " + e.getMessage());
-            sendData.remove(clientChannel);
             clientChannel.close();
             selectionKey.cancel();
             return;
@@ -141,40 +160,16 @@ public class ChatServer {
             return;
         }
 
+        /*Altera o buffer do modo de gravação (cuja posição
+         atual indica a última posição preenchida) para o modo de leitura
+         (resetando a posição inicial para 0 para permitir ler os dados desde o início do buffer).*/
+        buffer.flip();
         byte[] data = new byte[bytesRead];
-        System.arraycopy(buffer.array(), 0, data, 0, bytesRead);
-        System.out.println("Mensagem recebida do cliente " + clientChannel.getRemoteAddress() + ": " + new String(data));
-
-        //Ecoa mensagem recebida de volta pro cliente
-        addDataToSend(selectionKey, data);
-    }
-
-    /**
-     * Processa o envio de dados para o cliente
-     * @param selectionKey
-     * @throws IOException
-     */
-    private void processWrite(SelectionKey selectionKey) throws IOException {
-        SocketChannel clientChannel = (SocketChannel) selectionKey.channel();
-        List<byte[]> dataList = sendData.get(clientChannel);
-        Iterator<byte[]> iterator = dataList.iterator();
-        while(iterator.hasNext()){
-            byte[] data = iterator.next();
-            clientChannel.write(ByteBuffer.wrap(data));
-            iterator.remove();
-        }
-
-        //Registra interesse em processar mensagens recebidas do cliente
-        selectionKey.interestOps(SelectionKey.OP_READ);
-    }
-
-    private void addDataToSend(SelectionKey selectionKey, byte[] data){
-        SocketChannel clientChannel = (SocketChannel) selectionKey.channel();
-        List<byte[]> dataList = sendData.get(clientChannel);
-        dataList.add(data);
-
-        //Registra interesse em processar mensagens enviadas para o cliente
-        selectionKey.interestOps(SelectionKey.OP_WRITE);
+        buffer.get(data);
+        System.out.println(
+            "Mensagem recebida do cliente " +
+            clientChannel.getRemoteAddress() + ": " + new String(data) +
+            " (" + bytesRead + " bytes lidos)");
     }
 
     public static void main(String[] args) {
@@ -182,7 +177,7 @@ public class ChatServer {
             ChatServer server = new ChatServer();
             server.start();
         } catch (IOException e) {
-            System.err.println("Erro ao inicializar servidor: " + e.getMessage());
+            System.err.println("Erro durante execução do servidor: " + e.getMessage());
         }
 
     }
