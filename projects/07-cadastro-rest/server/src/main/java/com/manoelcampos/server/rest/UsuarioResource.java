@@ -21,6 +21,8 @@ public class UsuarioResource {
         return dao.findById(id);
     }
 
+    //"cpf/{cpf : \\d{11}}"
+    @GET
     @Path("cpf/{cpf : \\d{11}}")
     @Produces(MediaType.APPLICATION_JSON)
     public Usuario findByCpf(@PathParam("cpf") String cpf) {
