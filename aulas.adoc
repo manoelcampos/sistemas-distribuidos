@@ -1,10 +1,10 @@
 = Sistemas Distribuídos
 
-1. Apresentação da Disciplina (seg, 19/09/2018)
-2. a
-3. a
-4. a
-5. a
+1. Apresentação da Disciplina e Introdução à SD (seg, 19/09/2018)
+2. Características de SD
+3. Aplicação de Chat client/servidor com socket bloqueante
+4. Aplicação de Chat client/servidor com socket bloqueante
+5. Aplicação de Chat client/servidor com socket não-bloqueante
 6. a
 7. a
 8. a

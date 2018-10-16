@@ -15,6 +15,7 @@ import java.util.*;
  * @author Manoel Campos da Silva Filho
  * @see <a href="https://www.baeldung.com/java-nio-selector">Java NIO Selector</a>
  * @see <a href="https://www.apress.com/us/book/9781430240112">Pro Java 7 NIO.2</a>
+ * @see <a href="http://tutorials.jenkov.com/java-nio/">Java NIO Tutorial</a>
  */
 public class ChatServer {
     public static final int PORT = 4000;
@@ -23,26 +24,49 @@ public class ChatServer {
     private final Selector selector;
     private final ServerSocketChannel serverChannel;
 
-    //https://stackoverflow.com/questions/5670862/bytebuffer-allocate-vs-bytebuffer-allocatedirect
-    private final ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+    private final ByteBuffer buffer;
 
+    /**
+     * Executa a aplicação servidora.
+     * @param args
+     * @see #start()
+     */
+    public static void main(String[] args) {
+        try {
+            ChatServer server = new ChatServer();
+            server.start();
+        } catch (IOException e) {
+            System.err.println("Erro durante execução do servidor: " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * Construtor padrão que instancia os atributos
+     * e realiza as configurações necessárias.
+     * @throws IOException
+     */
     public ChatServer() throws IOException {
+        //https://stackoverflow.com/questions/5670862/bytebuffer-allocate-vs-bytebuffer-allocatedirect
+        buffer = ByteBuffer.allocateDirect(1024);
         selector = Selector.open();
         serverChannel = ServerSocketChannel.open();
         serverChannel.configureBlocking(false);
-        serverChannel.bind(new InetSocketAddress(HOSTNAME, PORT));
 
-        /*Registra o canal para ser monitorado pelo selector quando operações
-        * de aceitação de conexão de clientes (OP_ACCEPT) ocorrerem.
-        * As operações de leitura de dados enviados pelos clientes são monitoradas
-        * nos canais dos clientes.
+        /* Registra o canal para ser monitorado pelo selector quando operações
+        *  de solicitação de aceitação de conexão de clientes (OP_ACCEPT) ocorrerem.
+        *  As operações de leitura de dados enviados pelos clientes são monitoradas
+        *  nos canais de cada cliente.
         */
         serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+        //Indica que o servidor vai ficar escutando em um determinado IP/Nome DNS e Porta.
+        serverChannel.bind(new InetSocketAddress(HOSTNAME, PORT));
         System.out.println("Servidor iniciado no endereço " + HOSTNAME + " na porta " + PORT);
     }
 
     /**
-     * Inicia o loop a espera de requisições dos clientes.
+     * Inicia o loop infinito para esperar requisições dos clientes.
      */
     public void start() {
         while(true) {
@@ -56,7 +80,7 @@ public class ChatServer {
                 * Como registramos o canal do servidor o canal de cada cliente
                 * para serem monitorados pelo selector, se existirem eventos a serem
                 * processados em mais de um canal, o método select retornará um valor maior que 1.
-                * */
+                */
                 selector.select();
 
                 /* Cada objecto SelectionKey representa o registro de um canal para ser monitorado
@@ -82,11 +106,15 @@ public class ChatServer {
      */
     private void processEvents(Set<SelectionKey> selectionKeys) throws IOException {
         Iterator<SelectionKey> iterator = selectionKeys.iterator();
+        /*Não é usado o foreach aqui pois estamos removendo
+        * cada item do conjunto de SelectionKey's.
+        * Usando um foreach não podemos fazer isso.*/
         while (iterator.hasNext()) {
             //Obtém o evento a ser processado
             SelectionKey selectionKey = iterator.next();
 
-            //remove a SelectionKey da lista para indicar que a mesma foi processada
+            /*Remove a SelectionKey da lista para indicar que
+             um evento da mesma foi processado*/
             iterator.remove();
 
             /*Se o evento foi cancelado ou a conexão fechada, a selectionKey fica inválida
@@ -104,7 +132,7 @@ public class ChatServer {
     }
 
     /**
-     * Processa aceitações de conexões do cliente pelo servidor.
+     * Processa solicitações de aceitação de conexão do cliente pelo servidor.
      * Quando a conexão do cliente é aceita, envia mensagem de boas
      * vindas e fica monitorando quando dados enviados pelo cliente
      * estiverem prontos para serem lidos.
@@ -148,8 +176,6 @@ public class ChatServer {
         int bytesRead;
         try {
             bytesRead = clientChannel.read(buffer);
-            /* Altera do modo de escrita (onde a posição estava no final do buffer) para o de leitura
-            * (resetando a posição do buffer para 0)*/
         } catch (IOException e) {
             System.err.println(
                     "Não pode ler dados. Conexão fechada pelo cliente " +
@@ -173,15 +199,5 @@ public class ChatServer {
             "Mensagem recebida do cliente " +
             clientChannel.getRemoteAddress() + ": " + new String(data) +
             " (" + bytesRead + " bytes lidos)");
-    }
-
-    public static void main(String[] args) {
-        try {
-            ChatServer server = new ChatServer();
-            server.start();
-        } catch (IOException e) {
-            System.err.println("Erro durante execução do servidor: " + e.getMessage());
-        }
-
     }
 }

@@ -21,15 +21,47 @@ public class ChatClient implements Runnable {
     private final SocketChannel clientChannel;
     private final ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 
+    /**
+     * Executa a aplicação cliente.
+     * @param args
+     * @see #start()
+     */
+    public static void main(String[] args) {
+        try {
+            ChatClient client = new ChatClient();
+            client.start();
+        } catch (IOException e) {
+            System.err.println("Erro ao inicializar cliente: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Construtor padrão que instancia os atributos
+     * e realiza as configurações necessárias.
+     * @throws IOException
+     */
     public ChatClient() throws IOException {
         selector = Selector.open();
         clientChannel = SocketChannel.open();
         clientChannel.configureBlocking(false);
-        clientChannel.register(selector, clientChannel.validOps());
+
+        /* Registra o selector para monitorar operações de conexão do cliente com o servidor, leitura ou escrita no canal.
+        *  É o mesmo que usar a linha abaixo que já registra todas as operações válidas para um SocketChanel.*/
+        clientChannel.register(selector, SelectionKey.OP_CONNECT | SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+        //clientChannel.register(selector, clientChannel.validOps());
+
+        /* Como configuramos o canal para funcionar de forma não bloqueante,
+        *  o método connect não bloqueia.
+        *  Somente no método start que poderemos saber quando a conexão foi estabelecida.*/
         clientChannel.connect(new InetSocketAddress(ChatServer.HOSTNAME, ChatServer.PORT));
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Inicia o processo de espera pela conexão com o servidor
+     * e envio e recebimento de mensagens.
+     * @throws IOException
+     */
     public void start() throws IOException {
         try {
             /* Espera pelo primeiro evento, que só pode ser indicando o sucesso da conexão.
@@ -38,7 +70,7 @@ public class ChatClient implements Runnable {
             selector.select(1000);
             processConnectionAccept();
 
-            /* Cria um novo thread para ficar a guardando mensagens enviadas pelo servidor,
+            /* Cria um novo thread para ficar aguardando mensagens enviadas pelo servidor,
             *  paralelamente ao envio de mensagens.
             *  Como o construtor da classe Thread solicita um objeto Runnable
             *  e nossa classe ChatClient implementa a interface Runnable,
@@ -98,15 +130,6 @@ public class ChatClient implements Runnable {
         System.out.print("Digite seu login: ");
         String login = scanner.nextLine();
         clientChannel.write(ByteBuffer.wrap(login.getBytes()));
-    }
-
-    public static void main(String[] args) {
-        try {
-            ChatClient client = new ChatClient();
-            client.start();
-        } catch (IOException e) {
-            System.err.println("Erro ao inicializar cliente: " + e.getMessage());
-        }
     }
 
     /**
