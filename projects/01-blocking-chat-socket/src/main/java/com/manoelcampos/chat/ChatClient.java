@@ -82,7 +82,7 @@ public class ChatClient {
     private void waitMessages() {
         String msg;
         while(running && (msg = clientSocket.getMessage())!=null) {
-            System.out.println("\nServidor diz: " + msg + "\n");
+            System.out.println("\nServidor diz: " + msg);
         }
     }
 }

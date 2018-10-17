@@ -136,7 +136,7 @@ public class ChatServer {
             String msg;
             while((msg = clientSocket.getMessage()) != null){
                 System.out.println("Mensagem recebida do cliente "+ clientSocket.getLogin()+": " + msg);
-                if("sair".equalsIgnoreCase(msg)){
+                if(msg.endsWith("sair")){
                     clientSocket.sendMsg("Tchau " + clientSocket.getLogin());
                     return;
                 }
