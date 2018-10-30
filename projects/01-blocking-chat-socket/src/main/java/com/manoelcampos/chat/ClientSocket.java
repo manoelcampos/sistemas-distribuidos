@@ -84,8 +84,9 @@ public class ClientSocket {
          * Apesar de existirem formas mais simples de obter um BufferedReader,
          * utilizando sockets não temos como fazer isso.
          */
+        
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+        
         /**
          * Obtém um objeto {@link OutputStream} que permite escrever no socket,
          * ou seja, enviar mensagens pro servidor.

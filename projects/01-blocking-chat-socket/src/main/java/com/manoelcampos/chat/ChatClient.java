@@ -77,7 +77,7 @@ public class ChatClient {
     }
 
     /**
-     * Aguarda mensagens do servidor
+     * Aguarda mensagens do servidor.
      */
     private void waitMessages() {
         String msg;
