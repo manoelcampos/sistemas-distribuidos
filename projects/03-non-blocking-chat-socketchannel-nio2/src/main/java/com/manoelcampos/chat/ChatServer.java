@@ -47,7 +47,6 @@ public class ChatServer {
      * @throws IOException
      */
     public ChatServer() throws IOException {
-        //https://stackoverflow.com/questions/5670862/bytebuffer-allocate-vs-bytebuffer-allocatedirect
         buffer = ByteBuffer.allocateDirect(1024);
         selector = Selector.open();
         serverChannel = ServerSocketChannel.open();
