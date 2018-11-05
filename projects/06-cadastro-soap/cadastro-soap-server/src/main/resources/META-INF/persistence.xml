@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <!-- 
+  Este é o arquivo de configuração da JPA que define
+  como a aplicação acessará o banco de dados.
+  Neste caso, o acesso ao banco é feito por meio de um 
+  DataSource criado no AppServer (neste caso o GlassFish).
+  
+  O DataSource está sendo criado automaticamente quando a aplicação é 
+  implantanda no GlassFish, por meio do arquivo 
+  WEB-INFO/glassfish-resources.xml
+  O nome do DataSource aqui deve ser o mesmo que no arquivo acima.
+
+  glassfish 4: admin adminadmin 
+  -->
+  <persistence-unit name="default" transaction-type="JTA">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <jta-data-source>java:app/jdbc/cadastro_soap</jta-data-source>
+    <properties>
+      <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+    </properties>
+  </persistence-unit>
+</persistence>

@@ -5,7 +5,7 @@
 3. Aplicação de Chat client/servidor com socket bloqueante
 4. Aplicação de Chat client/servidor com socket bloqueante
 5. Aplicação de Chat client/servidor com socket não-bloqueante
-6. a
+6. Aplicação de Chat client/servidor com socket não-bloqueante
 7. a
 8. a
 9. Prova

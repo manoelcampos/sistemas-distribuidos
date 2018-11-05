@@ -120,6 +120,11 @@ https://martinfowler.com/bliki/CircuitBreaker.html
     * https://cloud.google.com/pubsub/docs/overview
 - Push/Pull como modelo de entrega
 
+= Modelo de requisição: blocking, non-blocking, sync, async, multiplexed IO
+
+https://notes.shichao.io/unp/ch6/
+
+
 [bibliography]
 == Referências
 

@@ -1,0 +1,51 @@
+= Aplicação de Chat utilizando WebSocket com Node.js
+
+Web chat utilizando http://nodejs.org:[Node.js] no lado da app servidor. Com Node.js podemos então usar JavaScript no lado servidor e no cliente. A aplicação utiliza WebSockets (recurso do HTML5) com a biblioteca http://socket.io para implementar o chat.
+
+== Estrutura do Projeto
+
+- link:index.js[index.js]: representa a aplicação Node.js que permitirá aos clientes (por meio do navegador) interagirem no chat.
+- link:package.json[package.json]: representa o arquivo de configuração da aplicação servidora. Ele foi criando por meio de um assistante, digitando-se `npm init` no terminal. As dependências (bibliotecas utilizadas pela aplicação) foram baixadas e salvas em tal arquivo digitando-se `npm install express socket.io --save-prod`. No entanto, como o `package.json` já está configurado, não precisamos digitar estes dois comandos.
+- link:index.html[index.html]: página web que será disponibilizada aos clientes quando eles acessarem o 
+                               servidor por meio do navegador. Tal página representa a parte cliente
+                               do chat. Por meio dela os usuários podem interagir entre si, utilizando
+                               o servidor como intermediário.
+                    
+
+== Instalação 
+
+É necessário instalar o http://nodejs.org:[Node.js] para rodar o servidor e o http://npmjs.com:[npm] para gerenciar pacotes utilizados pela aplicação (como por exemplo, baixar tais pacotes diretamente pelo terminal).
+
+Adicionalmente, é usado o https://nodemon.io:[nodemon] para permitir monitorar alterações no código do servidor e reiniciar a aplicação automaticamente. Isto facilita muito o desenvolvimento pois não temos que parar o servidor cada vez que fizermos uma alteração no código.
+
+A seguir é mostrado como instalar tais ferramentas no Linux e macOS.
+
+=== Linux
+
+Para instalar as ferramentas acima em Linux baseados em Debian (como Ubuntu e derivados), 
+basta abrir um terminal no diretório raiz do projeto e executar `make linux`.
+
+=== macOS
+
+Para instalar as ferramentas no macOS, pode-se baixar o gerenciador de pacotes homebrew.
+A https://brew.sh[página oficial] mostra logo no topo a única instrução necessária para isto.
+Após instalar o homebrew, basta abrir um terminal no diretório raiz do projeto e executar `make macos`.
+
+=== Dependências da aplicação servidora
+
+Os pacotes (dependências) que são utilizados pela aplicação servidora são salvos na pasta `node_modules`. Esta pasta não é incluída e pode ser removida a qualquer momento (uma vez que podemos usar um comando para baixar os pacotes novamente). Assim, para baixar tais pacotes em tal pasta, basta executar `make install`.
+
+== Executando a Aplicação
+
+=== Servidor
+
+Para iniciar o servidor, podemos executar `node index.js`.
+Porém, utilizando o nodemon, basta fazer `nodemon` que ele vai procurar um arquivo `index.js` e iniciá-lo automaticamente.
+
+=== Cliente
+
+Após iniciar o servidor, ele vai mostrar no terminal o endereço que a aplicação pode ser acessada pelo navegador (cliente).
+O endereço padrão é http://localhost:8000.
+Cada aba ou janela do navegador aberta em tal endereço representará um usuário do chat.
+
+

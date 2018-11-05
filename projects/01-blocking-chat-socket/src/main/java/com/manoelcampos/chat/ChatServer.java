@@ -21,6 +21,10 @@ public class ChatServer {
      */
     private final List<ClientSocket> clientSocketList;
 
+    public ChatServer() {
+        clientSocketList = new ArrayList<>();
+    }
+
     /**
      * Executa a aplicação servidora que fica em loop infinito aguardando conexões
      * dos clientes.
@@ -33,10 +37,6 @@ public class ChatServer {
         } catch (IOException e) {
             System.out.println("Erro ao iniciar servidor: " + e.getMessage());
         }
-    }
-
-    public ChatServer(){
-        clientSocketList = new ArrayList<>();
     }
 
     /**
@@ -68,6 +68,7 @@ public class ChatServer {
                 System.out.println("Aguardando conexão de novo cliente");
                 ClientSocket clientSocket = new ClientSocket(serverSocket.accept());
                 clientSocketList.add(clientSocket);
+                System.out.println("Cliente " + clientSocket.getRemoteSocketAddress() + " conectado");
 
                 /*
                 Cria um novo Thread para permitir que o servidor não fique bloqueado enquanto
@@ -131,7 +132,6 @@ public class ChatServer {
      *                     pode se comunicar com ele.
      */
     private void clientMessageLoop(ClientSocket clientSocket){
-        System.out.println("Cliente conectado");
         try {
             String msg;
             while((msg = clientSocket.getMessage()) != null){

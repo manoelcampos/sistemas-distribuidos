@@ -1,0 +1,23 @@
+{
+  "name": "05-chat-nodejs-socket-io",
+  "version": "1.0.0",
+  "description": "Web chat utilizando nodejs. Com Node.js podemos então usar JavaScript no lado servidor e no cliente. A aplicação utiliza WebSockets com a biblioteca http://socket.io para implementar o chat.",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.1.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "client/server",
+    "chat",
+    "nodejs",
+    "javascript",
+    "websockets",
+    "socket.io"
+  ],
+  "author": "Manoel Campos da Silva Filho",
+  "license": "MIT"
+}

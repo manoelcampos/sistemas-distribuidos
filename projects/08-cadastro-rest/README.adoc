@@ -1,0 +1,483 @@
+:source-highlighter: highlightjs
+:imagesdir: images
+:numbered:
+:unsafe:
+
+ifdef::env-github[]
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+ifdef::env-github[]
+IMPORTANT: http://manoelcampos.com/java-jaxrs-cdi-jpa/[Acesse o artigo online neste link].
+O acesso diretamente pelo repositório no GitHub não permite a exibição de vídeos.
+endif::[]
+
+= Desenvolvimento Web Services REST em Java utilizando JAX-RS com JPA e CDI no NetBeans
+por Manoel Campos da Silva Filho
+
+REST se tornou o padrão de fato para o desenvolvimento de Web Services (WS's) há alguns anos, em oposição ao protocolo SOAP padronizado pela W3C.
+Isto se deve a diversos fatores como:
+
+- Troca de mensagens simplificadas entre cliente e servidor, normalmente utilizando JSON no lugar de XML. Isto faz com o tráfego de dados e o delay causado pela troca de mensagens sejam reduzidos. Tais características são fundamentais para dispositivos móveis que normalmente possui pacotes de dados com franquia de tráfego e velocidade limitados.
+- Utilização apenas dos recursos do protocolo HTTP para troca de mensagens, sem precisar empacotar os dados da requisição no cabeçalho de outro protocolo como o SOAP, que apenas aumenta o tamanho dos pacotes de dados sendo enviados.
+- Utilização de URLs convencionalmente amigáveis, tornando muito simples o teste de clientes REST utilizando ferramentas de linha de comando como curl ou outras como plugins para navegadores.
+- Ampla adoção pelo mercado, tornando-o um padrão de fato, amplamente suportado pela comunidade de software livre com a disponibilização de inúmeras bibliotecas e suporte nos mais conhecidos IDEs do mercado.
+- Grandes empresas como Google, Facebook, Twitter, Yahoo e muitas outras fornecem incontáveis serviços REST para as mais variadas finalidades. Tais WS's fornecem desde integração com serviços como Google Maps, YouTube e Google Translator, informações sobre previsão do tempo e cotação de moedas (inclusive de criptomoedas como Bitcoin), etc.
+
+Por estes motivos, o protocolo SOAP se tornou absoleto, dando lugar ao REST. Desta forma, neste tutorial será mostrado o desenvolvimento de uma aplicação servidora e outra cliente utilizando o padrão REST. Será mostrado um passo-a-passo para criar as aplicações do zero, explicando as tecnologias utilizadas e configurações necessárias. Então vamos lá.
+
+== Ferramentas Necessárias
+
+Para este projeto vamos utilizar as versões estáveis mais recentes das ferramentas apresentadas, como listado abaixo:
+
+. JDK 1.8
+. IDE NetBeans 8.2 para Java EE para desenvolvimento do projeto
+. Servidor de aplicação GlassFish 5.0
+. MySQL Server 5 ou superior
+
+Considera-se que você já tem os itens 1 e 2 previamente instalados.
+
+=== MySQL Server
+
+Nossa aplicação servidora utilizará um banco de dados (BD) MySQL, apesar que qualquer outro banco pode ser utilizado. Se estiver utilizando Linux, como Ubuntu, basta fazer o download do MySQL Server via apt-get com o comando abaixo:
+
+[source,bash]
+----
+sudo apt-get install mysql-server
+----
+
+Se estiver usando Windows ou macOS, pode baixar o instalador do
+MySQL Server Community https://dev.mysql.com/downloads/mysql/[aqui].
+
+==== Criando o Banco de Dados
+
+Utilize o NetBeans para criar o banco de dados chamado `cadastro-rest` para o nosso sistema, acessando a aba "Services".
+
+// image::create-database.gif[]
+
+pass:[<div style='position:relative;padding-bottom:54%'><iframe src='https://gfycat.com/ifr/AgonizingAlertAcornbarnacle' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0' allowfullscreen></iframe></div>]
+
+Não precisaremos criar as tabelas manualmente, como veremos a seguir.
+
+=== GlassFish 5
+
+Como vamos usar o GlassFish 5, vamos remover o GlassFish 4 do NetBeans.
+Este é um passo opcional. Você pode ter quantos servidores de aplicação
+desejar. Mas vamos remover a versão 4 para evitar qualquer confusão.
+Para isto, basta ir na aba "Services" no lado esquerdo da janela principal do NetBeans para localizar e remover o GlassFish 4, como mostrado abaixo.
+
+// image::remove-glassfish4.gif[]
+
+pass:[<div style='position:relative; padding-bottom:64.25%'><iframe src='https://gfycat.com/ifr/SpicySphericalGordonsetter' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div>]
+
+Veja que nas propriedades do servidor é possível verificar em que pasta ele foi instalado (normalmente a pasta de instalação do NetBeans). Caso deseje, pode remover tal pasta também.
+
+Baixe o GlassFish 5 https://javaee.github.io/glassfish/download[aqui]. Tenha certeza de baixar a versão completa "GlassFish 5.0 - Full Platform", que possui todas as especificações do JavaEE. Basta descompactar em qualquer lugar que será criada uma pasta `glassfish5`. 
+
+Como vamos usar o MySQL como banco de dados, precisaremos do MySQL Connector J, driver JBDC do MySQL (que vai ser utilizado internamente para acesso ao BD). Baixe o driver no https://dev.mysql.com/downloads/connector/j/[site oficial].
+
+Após descompactar o driver, o único arquivo que nos interessa é o `mysql-connector-java-X.X.X-bin.jar` (onde X.X.X é a versão do driver). Copie tal arquivo para a pasta `glassfish5/glassfish/domains/domain1/lib` (considerando que `glassfish5` é a pasta onde descompactou o GlassFish). As bibliotecas colocadas em tal pasta serão carregadas automaticamente pelo GlassFish.
+
+Vamos então registrar o GlassFish 5 no NetBeans, indo na aba "Services" e adicionar um novo server no item "Servers", como mostrado a seguir. Observe que não é preciso informar usuário ou senha do GlassFish. Mas o usuário padrão é `admin` e não possui uma senha.
+
+image::register-glassfish5-netbeans.gif[]
+
+Observe que após registrar o servidor, o iniciamos em seguida para verificar se tudo correu bem. Depois que o servidor for iniciado e ficar com um botão de "play" verde do lado do seu ícone, podemos abrir o console de administração para verificar se está tudo correto mesmo.
+
+image::glassfish-admin-console.gif[]
+
+== Estrutura do projeto
+
+Utilizaremos o https://pt.wikipedia.org/wiki/Hibernate[Hibernate] como framework de https://pt.wikipedia.org/wiki/Mapeamento_objeto-relacional[mapeamento objeto relacional (Object Relational Mapping - ORM)], que é uma implementação da especificação https://pt.wikipedia.org/wiki/Java_Persistence_API[JPA]. Ele nos permite esquecer os detalhes relacionados à BDs relacionais (como SQL, Primary Keys (PKs), Foreign Keys (FKs), criação de tabelas, etc) e assim podermos trabalhar exclusivamente em um modelo orientado a objetos, mesmo para manipulação dos dados no banco.
+
+A especificação http://cdi-spec.org[Context and Dependency Injection (CDI)] permite que objetos sejam injetados (ou seja, criados automaticamente) onde precisarmos. Tal especificação é implementada por servidores de aplicação como o GlassFish ou WildFly. Podemos fazer o deploy (implantar) aplicações utilizando CDI em Web Containers como Tomcat ou Jetty (que não implementam todas as especificações da plataforma Java EE e logo são mais leves), mas isto requer uma série de configurações.
+
+CDI permite diminuir o acoplamento de um software, ou seja, reduz o nível de dependência do nosso projeto. Por exemplo, a partir do momento que utilizamos a especificação JPA como camada de persistência (para salvarmos os dados em algum lugar, neste caso em um BD), se instanciarmos diretamente no nosso código objetos JPA para fazer tais operações, estamos aumentando o nível de dependência do nosso projeto, tornando ele fortemente dependente da JPA. Se precisamos, por exemplo, persistir certos objetos em outro repositório, como em arquivos no disco, precisaríamos instanciar explicitamente objetos diferentes para realizar tal tarefa. 
+
+Com CDI, podemos simplesmente declarar um objeto e indicar que queremos que uma instância de tal objeto seja injetada automaticamente quando tal objeto precisar ser usado. Com isto, podemos ter uma arquivo de configuração separado que define qual instância será injetada quando um objeto de um determinado tipo for solicitado. Se precisarmos mudar o tipo de objeto (como objetos que usam JPA para persistir dados em um BD por objetos que simplesmente salvam dados em um arquivo), podemos alterar isso em apenas um lugar do código. Observe que utilizei o termo "tipo" e não "classe", uma vez que este tipo pode ser tanto uma classe quanto uma interface, sendo interfaces comumente mais utilizadas.
+
+O CDI também nos livra de termos que utilizar o operador `new` sempre que precisarmos usar um deteminado objeto. Quanto ao servidor de aplicação, o NetBeans 8.2 já disponibiliza o GlassFish 4.1, mas devido a alguns problemas encontrados com tal versão, vamos usar a versão 5.0. 
+
+== O projeto
+
+O projeto que desenvoremos será bem simples. O diagrama de classe abaixo mostra que teremos apenas duas classes de negócio `Usuario` e `Cidade`. O servidor disponibilizará um cadastro de usuários por meio de um WS REST. A classe `Usuario` tem apenas dados básicos e mais um atributo que indica a cidade onde ele mora. 
+
+Existe uma interface `Cadastro` que será implementada por todas as classes que representarem tabelas no BD. Tal interface apenas define tais classes devem possui um getter e setter para um atributo `id` que cada classe de negócio terá. Assim, estamos definindo que todas essas classes devem ter um atributo `id`, que será bastante útil posteriormente.
+
+image::class-diagram.jpg[title=Diagrama das Classes de Negócio]
+
+== Iniciando o Desenvolvimento
+
+Vamos criar um projeto Maven de uma Web Application no NetBeans, como mostra a animação abaixo.
+
+image::create-project.gif[]
+
+O campo `groupId` na penúltima tela de criação do projeto foi preenchido com `com.manoelcampos` indicando um nome de domínio invertido para identificar a empresa ou pessoa que desenvolveu o projeto. Caso você tenha um domínio, pode utilizar. Caso não tenho, pode inventar um ou usar qualquer nome que desejar. O campo `package` é automaticamente formado pela junção do `groupId` com o nome dado para o projeto no primeiro campo.
+
+Se nunca utilizou Maven antes, esta é uma ferramenta para gerenciamento de dependências no seu projeto, permitindo baixar as dependências indicadas automaticamente. Não confunda com o CDI que usaremos para injeção de dependências. No Maven dizemos quais bibliotecas nosso projeto precisa. Usando CDI, dizemos quais objetos devem ser injetados (automaticamente instanciados) quando precisarmos deles.
+
+=== Criando as classes de negócio
+
+Depois de criado o projeto, vamos criar as classes `Usuario` e `Cidade` dentro do pacote criado. Primeiro vamos criar a classe `Usuario` dentro de um subpacote chamado `model`, onde colocaremos todas as classes de negócio (que representam o modelo do negócio).
+
+image::create-business-class.gif[]
+
+Veja que apenas adicionamos `.model` ao final do nome do pacote ao criar a classe. Agora crie a classe `Cidade` dentro deste pacote `model`. 
+
+Como tais classes representarão tabelas no BD, cada uma delas deve ter um atributo `id` (neste caso, este id representa uma chave primária simples). Para isso, vamos criar uma interface chamada `Cadastro` que define métodos getter e setter para este atributo de tais classes. Tal interface ficará no mesmo pacote das classes e terá o seguinte código:
+
+[source,java]
+----
+public interface Cadastro {
+    long getId();
+    void setId(long id);
+}
+----
+
+Vamos então indicar que nossas classes `Usuario` e `Cidade` implementam tal interface.
+
+image::implement-interface-methods.gif[]
+
+Como estas classes agora precisam implementar os métodos na interface, podemos usar o NetBeans para incluir o corpo dos métodos pra nós, como mostrado acima. Faça o mesmo para as duas classes de negócio.
+
+Nossa classe `Usuario` terá apenas os atributos abaixo, com os respectivos getters e setters. 
+
+[source,java]
+----
+    private long id;
+    private String nome;
+    private String cpf;
+    private Cidade cidade;
+----
+
+Podemos usar o NetBeans para criar tais métodos para gente. Temos apenas que apagar o código gerado para os métodos `getId()` e `setId()` e definir o código apropriado.
+
+image::encapsulating-fields.gif[]
+
+Faça o mesmo para a classe `Cidade`, definindo os atributos abaixo:
+
+[source,java]
+----
+    private long id;
+    private String nome;
+    private String uf;
+----
+
+=== Utilizando a JPA para acesso ao Banco de Dados
+
+Como falado, a JPA é uma especificação Java que provê uma forma padrão para a implementação de frameworks de ORM como o Hibernate. Assim, se usarmos JPA, podemos traocar o framework por qualquer outro que implementa tal especificação, sem precisarmos alterar nosso código fonte (apenas configurações serão necessárias).
+
+Para usarmos a JPA, e posteriormente o Hibernate em segundo plano, para fazer toda a comunicação com o BD, precisamos indicar quais classes representam tabelas no BD. Nossas classes de negócio `Usuario` e `Cidade` serão as únicas a serem mapeadas para tabelas no banco (por isso chama-se mapeamento objeto-relacional, pois mapeia-se objetos para um BD relacional como o MySQL).
+
+Para indicarmos que uma classe será mapeada, precisamos marcá-la com a anotação `@Entity` da JPA, definindo a classe como uma entidade (uma tabela no BD). Tal anotação precisa ser colocada imediatamente antes da declaração da classe. Após incluí-la, precisaremos importar tal anotação. Novamente podemos usar o NetBeans para isso, clicando na lâmpada que aparece no lado esquerdo da linha, como mostrado abaixo.
+
+image::define-entity.gif[]
+
+Observe que após salvarmos, é apresentado um erro na linha da declaração da classe. Passando o mouse no erro destacado em vermelho, podemos ver que está sendo indicado que não há nenhum atributo `ID` para a entidade. Podemos clicar na lâmpada e usar o NetBeans para definir um `ID`, como mostra a animação acima. 
+
+Já temos um atributo que chamamos de `id` e que representa a identificação única de cada objeto da classe (ou seja, a PK na tabela do BD). Assim, apenas indicamos que queremos usar um campo existente como `ID` e então selecionamos o campo chamado `id`. Com isto, uma anotação `@Id` é colocada no campo.
+
+Para indicarmos que desejamos que o valor deste campo seja gerado automaticamente no BD (para que ele seja definido como autoincremento no MySQL), vamos adicionar a anotação `@GeneretedValue`, indicando que a estatégia para geração do valor do campo será `IDENTITY`. O atributo `id` deve ficar como abaixo. 
+
+[source,java]
+----
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+----
+
+As classes anotadas com `@Entity` (que a partir de agora, por simplificação chamaremos apenas de Entity) devem implementar a interface `Serializable`, indicando que objetos de tais classes podem ser persistidos (salvos). Também podemos usar o NetBeans para fazer essa modificação para nós.
+
+image::implement-serializable.gif[]
+
+O mesmo processo de definir uma entidade, um `ID` e implementar `Serializable` deve ser aplicado para todas as classes de negócio.
+
+=== Definindo uma Persistence Unit (PU)
+
+Projetos utilizando JPA precisam conter uma Persistence Unit (PU), que é uma arquivo chamado `persistence.xml` definindo as configurações para acesso ao BD, controle de transações, provedor de persistência a ser utilizado e outras configurações. Ele é o arquivo de configuração da JPA.
+
+Uma vez que já temos algumas Entities no nosso projeto, podemos facilmente adicionar uma PU utilizando o NetBeans.
+
+video::7y--ODvjdjQ[youtube, 800, 600]
+
+ifdef::env-github[]
+Este vídeo mostra o processo:
+pass:[http://youtu.be/7y--ODvjdjQ]
+endif::[]
+
+No vídeo acima, definimos o nome da PU como `default` (um nome mais simples que o sugerido pelo NetBeans). Como teremos apenas uma PU no nosso projeto (para acessar um único BD), não precisaremos nos preocupar com este nome. Escolhemos o Persistence Provider como Hibernate (JPA 2.1), indicando que o Hibernate será a implementação da JPA que utilizaremos. No campo Data Source devemos escolher ou configurar uma conexão com o BD. Um Data Source (DS) é uma fábrica de conexões com o BD. 
+
+Temos então que criar primeiro um DS. Chamamos tal DataSource de "cadastro-rest-ds" e selecionamos a conexão com o BD (configurada quando criamos o banco "cadastro-rest"). O nome do DS é utilizado na PU para poder instanciar uma conexão com o banco. Após abrir o arquivo `persistence.xml` (que representa as configurações da PU), o NetBeans mostra um editor gráfico para tal arquivo.
+
+image::persistence-unit.png[]
+
+Alguns pontos importantes são:
+
+- *Persistence Provider*: definimos que desejamos usar Hibernate (como dito antes), como implementação da JPA. 
+- *Use Java Transaction APIs*: esta opção indica que nossa aplicação usará a JTA. Esta é uma API implementada por servidores de aplicação como o GlassFish, para prover controle automático de transações para nossa aplicação. Isto quer dizer que não teremos que nos preocupar em abrir, cancelar ou confirmar transações no BD. Tudo isso será feito automaticamente pelo GlassFish.
+- *Table Generation Strategy*: está como "Create" para permitir que, ao rodar a aplicação, as tabelas sejam criadas no BD automaticamente. Depois que elas tiverem sido criadas, podemos alterar para "None". A opção "Drop and Create" só é interessante se não houver dados que desejamos manter no banco. Assim, sempre que exercutarmos a aplicação, as tabelas serão apagadas e recriadas.
+
+Há apenas alguns detalhes que precisamos observar. Se clicarmos no botão "Source" na parte superior do arquivo, podemos visualizar todo o código XML gerado. Quando escolhemos o Hibernate, o valor da tag `<provider>` foi definido como `org.hibernate.ejb.HibernatePersistence`, porém, tal provider está obsoleto nas versões atuais do Hibernate e deve ser trocado para `org.hibernate.jpa.HibernatePersistenceProvider`.
+
+O provider representa o nome qualificado (incluindo o nome do pacote) da classe que é capaz de criar objetos `EntityManagerFactory` e a estrutura de tabelas no BD. Um `EntityManagerFactory` é uma fábrica de objetos `EntityManager`. Um `EntityManager` (EM), por sua vez, é responsável por gerenciar o ciclo de vida das entidades como `Usuario` e `Cidade` no nosso sistema. Um EM permite, por exemplo, buscar, incluir, alterar e excluir objetos do BD.     
+
+Por fim, como indicamos que desejamos usar a JTA, da mesma forma que precisamos indicar qual era a classe que implementa o Persistence Provider, precisamos indicar qual a classe que implementa a JTA Platform, responsável por gerenciar as transações no BD.
+
+Como estamos utilizando GlassFish, precisamos adicionar na tag `<properties>` a seguinte propriedade:
+
+[source,xml]
+----
+<property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+----
+
+Esta é a classe do GlassFish que implementa a JTA Platform.
+
+=== Configurando o CDI
+
+Para permitir o uso de CDI, até o JavaEE 6 era obrigatória a existência de um arquivo chamado `beans.xml`. A partir do JavaEE 7 tal arquivo não é obrigatório, mas podemos criá-lo se quisermos adicionar algumas configurações para o CDI.
+
+Pelo menu `File >> New File` do NetBeans, podemos digitar `beans.xml` na janela de pesquisa para criar o arquivo. O arquivo possui um atributo chamado `bean-discovery-mode` que é definido com valor igual a `annotated`.
+
+Isto indica que só podemos injetar objetos que estejam marcados com alguma anotação que define o escopo dos objetos a serem injetados. Algumas anotações de escopo disponibilizadas pelo CDI, que controlam o ciclo de vida de objetos, são o `@ApplicationScoped` e `@RequestScoped`. Um objeto marcado com `@ApplicationScoped` será criado quando requisitado e só será destruído quando a aplicação for finalizada. Um objeto marcado com `@RequestScoped` será criado sempre que for requisitado e será destruído ao final da requisição. Se não marcarmos um objeto com nenhum anotação de escopo, seu escopo é `@Dependent`, que indica que seu ciclo de vida depende do ciclo de vida do objeto onde ele foi criado.
+
+Para não sermos obrigamos a anotar todas as classes que desejamos criar objetos por injeção e assim tornar mais fácil o uso de CDI, podemos alterar o valor do atributo para `all`. Assim, poderemos injetar objetos de qualquer classe que desejarmos.
+
+=== Adicionando dependências Maven
+
+O arquivo `pom.xml` (criando automaticamente quando criamos o projeto Maven) é onde indicamos quais são as dependências do nosso projeto. Como estamos utilizando o Hibernate, precisamos incluir as dependências a seguir dentro da tag `<dependencies>`:
+
+[source,java]
+----
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.2.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.1.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.1.0.Final</version>
+        </dependency>
+----
+
+O uso de CDI não nos dispensa de declarar as dependências do nosso projeto. O CDI também não vai reduzir o número de dependências. Nosso projeto continua dependendo daquilo que ele usa. O que o CDI garante é que seja fácil trocar a implementação de uma dependência por outra, sem precisar alterar o código, mas somente as configurações como acima.
+
+Nosso projeto depende de uma implementação da JPA. Usaremos CDI para injetar objetos que implementam a especificação JPA. Neste caso, tais objetos são de classes implementadas pelo Hibernate, que é o chamado Persistence Provider. Se decidirmos trocar o Hibernate por outra implementação (como o EclipseLink), trocamos apenas as dependências e configurações no `persistence.xml` e o CDI se encarregará de injetar os objetos criados pelo provider (como o `EntityManager` discutido anteriormente).
+
+=== Instanciando um EntityManager para manipular dados no BD
+
+A classe `EntityManager`, como dito anteriormente, controla o ciclo de vida de Entities (classes de negócio anotadas com `@Entity`) e permite persistir tais objetos no BD. Para instanciar um `EntityManager` precisaríamos de um objeto `EntityManagerFactory` que é uma fábrica de `EntityManagers`. No entanto, usando CDI, podemos injetar `EntityManagers` automaticamente, sempre que seu uso for necessário, sem precisarmos recorrer a um `EntityManagerFactory`. 
+
+Podemos injetar `EntityMangers` em classes que tenham o ciclo de vida controlado pelo servidor de aplicação. Para isso, precisaríamos declarar um objeto `EntityManager` e anotá-lo com `@PersistenceContext`. Porém, teríamos que utilizar esta anotação em todos os locais onde declarassemos tal objeto. Para não termos que fazer isso e centralizarmos o processo de injeção de qualquer `EntityManager` em um só lugar, vamos criar uma classe `Producers` dentro do pacote `com.manoelcampos.server.config`. A classe e o pacote podem ter qualquer nome que desejar. Esta classe representa um produtor (fábrica) de objetos e usará recursos do CDI para definir como determinados objetos mais complexos, como um `EntityManager`, devem ser criados. A classe deve ter o código apresentado a seguir:
+
+[source,java]
+----
+package com.manoelcampos.server.config;
+
+import javax.enterprise.inject.Produces;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+public class Producers {
+    @Produces 
+    @PersistenceContext
+    private EntityManager em;
+}
+----
+
+O código acima declara um `EntityManager` (EM) e o anota com `@PersistenceContext`. Assim, um EM será automaticamente injetado quando requisitado, utilizando as configurações definidas no `persistence.xml`. Como temos apenas uma Persistence Unit (PU) dentro de tal arquivo, não precisamos nos preocupar em definir o nome de tal PU ao anotar o `EntityManager`. Mas se quisessemos explicitar o nome da PU (que não é recomendável, pois este pode ser renomeado no arquivo xml), poderíamos alterar a anotação para `@PersistenceContext(name = "default")`, onde `default` foi o nome que demos pra nossa PU. Mas isso só é aconsolhável se tivermos mais de uma PU no `persistence.xml`.
+
+Observe que o EM também está anotado com `@Produces`. Isto quer dizer que sempre que precisarmos de um EM, uma instância será criada neste atributo `em` e retornado para o local onde foi solicitado.
+
+=== Implementando o padrão DAO
+
+Supondo que estamos desenvolvendo esta aplicação para um determinado cliente, nossas classes de negócio `Usuario` e `Cidade` são classes específicas do negócio do cliente. O EM disponibiliza métodos para persistir objetos no BD. Assim, para incluir, alterar ou excluir um objeto no BD, precisamos chamar estes métodos do EM. 
+
+Para não incluir tal código dentro das classes de negócio (que devem ter apenas código referente ao negócio do cliente), é comum a utilização do padrão https://pt.wikipedia.org/wiki/Objeto_de_acesso_a_dados[Data Access Object (DAO)] para permitir a separação de conceitos (https://pt.wikipedia.org/wiki/Separação_de_conceitos[Separation of Concerns, SoC]). Isto evita misturar código de um determinado nível de abstração com outros de outro nível. As classes de negócio como `Usuario` podem ter código para validar o CPF, enquanto operações de BD não estão relacionadas com o negócio e assim devem ser mantidas separadas.
+
+Para implementar o padrão DAO, precisaríamos criar uma classe DAO para cada classe de negócio. Assim, teríamos uma classe `UsuarioDAO` e `CidadeDAO`. Como um DAO proverá métodos para manipular dados no BD, como `salvar` e `remover`, tais métodos acabam ficando duplicados entre os DAOs. Para evitar isso, podemos criar um DAO genérico que funciona para qualquer classe de negócio. Isto pode ter suas desvantagens, mas não vamos discutí-las nesse artigo.
+
+Primeiro, vamos definir uma interface chamada DAO, dentro do pacote `com.manoelcampos.server.dao`.
+
+[source,java]
+----
+package com.manoelcampos.server.dao;
+
+import com.manoelcampos.server.model.Cadastro;
+
+public interface DAO<T extends Cadastro> {
+    T findById(long id);
+    T findByField(String fieldName, Object value);
+    boolean remove(T entity);
+    void save(T entity);
+}
+----
+
+Tal interface define métodos para:
+
+- localizar um objeto no BD a partir do seu id (`findById`);
+- localizar por um campo específico (`findByField`);
+- remover (`remove`);
+- e salvar (`save`) um objeto no BD. 
+
+A interface usa https://en.wikipedia.org/wiki/Generics_in_Java[Generics] para permitir indicar qual o tipo de objeto de negócio (que implementa a interface `Cadastro`) um DAO trabalhará. Assim, quando mandarmos localizar um `Usuario` utilizando seu id, teremos como retorno um objeto `Usuario` e não um objeto genérico como `Object`. Generics é um assunto bem extenso que está fora do escopo deste artigo.
+
+Agora que definimos uma interface padrão para nossos DAOs, vamos criar uma classe que utilizará JPA para implementar o DAO. Definir a interface e criar uma classe que a implementa é muito útil se desejarmos criar outras formas de persistência para nossos objetos de negócio. Por exemplo, poderíamos desejar persistir os objetos em um BD usando JPA e também em arquivos, utilizando o recurso de serialização do Java. Para isso, poderíamos ter classes DAO implementando diferentes mecanismos de persistência de dados.
+
+Assim, crie a classe `JpaDAO` no pacote `com.manoelcampos.server.dao` como abaixo. Ela usa um `EntityManager` para persistir um objeto de negócio no BD. O tipo de objeto de negócio é definido utilizando Generics, como feito na interface `DAO`.
+
+[source,java]
+----
+package com.manoelcampos.server.dao;
+
+import com.manoelcampos.server.model.Cadastro;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
+public class JpaDAO<T extends Cadastro> implements DAO<T> {
+    private final EntityManager em;
+    private final Class<T> classe;
+    
+    public JpaDAO(EntityManager em, Class<T> classe){
+        this.em = em;
+        this.classe = classe;
+    }
+
+    @Override
+    public T findById(long id) {
+        return em.find(classe, id);
+    }
+
+    @Override
+    public boolean remove(T entity) {
+        em.remove(entity);
+        return true;
+    }
+
+    @Override
+    public void save(T entity) {
+        em.persist(entity);
+    }
+
+    @Override
+    public T findByField(String fieldName, Object value) {
+        final String jpql = "select o from " + classe.getSimpleName() + " o " +
+                            " where o." + fieldName + " = :" + fieldName;
+        TypedQuery<T> query = em.createQuery(jpql, classe);
+        query.setParameter(fieldName, value);
+        return query.getSingleResult();
+    }
+}
+----
+
+Como pode ser observado acima, os métodos para fazer a manipulação dos dados no BD são extremamente simples. No entanto, a instanciação de um `JpaDAO` não é tão simples assim. Para criar tal objeto é preciso passar dois parâmetros para o construtor. Sempre que precisarmos instanciar um `JpaDAO`, precisaremos passar tais parâmetros. É nesses casos em que a injeção de dependências tem mais valor.
+
+Quando usamos injeção de dependência com CDI, objetos podem ser criados automaticamente, desde que eles tenham um construtor padrão. Assim, não podemos injetar objetos DAO diretamente. Precisamos criar um código adicional para indicar ao CDI como objetos DAO devem ser criados, até porque se tivessemos mais de uma implementação do DAO, o CDI não saberia qual classe concreta instanciar para injetar um objeto que implementa a interface `DAO`.
+
+A grande vantagem é que, apesar de termos um trablaho adicional para informar ao CDI como criar DAOs, teremos que fazer isso em um único lugar, ao invés de ter que passar esses parâmetros para criar um DAO em todo lugar que declararmos um. Para fazer isso, vamos alterar a classe `Producers` como abaixo:
+
+[source,java]
+----
+package com.manoelcampos.server.config;
+
+import com.manoelcampos.server.dao.DAO;
+import com.manoelcampos.server.dao.JpaDAO;
+import com.manoelcampos.server.model.Cadastro;
+import java.lang.reflect.ParameterizedType;
+import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.InjectionPoint;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+public class Producers {
+    @Produces 
+    @PersistenceContext
+    private EntityManager em;
+    
+    @Produces
+    public <T extends Cadastro> DAO<T> getDao(InjectionPoint ip){
+        ParameterizedType t = (ParameterizedType) ip.getType();
+        Class classe = (Class) t.getActualTypeArguments()[0];
+        return new JpaDAO(em, classe);
+    }        
+}
+----
+
+Neste caso, definimos um método anotado com `@Produces`, uma vez que para criar um DAO é bem mais complicado que criar um `EntityManager` usando CDI.
+Este método será chamado automaticamente, toda vez que declararmos um objeto `DAO` e anotarmos ele com `@Inject` para indicar que um DAO deve ser injetado alí.
+
+O parâmetro `ip` que tal método recebe, conterá informações sobre o local onde foi solicitada a injeção de um `DAO`. Como para declarar um `DAO`, por exemplo, para manipular objetos `Usuario` tem que ser feita como `@Inject DAO<Usuario> dao`, indicando quais objetos de negócio o `DAO` manipulará, este parâmetro `ip` fornecerá informações como qual tipo genérico (definido entre < e >) que está sendo associado ao `DAO`. Com isto, conseguimos obter a classe entre < e > e assim criar um `DAO` instanciando um objeto `JpaDAO`. Como tal objeto também requer um `EntityManager`, podemos simplesmente acessar o atributo `em`. Quando fizermos isso, um `EntityManager` será produzido e passado para o `JpaDAO` criado.
+
+=== Implementando o Servidor REST
+
+Toda a infraestrutura da nossa aplicação está pronta. Agora, vamos criar nosso Web Service (WS) REST. Tal WS disponibilizará operações para manipular usuários no BD, assim como as operações definidas no `DAO`. Web Services REST são acessados normalmente por meio de URIs amigáveis. Cada URI dá acesso a um determinado recurso. 
+
+Na terminologia REST, um recurso pode ser um arquivo qualquer, uma imagem, um registro em um BD (como é o nosso caso), etc. Assim, para podermos disponibilizar as operações do `DAO` sobre objetos `Usuario` precisamos criar uma classe `UsuarioResource` no pacote `com.manoelcampos.server.rest`, como abaixo.
+
+[source,java]
+----
+package com.manoelcampos.server.rest;
+
+import com.manoelcampos.server.dao.DAO;
+import com.manoelcampos.server.model.Usuario;
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+@Path("/usuario")
+public class UsuarioResource {
+    @Inject 
+    private DAO<Usuario> dao;
+    
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Usuario findById(@PathParam("id") long id) {
+        return dao.findById(id);
+    }
+
+}
+----
+
+Para publicar tal classe como um recurso acessível via HTTP, devemos anotá-la com `@Path` e indicar o nome que será utilizado para acessar tal recurso por meio de uma URI. Neste caso, indicamos que um recurso `Usuario` poderá ser acessado a partir do nome `/usuario`. O acesso ao recurso só pode ser feito de fato quando acessa-se um determinado método da classe. Cada método então define um novo caminho a partir de `/usuario` que permitirá o método ser chamado por uma requisição HTTP. No caso do método `findById` (que possui o mesmo nome que no `DAO`), ele será acessado a partir de `/usuario/{id}`, onde `{id}` representa o id do usuário que deseja-se obter. 
+
+Observe que o método `findById` possui um parâmetro id. Quando utilizamos a anotação `@Path` para indicar qual o caminho a ser utilizado para acessar tal método via HTTP, definimos o nome como `{id}` (entre chaves), para indicar que `id` deve ser um valor a ser passado na URI após `/usuario`. Esta valor será passado automaticamente para o parâmetro id do método, uma vez que utilizamos a tag `@ParamPath` para indicar isso. Note que no `@ParamPath` não se usa chaves. Assim, se acessarmos uma URI terminada em `/usuario/1`, estamos indicando que desejamos obter o usuário de id igual a 1. Ou seja, o valor para o parâmetro `id` é obtido a partir da URI.
+
+=== Configurando o Servidor REST e executando a aplicação
+
+Para o recurso `Usuario` ficar de fato disponível via HTTP, precisamos habilitar o uso de REST no projeto. Para isto, basta criar uma classe como `RestConfig` no pacote `com.manoelcampos.server.config` (o nome da classe e do pacote podem ser qualquer um). Tal classe deve extender `javax.ws.rs.core.Application` e deve ser anotada com `@javax.ws.rs.ApplicationPath("api")`, onde `api` pode ser qualquer nome que indica a raiz a partir da qual os recursos (as classes anotadas com `@Path`), estarão disponíveis. 
+
+Uma vez que estamos rodando o GlassFish localmente e que nosso projeto chama `server`, a URL para acessar a aplicação seria http://localhost:8080/server/. Antes de acessar tal URL, precisamos clicar no botão `Build` para compilar todo o projeto. Sempre que salvamos o projeto, as classes alteradas são compiladas e o projeto é reimplantado (redeployed) automaticamente. Normalmente, como fizemos inúmeras alterações no projeto e nunca executamos o mesmo, é aconselhável clicar no botão `Clean and Build` (Limpar e Construir) para apagar quaisquer versões anteriores das classes e implantar as novas. Muitos erros ocorrem quando fazemos alterações estruturais no projeto e não usamos tal opção. Agora, podemos clicar no botão `Play` (F6) para executar o projeto. Sem isso, o WS REST não poderá ser acessadso.
+
+Ao executar o projeto, uma página como http://localhost:8080/server/ será acessada. A API REST estará disponível a partir de outro diretório, como especificado na anotação `@javax.ws.rs.ApplicationPath`. Neste caso, a URL base para acesso aos recursos será http://localhost:8080/server/api.
+Então, para acessar o método `findById` do recurso `Usuario`, a URI completa seria algo como http://localhost:8080/server/api/usuario/1.
+
+Se uma classe como a `RestConfig` não for criada, o NetBeans dará um aviso na linha da declaração de qualquer classe anotada com `@Path` e permitirá adicionar a classe de configuração automaticamente. No entanto, tal classe precisa apenas ter o código mínimo definido abaixo:
+
+[source,java]
+----
+package com.manoelcampos.server.config;
+
+import javax.ws.rs.core.Application;
+
+@javax.ws.rs.ApplicationPath("api")
+public class RestConfig extends Application {
+
+}
+----
+
+No entanto, o NetBeans adicionará código dentro de tal classe que de fato não funcionará (pelo menos não para as versões de bibliotecas e ferramentas utilizadas). Assim, se usar o recurso do NetBeans para criar tal classe, tenha certeza de apagar o código entre as chaves, deixando a classe vazia como acima. Lembre também de definir o nome pelo qual deseja acessar os recursos por meio de REST. 

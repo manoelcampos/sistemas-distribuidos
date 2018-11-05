@@ -1,4 +1,0 @@
-== Consome WebServices REST do CoinMarketCap
-
-Utiliza a versão 1 da API REST do https://coinmarketcap.com/api/[CoinMarketCap]
-para consultar cotação de criptomoedas.
