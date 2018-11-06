@@ -1,0 +1,28 @@
+# Aplicação cliente para consumir Web Service SOAP de busca de CEP
+
+Este é um projeto Java convencional (Java Application)
+que utilizou o assistente do NetBeans para criar uma classe cliente de Web Service (Web Service Client)
+para consumir um WebService gratuito dos Correios.
+A classe BuscaCep foi gerada utilizando tal assistente do NetBeans.
+
+Tal Web Service permite informar um CEP e obter o endereço para o mesmo.
+
+# Compilando e executando a aplicação
+
+Ao abrir a aplicação e a classe BuscaCep, poderá observar que há uma série de importações
+de classes do pacote `br.com.correios.bsb.sigep.master.bean`.
+Tais classes também foram geradas automaticamente quando mandamos criar o cliente de Web Service
+a partir do https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl[endereço WSDL do Web Service dos Correios].
+
+No entanto, o abrir o projeto pela primeira vez, o IDE deve indicar que as as classes do pacote indicado acim
+não existem. Tais classes são geradas automaticamente a partir da leitura do arquivo WSDL indicado
+na criação do projeto. Para que as classes sejam criadas no seu projeto, precisa compilar o mesmo.
+No NetBeans, basta clicar no botão "Construir" (F11).
+
+Em seguida, basta executar a aplicação normalmente que os resultados serão exibidos no terminal do seu IDE.
+
+# Documentação
+
+A documentação do Web Service está disponível http://www.corporativo.correios.com.br/encomendas/sigepweb/doc/Manual_de_Implementacao_do_Web_Service_SIGEP_WEB.pdf[aqui]. 
+
+Os correios ainda fornecem https://www.correios.com.br/para-sua-empresa/logistica-integrada/correioslog-comercio-eletronico/pdf/CorreiosWebServicePadresTcnicosdeComunicaodoServioefulfillmentv1_1.pdf[outros Web Services SOAP], mas o serviço não é gratuito.

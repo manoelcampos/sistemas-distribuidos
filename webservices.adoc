@@ -8,10 +8,6 @@
 - https://javaee.github.io/glassfish/download[GlassFish 5.0 - Full Platform]
 - https://dev.mysql.com/downloads/connector/j/[MySQL Connector instalado no GlassFish]
 
-= SOAP
-
-- https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl[Busca de Endereço dos Correios (Gratuito)]
-- https://www.correios.com.br/para-sua-empresa/logistica-integrada/correioslog-comercio-eletronico/pdf/CorreiosWebServicePadresTcnicosdeComunicaodoServioefulfillmentv1_1.pdf[WebServices Pagos dos Correios]
 
 = REST: Representational State Transfer
 

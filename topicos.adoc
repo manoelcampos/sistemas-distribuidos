@@ -21,6 +21,7 @@
 - Java Sync Sockets (ServerSocket)
   e Async Sockets com NIO2 (https://www.baeldung.com/java-nio2-async-socket-channel)
 
+
 - WebSockets
 - https://socket.io (js / node.js)
 - http://peerjs.com (WebRTC)
@@ -123,6 +124,7 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 = Modelo de requisição: blocking, non-blocking, sync, async, multiplexed IO
 
 https://notes.shichao.io/unp/ch6/
+https://en.wikipedia.org/wiki/Asynchronous_I/O
 
 
 [bibliography]
