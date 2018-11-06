@@ -16,6 +16,9 @@ import java.net.Socket;
  * @author Manoel Campos da Silva Filho
  */
 public class ClientSocket {
+    /**
+     * Socket representando a conexão de um cliente com o servidor.
+     */
     private final Socket socket;
 
     /**
@@ -45,7 +48,11 @@ public class ClientSocket {
      * Instancia um ClientSocket.
      *
      * @param socket socket que representa a conexão do cliente com o servidor.
-     * @throws IOException
+     * @throws IOException quando não for possível obter 
+     *         os objetos {@link #in} ou {@link #out} que permitem,
+     *         respectivamente, receber e enviar mensagens pelo socket.
+     *         Tal erro pode ocorrer quando, por exemplo, a conexão com o servidor cair
+     *         por falha do lado do servidor o do cliente.
      */
     public ClientSocket(Socket socket) throws IOException {
         this.socket = socket;
@@ -115,10 +122,9 @@ public class ClientSocket {
     /**
      * Envia uma mensagem e espera por uma resposta.
      * @param msg mensagem a ser enviada
-     * @return resposta obtida
-     * @throws IOException
+     * @return resposta obtida ou null se ocorreu erro ao obter a resposta (como falha de conexão)
      */
-    public String sendMsgAndGetResponse(String msg) throws IOException {
+    public String sendMsgAndGetResponse(String msg)  {
         sendMsg(msg);
         return getMessage();
     }
@@ -127,17 +133,17 @@ public class ClientSocket {
      * Envia uma mensagem e <b>não</b> espera por uma resposta.
      * @param msg mensagem a ser enviada
      * @return true se o socket ainda estava aberto e a mensagem foi enviada, false caso contrário
-     * @throws IOException
      */
     public boolean sendMsg(String msg) {
         out.println(msg);
+        
+        //retorna true se não ouve nenhum erro ao enviar mensagem ou false caso tenha havido
         return !out.checkError();
     }
 
     /**
      * Obtém uma mensagem de resposta.
-     * @return a mensagem obtida
-     * @throws IOException
+     * @return a mensagem obtida ou null se ocorreu erro ao obter a resposta (como falha de conexão)
      */
     public String getMessage() {
         try {
@@ -147,6 +153,11 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Fecha a conexão do socket e os objetos usados para enviar e receber mensagens.
+     * 
+     * @throws IOException quando tentar fechar um socket que já foi fechado (por exemplo)
+     */
     public void stop() throws IOException {
         System.out.println("Finalizando cliente " + login);
         in.close();
@@ -160,6 +171,7 @@ public class ClientSocket {
 
     /**
      * Socket que representa a conexão do cliente com o servidor.
+     * @return 
      */
     public Socket getSocket() {
         return socket;
