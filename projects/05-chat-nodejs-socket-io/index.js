@@ -4,41 +4,101 @@
  * com NodeJS.
  * 
  * A biblioteca express (https://expressjs.com)
- * é utilizada para criar um servidor web que vai aguardar
- * requisições HTTP.
+ * é utilizada para facilitar a criação de aplicações
+ * web com nodejs, uma vez que ela permite escrever métodos separados
+ * para atender à solicitações de acesso à diferentes páginas
+ * de uma aplicação web.
+ * 
+ * Observe que o código usa funções anônimas extensivamente 
+ * (um recurso do JavaScript e de muitas linguagens),
+ * quando temos uma função que não tem um nome.
+ * Por exemplo: function(requisicao, resposta){ ... }
+ * Observe que não há um nome depois da palavra function.
+ * Se você não sabe o que são funções anônimas,
+ * veja a documentação do Firefox em https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide/Funções.
  */
 
+/*
+Importa a biblioteca express e automaticamente cria o objeto express que 
+vai permitir programarmos nosso servidor para responder à solicitações
+de acesso às páginas HTML (neste exemplo caso apenas à index.html)
+da nossa aplicação web.*/
 var express = require('express')()
+
+/*Cria um servidor HTTP que vai ficar escutando numa porta a ser
+definida logo abaixo.
+Esta biblioteca não precisa ser adicionada como dependência no package.json,
+pois ela é fornecida por padrão com o nodejs.
+ */
 var http = require('http').Server(express)
+
+/*
+Importa a biblioteca socket.io e automaticamente cria um objeto da classe
+Server que representará nosso servidor de WebSocket.
+Como o WebSocket trafega dados sobre o protocolo TCP,
+nosso servidor http então é indicado abaixo como sendo o canal
+a ser utilizado para trafegar os dados do WebSocket.
+ */
 var io = require('socket.io')(http)
 
-//Porta na qual o servidor vai ficar aguardando requisições do WebSocket.
-var porta = 8000
+/*Porta na qual o servidor vai ficar aguardando requisições HTTP.*/
+var porta = 80
 
-/**
- * Função que faz o servidor ficar escutando a porta do WebSocket,
- * aguardando requisições.
+/*
+ * Faz o servidor ficar escutando a porta indicada acima, aguardando requisições.
  * Quando a função é iniciada, a aplicação começa a escutar tal porta.
+ * O primeiro parâmetro é o número da porta que a aplicação vai ficar escutando (aguardando requisições)
+ * O segundo parâmetro é uma função anônima sem parâmetros que será chamada automaticamente
+ * quando o servidor começar a escutar na porta indicada.
+ * Neste caso, exibiremos apenas uma mensagem no terminal do servidor.
+ * O método listen espera que tal função anônima não tenha parâmetros,
+ * como indicado em https://nodejs.org/api/net.html#net_server_listen_options_callback
  */
 http.listen(porta, function(){
-    console.log('Servidor iniciado. Abra o navegador em http://localhost:' + porta)
+    //Se a porta for 80, não precisa exibir na URL pois é padrão
+    if(porta == 80)
+        portaStr = ''
+    else portaStr = ':' + porta
+
+    console.log('Servidor iniciado. Abra o navegador em http://localhost' + portaStr)
 });
 
-/**
- * Função que vai responder à requisições à página inicial do servidor (raíz do site),
+/*
+ * A chamada express.get indica que queremos que uma função seja chamada
+ * sempre que ocorrerem requisições à página inicial do servidor (raíz do site),
  * normalmente http://localhost:porta/
  * A porta é definida acima.
  * 
  * Quando uma requisição à raíz for solicitada,
  * é retornado o conteúdo do arquivo index.html para o cliente.
  * Assim, ele poderá ver a interface para interagir no chat.
+ * 
+ * O primeiro parâmetro na chamada express.get abaixo indica que neste código,
+ * estamos processando requisições à raíz do site (/).
+ * O segundo parâmetro é uma função anônima que será chamada automaticamente
+ * quando uma requisição à tal endereço for recebida.
+ * Tal função precisa ter 2 parâmetros: requisicao e resposta (não necessariamente com estes nomes).
+ * Quando ela for chamada, estes dois parâmetros serão passados à ela automaticamente.
+ * Tais parâmetros são descritos abaixo:
+ * - requisicao dados da requisição HTTP enviada pelo usuário,
+ *              como URL solicitada e IP do cliente
+ * - resposta   objeto por meio do qual conseguimos enviar uma resposta
+ *              ao cliente, por exemplo,
+ *              com o conteúdo da página HTML a ser exibido no navegador.
+ * A biblioteca express é que define que tal função deve ter obrigariamente
+ * estes dois parâmetros, que são extremamente úteis para permitir verificar
+ * qualquer informação a respeito da requisição do usuário e poder enviar
+ * uma resposta pra ele.
+ * 
+ * Veja detelhes em https://expressjs.com/en/4x/api.html#app.get.method
  */
-express.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html')
+express.get('/', function (requisicao, resposta) {
+    resposta.sendFile(__dirname + '/index.html')
 });
 
-/**
- * Função executada quando um cliente conecta no servidor.
+/*
+ * A chamada io.on indica que queremos que uma determinada função seja executada 
+ * sempre que um cliente conectar ao servidor.
  * Isto ocorre quando o cliente abre a página
  * http://localhost:porta/
  * 
@@ -46,20 +106,34 @@ express.get('/', function (req, res) {
  * vai representar um novo usuário conectado ao servidor.
  * Assim, a cada aba ou janela aberta em tal endereço,
  * esta função é chamada para iniciar a conexão do cliente com o servidor.
+ * 
+ * O primeiro parâmetro da função on indica qual tipo de evento 
+ * desejamos monitorar. Assim, estamos dizendo que queremos
+ * monitorar eventos de conexão (connect).
+ * 
+ * Quando um evento deste ocorrer, a função anônima passada
+ * no segundo parâmetro do método on será chamada automaticamente,
+ * nos permitindo processar a conexão de um cliente.
+ * Tal função deve ter um parâmetro socket, 
+ * que representa o WebSocket pelo qual o servidor
+ * pode se comunicar com o cliente.
  */
 io.on('connect', function(socket){
     console.log('\nCliente conectado: ' + socket.id)
 
     /*
-    Função chamada quando um cliente desconecta do servidor 
+    A chamada socket.on abaixo indica que queremos que uma função anônima seja chamada quando o cliente
+    do socket acima desconectar do servidor 
     (fechando a aba ou janela do navegador ou perdendo a conexão).
+    Neste caso, uma função anônima será chamada e apenas exibirá uma mensagem no terminal.
     */
     socket.on('disconnect', function(){
         console.log('Cliente desconectado: ' + socket.id)
     });
         
     /*
-    Função chamada quando uma mensagem do tipo "chat msg" é enviada por um cliente.
+    A chamada socket.on abaixo indica que queremos que uma função anônima seja chamada quando
+    uma mensagem do tipo "chat msg" for enviada pelo cliente do socket acima.
     Tal mensagem representa um conversa do cliente.
     O tipo "chat msg" foi definido por nós. 
     A biblioteca socket.io nos permite definir qualquer
@@ -71,6 +145,8 @@ io.on('connect', function(socket){
     da mensagem recebida, uma vez que a função abaixo
     vai ser chamada somente quando mensagens do tipo especificado
     forem enviadas.
+
+    A função anônima passada receberá a mensagem (msg) enviada ao servidor.
     */
     socket.on('chat msg', function(msg){
         console.log('Mensagem: ' + msg)
@@ -78,12 +154,15 @@ io.on('connect', function(socket){
     });    
 
     /*
-    Função chamada quando um cliente envia uma mensagem de status
+    A chamada socket.on abaixo indica que queremos que uma função anônima seja chamada quando 
+    o cliente do socket acima enviar uma mensagem de status
     para o servidor. Tal mensagem pode indicar, por exemplo, que
     o usuário está digitando.
     Quando uma mensagem deste tipo é recebida, é feito broadcast
     dela, ou seja, ela é enviada para todos os outros usuários.
     Assim, eles saberão o status de um determinado usuário.
+
+    A função anônima passada receberá a mensagem (msg) enviada ao servidor.
      */
     socket.on('status', function(msg){
         console.log(msg)
