@@ -26,6 +26,8 @@ Com WebSockets, diferente de uma aplicação web tradicional usando HTTP,
 o servidor pode enviar dados para um cliente conectado, sem que o cliente primeiro requisite tais dados.
 Isto faz todo o sentido nas aplicações descritas acima, onde um usuário conectado pode receber dados de outro usuário, mesmo sem ter solicitado tais dados (um usuário pode estar conectado e receber uma mensagem de outro, sem ele ser obrigado à enviar uma requisição ao sevidor para solicitar o recebimento de tais dados).
 
+Projeto baseado no exemplo disponível no https://socket.io/get-started/chat/[site do socket.io].
+
 == Estrutura do Projeto
 
 - link:index.js[index.js]: representa a aplicação Node.js que permitirá aos clientes (por meio do navegador) interagirem no chat.
