@@ -6,6 +6,18 @@ permitir a realização de cadastros em um banco de dados MySQL.
 O projeto usa a Java Persistence API (JPA) para Mapeamento Objeto-Relacional (Object Relational Mapping, ORM)
 por meio do framework Hibernate 5.
 
+== Estrutura do Projeto
+
+=== Servidor
+O código do projeto do servidor está dividido em 3 pacotes:
+
+- com.manoelcampos.soapserver.model
+- com.manoelcampos.soapserver.dao
+- com.manoelcampos.soapserver.ws
+
+Dentro de cada pacote há um arquivo package-info.java que contém a documentação JavaDoc
+do pacote, apresentando detalhes de como funcionam as classes e interfaces dentro dele.
+
 == Executando o Projeto
 
 === Servidor de Banco de Dados
