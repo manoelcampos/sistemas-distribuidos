@@ -12,11 +12,6 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-ifdef::env-github[]
-IMPORTANT: http://manoelcampos.com/java-jaxrs-cdi-jpa/[Acesse o artigo online neste link].
-O acesso diretamente pelo repositório no GitHub não permite a exibição de vídeos.
-endif::[]
-
 = Desenvolvimento Web Services REST em Java utilizando JAX-RS com JPA e CDI no NetBeans
 por Manoel Campos da Silva Filho
 
@@ -37,8 +32,7 @@ Para este projeto vamos utilizar as versões estáveis mais recentes das ferrame
 
 . JDK 1.8
 . IDE NetBeans 8.2 para Java EE para desenvolvimento do projeto
-. Servidor de aplicação GlassFish 5.0
-. MySQL Server 5 ou superior
+. Servidor de aplicação GlassFish 5 Full Platform (informações de configuração a seguir)
 
 Considera-se que você já tem os itens 1 e 2 previamente instalados.
 

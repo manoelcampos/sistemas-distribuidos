@@ -1,4 +1,8 @@
 == Consome WebServices REST do CoinMarketCap
 
-Utiliza a versão 1 da API REST do https://coinmarketcap.com/api/[CoinMarketCap]
-para consultar cotação de criptomoedas.
+Aplicação cliente que consome WebService do Coin Market Cap para exibir cotação
+de criptomoedas. Utiliza a versão 1 da API REST do https://coinmarketcap.com/api/[CoinMarketCap].
+
+Este é um projeto Java convencional (Java Application).
+As classes `TickerResource` e `GlobalResource` foram geradas automaticamente
+a partir do menu File > New > RESTfull Java Client do NetBeans.

@@ -1,14 +1,5 @@
 = Ferramentas
 
-- JDK 8
-- NetBeans 8.2
-- Glass Fish 5
 - https://chrome.google.com/webstore/detail/restlet-client-rest-api-t/aejoelaoggembcahagimdiliamlcdmfm[Restlet Client Chrome Extension]
 - https://www.soapui.org[SoapUI]
-- https://javaee.github.io/glassfish/download[GlassFish 5.0 - Full Platform]
-- https://dev.mysql.com/downloads/connector/j/[MySQL Connector instalado no GlassFish]
-
-
-= REST: Representational State Transfer
-
-- https://coinmarketcap.com/api/[CoinMarketCap]
+ 

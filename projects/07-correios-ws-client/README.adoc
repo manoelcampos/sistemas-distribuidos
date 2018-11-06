@@ -1,4 +1,4 @@
-# Aplicação cliente para consumir Web Service SOAP de busca de CEP
+= Aplicação cliente para consumir Web Service SOAP de busca de CEP
 
 Este é um projeto Java convencional (Java Application)
 que utilizou o assistente do NetBeans para criar uma classe cliente de Web Service (Web Service Client)
@@ -7,7 +7,7 @@ A classe BuscaCep foi gerada utilizando tal assistente do NetBeans.
 
 Tal Web Service permite informar um CEP e obter o endereço para o mesmo.
 
-# Compilando e executando a aplicação
+= Compilando e executando a aplicação
 
 Ao abrir a aplicação e a classe BuscaCep, poderá observar que há uma série de importações
 de classes do pacote `br.com.correios.bsb.sigep.master.bean`.
@@ -21,7 +21,7 @@ No NetBeans, basta clicar no botão "Construir" (F11).
 
 Em seguida, basta executar a aplicação normalmente que os resultados serão exibidos no terminal do seu IDE.
 
-# Documentação
+= Documentação
 
 A documentação do Web Service está disponível http://www.corporativo.correios.com.br/encomendas/sigepweb/doc/Manual_de_Implementacao_do_Web_Service_SIGEP_WEB.pdf[aqui]. 
 

@@ -10,8 +10,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author manoelcampos
+ * Classe responsável pela produção (criação/instanciação)
+ * de objetos complexos como o {@link EntityManager} para 
+ * fazer a persistência de dados em um banco
+ * e objetos {@link DAO} que geram as instruções para realização
+ * das operações básicas de seleção, inclusão, exclusão e atualização de dados no banco.
+ * 
+ * @author Manoel Campos da Silva Filho
  */
 public class Producers {
     @Produces 
