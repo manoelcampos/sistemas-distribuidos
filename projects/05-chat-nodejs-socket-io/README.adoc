@@ -20,7 +20,7 @@ No Chrome devemos acessar ... >> More Tools >> Developer Tools >> Network.
 Na mesma aba, na parte inferior, podemos ver os frames WebSocket enviados
 e como tais frames são pequenos.
 
-Para aplicações web de tempo real como mensagens instantâneas (como Google Hangout) e edição colaborativa de documentos (como Google Docs ou Microsoft Office 360), o uso de conexões leves como WebSockets reduz problemas de escalabilidade geográfica e escalabilidade de tamanho (número de usuários).
+Para aplicações web de tempo real como jogos, mensagens instantâneas e edição colaborativa de documentos, o uso de conexões leves como WebSockets reduz problemas de escalabilidade geográfica e escalabilidade de tamanho (número de usuários).
 
 Com WebSockets, diferente de uma aplicação web tradicional usando HTTP,
 o servidor pode enviar dados para um cliente conectado, sem que o cliente primeiro requisite tais dados.

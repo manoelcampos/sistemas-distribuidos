@@ -26,7 +26,7 @@ public class TickerResource implements Closeable {
      * O nome das moedas suportadas pode ser obtido na tabela
      * da <a href="https://coinmarketcap.com">página inicial</a>.
      */
-    private static final String NOME_CRIPTOMOEDA = "Ethereum";
+    private static final String NOME_CRIPTOMOEDA = "Litecoin";
 
     /**
      * Símbolo da moeda adicional para converter a {@link #NOME_CRIPTOMOEDA}. 
@@ -69,6 +69,7 @@ public class TickerResource implements Closeable {
                                 .path(nomeCriptomoedaOrigem)
                                 .queryParam("convert", simboloMoedaDestino);
         System.out.println("URI do WS: " + resource.getUri() + "\n");
+        
         /*List.class indica o tipo de dados para o qual o documento JSON retornado
         deve ser convertido*/
         return resource.request(MediaType.APPLICATION_JSON).get(List.class);
