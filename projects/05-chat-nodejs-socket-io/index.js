@@ -41,8 +41,9 @@ a ser utilizado para trafegar os dados do WebSocket.
  */
 var io = require('socket.io')(http)
 
-/*Porta na qual o servidor vai ficar aguardando requisições HTTP.*/
-var porta = 80
+/*Porta na qual o servidor vai ficar aguardando requisições HTTP.
+Usar a porta 80 pode exigir permissões de root no Linux.*/
+var porta = 8000
 
 /*
  * Faz o servidor ficar escutando a porta indicada acima, aguardando requisições.
