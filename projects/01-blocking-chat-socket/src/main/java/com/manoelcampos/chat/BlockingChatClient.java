@@ -18,13 +18,13 @@ import java.util.Scanner;
  *
  * @author Manoel Campos da Silva Filho
  */
-public class ChatClient implements Runnable {
+public class BlockingChatClient implements Runnable {
     /**
      * Endereço IP ou nome DNS para conectar no servidor.
-     * O número da porta é obtido diretamente da constante {@link ChatServer#PORT}
+     * O número da porta é obtido diretamente da constante {@link BlockingChatServer#PORT}
      * na classe do servidor.
      */
-    private static final String SERVER_ADDRESS = "127.0.0.1";
+    public static final String SERVER_ADDRESS = "127.0.0.1";
 
     /**
      * Objeto para capturar dados do teclado e assim
@@ -44,11 +44,11 @@ public class ChatClient implements Runnable {
      * Isto permite ter vários clientes conectados e interagindo
      * por meio do servidor.
      * 
-     * @param args parâmetros de linha de comando (não usados para este aplicação)
+     * @param args parâmetros de linha de comando (não usados para esta aplicação)
      */
     public static void main(String[] args) {
         try {
-            ChatClient client = new ChatClient();
+            BlockingChatClient client = new BlockingChatClient();
             client.start();
         } catch (IOException e) {
             System.out.println("Erro ao conectar ao servidor: " + e.getMessage());
@@ -58,7 +58,7 @@ public class ChatClient implements Runnable {
     /**
      * Instancia um cliente, realizando o mínimo de operações necessárias.
      */
-    public ChatClient(){
+    public BlockingChatClient(){
         scanner = new Scanner(System.in);
     }
 
@@ -71,10 +71,10 @@ public class ChatClient implements Runnable {
      *                     ou o cliente não tem acesso à rede.
      */
     private void start() throws IOException {
-        clientSocket = new ClientSocket(new Socket(SERVER_ADDRESS, ChatServer.PORT));
+        clientSocket = new ClientSocket(new Socket(SERVER_ADDRESS, BlockingChatServer.PORT));
         System.out.println(
             "Cliente conectado ao servidor no endereço " + SERVER_ADDRESS +
-            " e porta " + ChatServer.PORT);
+            " e porta " + BlockingChatServer.PORT);
         
         //Inicia o loop de espera por mensagens enviadas pelo servidor
         messageLoop();
@@ -103,7 +103,7 @@ public class ChatClient implements Runnable {
         
         Como nossa classe implementa a interface Runnable,
         para criar a thread e fazê-la executar o método run(),
-        basta passarmos this para indicar que o objeto atual da classe ChatClient
+        basta passarmos this para indicar que o objeto atual da classe BlockingChatClient
         é um objeto Runnable, ou seja, ele possui um método run()
         que será chamado quando a thread for executada.
         */
@@ -115,7 +115,7 @@ public class ChatClient implements Runnable {
             msg = scanner.nextLine();
             clientSocket.sendMsg("msg " + msg);
         } while(!"sair".equalsIgnoreCase(msg));
-        clientSocket.stop();
+        clientSocket.close();
     }
 
     /**

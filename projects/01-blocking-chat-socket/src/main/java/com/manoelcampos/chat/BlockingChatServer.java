@@ -2,6 +2,7 @@ package com.manoelcampos.chat;
 
 import java.io.*;
 import java.net.ServerSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author Manoel Campos da Silva Filho
  */
-public class ChatServer {
+public class BlockingChatServer {
     /**
      * Porta na qual o servidor vai ficar escutando (aguardando conexões dos clientes).
      * Em um determinado computador só pode haver uma única aplicação servidora
@@ -30,21 +31,21 @@ public class ChatServer {
      */
     private final List<ClientSocket> clientSocketList;
 
-    public ChatServer() {
+    public BlockingChatServer() {
         clientSocketList = new ArrayList<>();
     }
 
     /**
      * Executa a aplicação servidora que fica em loop infinito aguardando conexões
      * dos clientes.
-     * @param args parâmetros de linha de comando (não usados para este aplicação)
+     * @param args parâmetros de linha de comando (não usados para esta aplicação)
      */
     public static void main(String[] args) {
-        ChatServer server = new ChatServer();
+        BlockingChatServer server = new BlockingChatServer();
         try {
             server.start();
         } catch (IOException e) {
-            System.out.println("Erro ao iniciar servidor: " + e.getMessage());
+            System.err.println("Erro ao iniciar servidor: " + e.getMessage());
         }
     }
 
@@ -59,7 +60,7 @@ public class ChatServer {
     private void start() throws IOException {
         serverSocket = new ServerSocket(PORT);
         System.out.println(
-                "Servidor iniciado no endereço " + serverSocket.getInetAddress().getHostAddress() +
+                "Servidor de chat bloqueante iniciado no endereço " + serverSocket.getInetAddress().getHostAddress() +
                 " e porta " + PORT);
 
         clientConnectionLoop();
@@ -93,10 +94,15 @@ public class ChatServer {
                 Após voltar pro início do loop, o servidor fica parado novamente
                 aguardando um novo cliente conectar.
                 */
-                ClientSocket clientSocket = new ClientSocket(serverSocket.accept());
-                
-                clientSocketList.add(clientSocket);
-                System.out.println("Cliente " + clientSocket.getSocket().getRemoteSocketAddress() + " conectado");
+                ClientSocket clientSocket;
+                try {
+                    clientSocket = new ClientSocket(serverSocket.accept());
+                    System.out.println("Cliente " + clientSocket.getSocket().getRemoteSocketAddress() + " conectado");
+                }catch(SocketException e){
+                    System.err.println("Erro ao aceitar conexão do cliente. O servidor possivelmente está sobrecarregado:");
+                    System.err.println(e.getMessage());
+                    continue;
+                }
 
                 /*
                 Cria uma nova Thread para permitir que o servidor não fique bloqueado enquanto
@@ -144,7 +150,16 @@ public class ChatServer {
                 como mostrado abaixo. O código fica bem mais reduzido.
                 Depois que vocês estudar lambda, entenderá toda a sintaxe do comando abaixo.
                 */
-                new Thread(() -> clientMessageLoop(clientSocket)).start();
+                try {
+                    new Thread(() -> clientMessageLoop(clientSocket)).start();
+                }catch(OutOfMemoryError ex){
+                    System.err.println(
+                            "Não foi possível criar thread para novo cliente. O servidor possivelmente está sobrecarregdo. Conexão será fechada: ");
+                    System.err.println(ex.getMessage());
+                    clientSocket.close();
+                }
+
+                clientSocketList.add(clientSocket);
             }
         } finally{
             /*Se sair do laço de repetição por algum erro, exibe uma mensagem
@@ -199,9 +214,9 @@ public class ChatServer {
                 }
             }
 
-            clientSocket.stop();
+            clientSocket.close();
         } catch (IOException e) {
-            System.out.println("Erro ao ler mensagem do cliente: " + e.getMessage());
+            System.err.println("Erro ao ler mensagem do cliente: " + e.getMessage());
         }
     }
 

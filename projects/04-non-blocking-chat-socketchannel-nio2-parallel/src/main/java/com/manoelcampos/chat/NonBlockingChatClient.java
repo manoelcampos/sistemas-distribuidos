@@ -15,7 +15,7 @@ import java.util.Set;
  *
  * @author Manoel Campos da Silva Filho
  */
-public class ChatClient implements Runnable {
+public class NonBlockingChatClient implements Runnable {
     private final Scanner scanner;
     private final Selector selector;
     private final SocketChannel clientChannel;
@@ -28,7 +28,7 @@ public class ChatClient implements Runnable {
      */
     public static void main(String[] args) {
         try {
-            ChatClient client = new ChatClient();
+            NonBlockingChatClient client = new NonBlockingChatClient();
             client.start();
         } catch (IOException e) {
             System.err.println("Erro ao inicializar cliente: " + e.getMessage());
@@ -40,7 +40,7 @@ public class ChatClient implements Runnable {
      * e realiza as configurações necessárias.
      * @throws IOException
      */
-    public ChatClient() throws IOException {
+    public NonBlockingChatClient() throws IOException {
         selector = Selector.open();
         clientChannel = SocketChannel.open();
         clientChannel.configureBlocking(false);
@@ -53,7 +53,7 @@ public class ChatClient implements Runnable {
         /* Como configuramos o canal para funcionar de forma não bloqueante,
         *  o método connect não bloqueia.
         *  Somente no método start que poderemos saber quando a conexão foi estabelecida.*/
-        clientChannel.connect(new InetSocketAddress(ChatServer.HOSTNAME, ChatServer.PORT));
+        clientChannel.connect(new InetSocketAddress(NonBlockingChatServer.ADDRESS, NonBlockingChatServer.PORT));
         scanner = new Scanner(System.in);
     }
 
@@ -73,9 +73,9 @@ public class ChatClient implements Runnable {
             /* Cria um novo thread para ficar aguardando mensagens enviadas pelo servidor,
             *  paralelamente ao envio de mensagens.
             *  Como o construtor da classe Thread solicita um objeto Runnable
-            *  e nossa classe ChatClient implementa a interface Runnable,
+            *  e nossa classe NonBlockingChatClient implementa a interface Runnable,
             *  passamos this como parâmetro para o construtor para indicar
-            *  que o nosso objeto atual da classe ChatClient é o objeto
+            *  que o nosso objeto atual da classe NonBlockingChatClient é o objeto
             *  que possui um método run() que será executado pelo Thread
             *  (possivelmente em um novo núcleo de CPU).*/
             new Thread(this).start();

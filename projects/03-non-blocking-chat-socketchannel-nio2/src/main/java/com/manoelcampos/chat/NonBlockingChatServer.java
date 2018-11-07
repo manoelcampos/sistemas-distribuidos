@@ -17,9 +17,9 @@ import java.util.*;
  * @see <a href="https://www.apress.com/us/book/9781430240112">Pro Java 7 NIO.2</a>
  * @see <a href="http://tutorials.jenkov.com/java-nio/">Java NIO Tutorial</a>
  */
-public class ChatServer {
+public class NonBlockingChatServer {
     public static final int PORT = 4000;
-    public static final String HOSTNAME = "127.0.0.1";
+    public static final String ADDRESS = "127.0.0.1";
 
     private final Selector selector;
     private final ServerSocketChannel serverChannel;
@@ -33,12 +33,11 @@ public class ChatServer {
      */
     public static void main(String[] args) {
         try {
-            ChatServer server = new ChatServer();
+            NonBlockingChatServer server = new NonBlockingChatServer();
             server.start();
         } catch (IOException e) {
             System.err.println("Erro durante execução do servidor: " + e.getMessage());
         }
-
     }
 
     /**
@@ -46,7 +45,7 @@ public class ChatServer {
      * e realiza as configurações necessárias.
      * @throws IOException
      */
-    public ChatServer() throws IOException {
+    public NonBlockingChatServer() throws IOException {
         buffer = ByteBuffer.allocateDirect(1024);
         selector = Selector.open();
         serverChannel = ServerSocketChannel.open();
@@ -60,8 +59,8 @@ public class ChatServer {
         serverChannel.register(selector, SelectionKey.OP_ACCEPT);
 
         //Indica que o servidor vai ficar escutando em um determinado IP/Nome DNS e Porta.
-        serverChannel.bind(new InetSocketAddress(HOSTNAME, PORT));
-        System.out.println("Servidor iniciado no endereço " + HOSTNAME + " na porta " + PORT);
+        serverChannel.bind(new InetSocketAddress(ADDRESS, PORT));
+        System.out.println("Servidor de chat não-bloqueante iniciado no endereço " + ADDRESS + " na porta " + PORT);
     }
 
     /**

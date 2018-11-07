@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.manoelcampos</groupId>
-    <artifactId>non-blocking-chat-socket-nio2</artifactId>
-    <version>1.0</version>
+    <artifactId>non-blocking-chat</artifactId>
+    <version>1.0.0</version>
     <build>
         <plugins>
             <plugin>

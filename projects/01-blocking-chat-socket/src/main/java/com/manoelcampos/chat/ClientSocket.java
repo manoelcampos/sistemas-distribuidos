@@ -5,8 +5,8 @@ import java.net.Socket;
 
 /**
  * Permite enviar e receber mensagens por meio de um socket cliente.
- * Tal classe é utilizada tanto pela aplicação cliente {@link ChatClient}
- * quanto pelo servidor {@link ChatServer}.
+ * Tal classe é utilizada tanto pela aplicação cliente {@link BlockingChatClient}
+ * quanto pelo servidor {@link BlockingChatServer}.
  *
  * <p>O servidor cria uma instância desta classe para cada cliente conectado,
  * assim ele pode mensagens para e receber mensagens de cada cliente.
@@ -15,7 +15,7 @@ import java.net.Socket;
  *
  * @author Manoel Campos da Silva Filho
  */
-public class ClientSocket {
+public class ClientSocket implements Closeable {
     /**
      * Socket representando a conexão de um cliente com o servidor.
      */
@@ -23,19 +23,19 @@ public class ClientSocket {
 
     /**
      *  Permite ler mensagens recebidas ou enviadas pelo cliente.
-     *  Se o {@link ClientSocket} foi criado pela aplicação {@link ChatServer}, tal atributo permite ao {@link ChatServer}
+     *  Se o {@link ClientSocket} foi criado pela aplicação {@link BlockingChatServer}, tal atributo permite ao {@link BlockingChatServer}
      *  ler mensagens enviadas pelo cliente.
-     *  Se o {@link ClientSocket} foi criado pela aplicação {@link ChatClient}, tal atributo
-     *  permite ao {@link ChatClient} ler mensagens enviadas pelo servidor.
+     *  Se o {@link ClientSocket} foi criado pela aplicação {@link BlockingChatClient}, tal atributo
+     *  permite ao {@link BlockingChatClient} ler mensagens enviadas pelo servidor.
      */
     private final BufferedReader in;
 
     /**
      *  Permite enviar mensagens do cliente para o servidor ou do servidor para o cliente.
-     *  Se o {@link ClientSocket} foi criado pela aplicação {@link ChatServer}, tal atributo permite ao {@link ChatServer}
+     *  Se o {@link ClientSocket} foi criado pela aplicação {@link BlockingChatServer}, tal atributo permite ao {@link BlockingChatServer}
      *  enviar mensagens ao cliente.
-     *  Se o {@link ClientSocket} foi criado pela aplicação {@link ChatClient}, tal atributo
-     *  permite ao {@link ChatClient} enviar mensagens ao servidor.
+     *  Se o {@link ClientSocket} foi criado pela aplicação {@link BlockingChatClient}, tal atributo
+     *  permite ao {@link BlockingChatClient} enviar mensagens ao servidor.
      */
     private final PrintWriter out;
 
@@ -158,11 +158,16 @@ public class ClientSocket {
      * 
      * @throws IOException quando tentar fechar um socket que já foi fechado (por exemplo)
      */
-    public void stop() throws IOException {
-        System.out.println("Finalizando cliente " + login);
+    @Override
+    public void close() throws IOException {
+        showFinishMessage();
         in.close();
         out.close();
         socket.close();
+    }
+
+    protected void showFinishMessage() {
+        System.out.println("Finalizando cliente " + login);
     }
 
     public void setLogin(String login){ this.login = login; }
