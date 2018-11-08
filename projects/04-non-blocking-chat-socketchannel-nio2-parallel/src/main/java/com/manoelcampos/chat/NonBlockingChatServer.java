@@ -34,7 +34,7 @@ public class NonBlockingChatServer {
     public static void main(String[] args) {
         //Define o número máximo de threads a serem criadas usando Stream do Java 8 (opcional)
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "10");
-        System.out.printf("CPUs: %d | Max Threads usadas por uma Stream do Java 8: %s\n\n",
+        System.out.printf("CPUs: %d | Max Threads usadas por Streams do Java 8: %s\n\n",
                 Runtime.getRuntime().availableProcessors(),
                 System.getProperty("java.util.concurrent.ForkJoinPool.common.parallelism"));
         
@@ -44,7 +44,6 @@ public class NonBlockingChatServer {
         } catch (IOException e) {
             System.err.println("Erro durante execução do servidor: " + e.getMessage());
         }
-
     }
 
     /**
@@ -60,8 +59,10 @@ public class NonBlockingChatServer {
 
         serverChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-        //Indica que o servidor vai ficar escutando em um determinado IP/Nome DNS e Porta.
-        serverChannel.bind(new InetSocketAddress(ADDRESS, PORT));
+        /*Indica que o servidor vai ficar escutando em um determinado IP/Nome DNS e Porta.
+        * O valor do último parâmetro é opcional e indica o número máximo de conexões
+        * a ficarem aguardando para serem aceitas (pendentes)*/
+        serverChannel.bind(new InetSocketAddress(ADDRESS, PORT), 10000);
         System.out.println("Servidor de chat não-bloqueante iniciado no endereço " + ADDRESS + " na porta " + PORT);
     }
 
@@ -88,8 +89,8 @@ public class NonBlockingChatServer {
      *                      pelo {@link #selector}.
      * @throws IOException
      */
-    private void processEvents(Set<SelectionKey> selectionKeys) throws IOException {
-        selectionKeys.stream().forEach(this::processEvent);
+    private void processEvents(Set<SelectionKey> selectionKeys) {
+        selectionKeys.stream().parallel().forEach(this::processEvent);
         selectionKeys.clear();
     }
     
