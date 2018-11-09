@@ -125,6 +125,7 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 
 https://notes.shichao.io/unp/ch6/
 https://en.wikipedia.org/wiki/Asynchronous_I/O
+https://www.ibm.com/developerworks/library/l-async/
 
 
 [bibliography]
