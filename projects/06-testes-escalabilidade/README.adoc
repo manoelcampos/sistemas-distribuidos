@@ -95,6 +95,9 @@ existem alguns scripts para auxiliar neste processo.
 
 O link:transfer-server.sh[transfer-server.sh] é utilizado para transferir o pacote jar da aplicação para a máquina onde você pretende executar o servidor de chat. O script envia o pacote jar da aplicação e o link:start-server.sh[start-server.sh] para tal máquina. Em seguida, este último inicia o servidor de chat na máquina remota.
 
+No entanto, para usar o `transfer-server.sh`, é necessário ter o comando `expect` instalado.
+Para instalar o mesmo em Linux (Debian, Ubuntu e derivados) ou macOS, apenas execute `make` na raiz desta pasta no terminal.
+
 == Referências
 
 - http://www.lognormal.com/blog/2012/09/27/linux-tcpip-tuning/
