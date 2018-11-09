@@ -34,9 +34,9 @@ Usando qualquer uma das opções, será criado um arquivo `scalability-tests-1.0
 
 == Executando os Servidores de Chat
 
-Se executados sem parâmetros, os servidores vão aceitar conexões no IP 127.0.0.1 em uma determinada
-porta que é exibida ao iniciar. 
-Os servidores podem ser executados diretamente pelo seu IDE.
+Os servidores aceitam conexão em uma determinada porta, e em qualquer IP
+que a máquina tiver (como IPs de diferentes interfaces de rede físicas ou virtuais).
+Eles podem ser executados diretamente pelo seu IDE.
 No NetBeans basta pressionar SHIFT+F6 para executar a classe atual. 
 
 Pode-se ainda utilizar os comandos mostrados abaixo no terminal, a partir da pasta `target`.
@@ -49,19 +49,18 @@ ou
 
 Como os dois servidores usam a mesma porta, eles não podem ser executados em simultâneo na mesma máquina.
 
-Opcionalmente, o IP no qual o servidor irá aceitar conexões pode ser passado por parâmetro de linha de comando, como mostrado abaixo:
-
-`java -cp scalability-tests-1.0.0.jar BlockingChatServer IP_DO_SERVIDOR`
-
-ou 
-
-`java -cp scalability-tests-1.0.0.jar NonBlockingChatServer IP_DO_SERVIDOR`
-
 == Executando os testes de escalabilidade
 
 Ao executar a classe link:src/main/java/AppSocketChatScalability.java[AppSocketChatScalability], são criadas inúmeras conexões com o servidor de chat que estiver em execução. Tal classe pode ser executada diretamente do seu IDE, ou pelo terminal utilizando o comando abaixo dentro da pasta `target`: 
 
 `java -cp scalability-tests-1.0.0.jar AppSocketChatScalability`
+
+Neste caso, ele vai tentar conectar em um servidor de chat local.
+Se desejar conectar em um servidor de chat remoto, pode passar o IP ou conjunto de IPs como parâmetros de linha de comando.
+
+O comando abaixo por exemplo, vai iniciar clientes para conectarem em diferentes IPs do servidor.
+
+`java -cp scalability-tests-1.0.0.jar AppSocketChatScalability 10.107.0.80 10.107.0.81`
 
 == Ambiente de Execução
 

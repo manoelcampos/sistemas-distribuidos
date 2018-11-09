@@ -6,20 +6,18 @@
 #e executado localmente em tal máquina.
 #Assim, ele não deve ser chamado manualmente.
 
-if [[ $# -lt 2  ]]; then
-    echo "Uso: $0 ChatServerClass IP"
+if [[ $# -lt 1 ]]; then
+    echo "Uso: $0 ChatServerClass"
     echo -e "\tChatServerClass - Nome da classe Java que representa o servidor de chat a iniciar"
-    echo -e "\tIP - Informe o endereço IP no qual o servidor de chat vai ficar escutando"
     exit -1
 fi
 
 CHAT_SERVER_CLASS=$1
-IP=$2
 
 DEST_DIR=/tmp/scalability
 
 rm -rf $DEST_DIR && \
 mkdir -p $DEST_DIR && \
-unzip scalability.jar -d $DEST_DIR && \
+unzip scalability-tests-1.0.0.jar -d $DEST_DIR && \
 cd $DEST_DIR && pwd && \
-java $CHAT_SERVER_CLASS $IP 
+java $CHAT_SERVER_CLASS 

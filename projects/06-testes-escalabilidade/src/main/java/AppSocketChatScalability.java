@@ -14,36 +14,40 @@ import java.net.Socket;
 public class AppSocketChatScalability extends ChatScalabilityAbstract<Socket> {
     /**
      * Inicia a aplicação para testar a escalabilidade do servidor blqoueante de chat.
-     * @param args parâmetros de linha de comando.
-     *             O primeiro parâmetro é o IP do servidor.
-     *             Se omitido, é utilizado 127.0.0.1.
+     * @param args Números IP a serem passados pela linha de comando,
+     *             nos quais o servidor de chat vai aceitar conexões.
+     *             Se nenhum parâmetro for passado, será tentado conexão em localhost
      */
     public static void main(String[] args) {
-        //final String serverAddress = ChatServerAbstract.getServerAddressFromCmdLine(args);
-        final String serverAddress = "10.104.0.103";
+        final String server_ips[] = args.length == 0 ? new String[]{"localhost"} : args;
 
         System.out.println(
-                "Aplicação de teste de escalabilidade de servidor de chat iniciada. Os clientes conectarão no servidor em " +
-                        serverAddress + ":"+ ChatServerAbstract.PORT);
+                "Aplicação de teste de escalabilidade de servidor de chat iniciada. Os clientes conectarão no servidor " +
+                " na porta " + ChatServerAbstract.PORT + " nos seguintes IPs:");
+        for (String server_ip : server_ips) {
+            System.out.println("\t"+server_ip);
+        }
+        System.out.println();
+
         if(args.length == 0){
             System.out.println("Você pode passar o endereço IP do servidor como parâmetro na linha de comando.");
         }
         System.out.println();
 
-        try(AppSocketChatScalability app = new AppSocketChatScalability(serverAddress)){
+        try(AppSocketChatScalability app = new AppSocketChatScalability(server_ips)){
             app.start();
         } catch (ConnectException e) {
             System.err.println(e.getMessage());
         }
     }
 
-    private AppSocketChatScalability(final String serverAddress){
-        super(serverAddress);
+    private AppSocketChatScalability(final String serverIps[]){
+        super(serverIps);
     }
 
     @Override
-    protected Socket newClient() throws IOException{
-        return new Socket(serverAddress, ChatServerAbstract.PORT);
+    protected Socket newClient(final String chatServerIp) throws IOException{
+        return new Socket(chatServerIp, ChatServerAbstract.PORT);
     }
 
     @Override

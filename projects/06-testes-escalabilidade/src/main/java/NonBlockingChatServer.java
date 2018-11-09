@@ -27,8 +27,7 @@ public class NonBlockingChatServer extends ChatServerAbstract {
                 Runtime.getRuntime().availableProcessors(),
                 System.getProperty("java.util.concurrent.ForkJoinPool.common.parallelism"));
 
-        final String serverAddress = getServerAddressFromCmdLine(args);
-        try(final NonBlockingChatServer server = new NonBlockingChatServer(serverAddress)) {
+        try(final NonBlockingChatServer server = new NonBlockingChatServer()) {
             server.start();
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -36,18 +35,16 @@ public class NonBlockingChatServer extends ChatServerAbstract {
         }
     }
 
-    public NonBlockingChatServer(final String serverAddress) throws IOException {
-        super(serverAddress);
+    public NonBlockingChatServer() throws IOException {
+        super();
         try {
             selector = Selector.open();
             serverChannel = ServerSocketChannel.open();
             serverChannel.configureBlocking(false);
 
             serverChannel.register(selector, SelectionKey.OP_ACCEPT);
-            final InetSocketAddress address =
-                    new InetSocketAddress(InetAddress.getByName(serverAddress), PORT);
-            serverChannel.bind(address, MAX_PENDING_CONNECTIONS);
-            System.out.println("Servidor de chat não-bloqueante iniciado no endereço " + address);
+            serverChannel.bind(new InetSocketAddress(PORT), MAX_PENDING_CONNECTIONS);
+            System.out.println("Servidor de chat não-bloqueante iniciado no endereço " + new InetSocketAddress(PORT));
         } catch (IOException e) {
             throw new IOException("Erro ao iniciar servidor: " + e.getMessage(), e);
         }

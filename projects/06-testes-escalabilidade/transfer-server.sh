@@ -3,7 +3,7 @@
 #Transfere o pacote jar da aplicação de servidor de chat para uma máquina remota
 #e em seguida executa tal aplicação.
 
-set hostname "10.104.0.103" 
+set hostname "10.107.0.60" 
 set username "aluno"
 set password "aluno"
 
@@ -24,14 +24,19 @@ if { [lindex $argv 2] != "" } {
     set password [lindex $argv 2]
 }
 
+proc enter_ssh_password {} {
+    global password
+    expect "assword:"
+    send -- "$password\n"
+    expect "*$ "
+    #expect "*\]"
+}
 
 #NonBlockingChatServer BlockingChatServer AppSocketChatScalability
-spawn scp -o "StrictHostKeyChecking no" target/scalability-tests-1.0.0.jar $username@$hostname:/tmp/scalability.jar
-spawn scp -o "StrictHostKeyChecking no" start-server.sh $username@$hostname:/tmp
+spawn scp -o "StrictHostKeyChecking no" target/scalability-tests-1.0.0.jar start-server.sh virtual-network-interfaces.sh $username@$hostname:/tmp/
+enter_ssh_password
 
-spawn ssh -o "StrictHostKeyChecking no" $username@$hostname "sh /tmp/start-server.sh NonBlockingChatServer $hostname"
-expect "assword:"
-send -- "$password\n"
-expect "*$ "
+spawn ssh -o "StrictHostKeyChecking no" $username@$hostname "cd /tmp && ./start-server.sh NonBlockingChatServer"
+enter_ssh_password
 interact
 #send -- "exit\n"

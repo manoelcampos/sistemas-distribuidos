@@ -22,14 +22,30 @@ abstract class ChatScalabilityAbstract<T extends Closeable> implements Closeable
     protected static final int MAX_CLIENTS  = 60_000;
     protected static final int MAX_MESSAGES = 10_000;
     protected static final int MAX_MESSAGE_LENGTH = 1024;
-    protected final String serverAddress;
-    protected final Random random;
-    protected final List<T> clients;
-    protected List<Double> connectionTimes;
-    protected List<Double> responseTimes;
 
-    public ChatScalabilityAbstract(final String serverAddress) {
-        this.serverAddress = serverAddress;
+    private final Random random;
+    private final List<T> clients;
+    private List<Double> connectionTimes;
+    private List<Double> responseTimes;
+
+    /**
+     * Indica os endereços IPs nos quais podemos conectar no servidor de chat.
+     * Por questões de escalabilidade, o socket do servidor de chat
+     * é iniciado sem informar o IP no qual ele vai aceitar conexão.
+     * Assim, ele aceitará conexão em qualquer IP da máquina.
+     * Com isto, conseguimos abrir mais conexões de clientes em tal servidor.
+     */
+    private final String serverIps[];
+
+    /**
+     * Índice do endereço IP atual, obtido de {@link #serverIps}, em que o próximo cliente vai tentar conectar
+     * no servidor.
+     */
+    private int currentServerIpIndex;
+
+    public ChatScalabilityAbstract(final String serverIps[]) {
+        this.currentServerIpIndex = 0;
+        this.serverIps = serverIps;
         random = new Random();
         connectionTimes = Collections.emptyList();
         responseTimes = Collections.emptyList();
@@ -58,9 +74,9 @@ abstract class ChatScalabilityAbstract<T extends Closeable> implements Closeable
      * @throws ConnectException quando o servidor de chat não for localizado
      */
     protected void startClients() throws ConnectException {
-        if(startClient() < 0){
+        if(serverIps.length == 1 && startClient() < 0){
             throw new ConnectException(
-                    "Não foi possível conectar ao servidor de chat em " + serverAddress+":"+ ChatServerAbstract.PORT +
+                    "Não foi possível conectar ao servidor de chat em " + getCurrentServerIp() +":"+ ChatServerAbstract.PORT +
                     ". Verifique se o servidor está em execução!");
         }
 
@@ -68,7 +84,7 @@ abstract class ChatScalabilityAbstract<T extends Closeable> implements Closeable
             IntStream.iterate(0, i -> i+1)
                      .parallel()
                      .mapToObj(i -> startClient())
-                     .takeWhile(responseTime -> responseTime > -1) //Java 9
+                     .takeWhile(responseTime -> responseTime > -1) //Só funciona em Java 9
                      .collect(Collectors.toCollection(LinkedList::new));*/
 
         connectionTimes =
@@ -107,7 +123,7 @@ abstract class ChatScalabilityAbstract<T extends Closeable> implements Closeable
         final double meanCT = getDoubleStream(connectionTimes).average().orElse(0);
         final double successfulConnectionsPercent = clients.size()/(double)MAX_CLIENTS*100;
 
-        System.out.println("Resultados dos Testes de Escalabilidade do Servidor de Chat " + serverAddress+":"+ ChatServerAbstract.PORT);
+        System.out.println("Resultados dos Testes de Escalabilidade do Servidor de Chat");
         System.out.println("----------------------------------------------------------------------");
         System.out.println("Máximo de clientes:           " + MAX_CLIENTS);
         System.out.println("Total de clientes conectados: " + clients.size());
@@ -151,13 +167,27 @@ abstract class ChatScalabilityAbstract<T extends Closeable> implements Closeable
     }
 
     /**
-     * Abre uma conexão cliente com o servidor.
+     * Decide aleatoriamente, se uma uma conexão cliente com o servidor será aberta,
+     * baseada em uma determinada probabilidade.
+     *
      * @return tempo que levou para conectar (em segundos) ou -1 se a conexão não foi estabelecida
      */
     private double startClient() {
+        /*Aleatoraimente aguarda alguns milisegundos para dar tempo
+        entre uma conexão e outra, e asssim o servidor poder "respirar"*/
+        final long delay = Math.round(random.nextDouble() * 1000);
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+        }
+
         try {
             final long start = System.currentTimeMillis();
-            T clientSocket = newClient();
+            final String serverIp = getNextServerIp();
+            System.out.println(
+                    "Conectando novo cliente #" + clients.size() + " (de um máx. esperado de "+
+                    MAX_CLIENTS+") no servidor de chat em " + serverIp);
+            T clientSocket = newClient(serverIp);
             clients.add(clientSocket);
             return getTimeInterval(start);
         } catch (IOException e) {
@@ -165,7 +195,30 @@ abstract class ChatScalabilityAbstract<T extends Closeable> implements Closeable
         }
     }
 
-    protected abstract T newClient() throws IOException;
+    private String getCurrentServerIp() {
+        return serverIps[currentServerIpIndex];
+    }
+
+    /**
+     * Obtém o próximo endereço IP do servidor de chat
+     * da lista {@link #serverIps}.
+     * Com isto, é feito balanceamento do número de clientes que vai conectar
+     * em cada IP do servidor de chat.
+     *
+     * @return o IP selecionado para o cliente conectar no servidor de chat
+     */
+    private String getNextServerIp() {
+        final String serverIp = getCurrentServerIp();
+
+        currentServerIpIndex++;
+        //obtém o próximo IP como se o vetor fosse uma lista circular (chegou no último, volta ao primeiro)
+        if(currentServerIpIndex >= serverIps.length){
+            currentServerIpIndex = 0;
+        }
+        return serverIp;
+    }
+
+    protected abstract T newClient(final String chatServerIp) throws IOException;
 
     /**
      * Envia mensagens aleatórias para os clientes e coleta o tempo

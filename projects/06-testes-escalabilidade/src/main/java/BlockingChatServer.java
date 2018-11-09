@@ -26,9 +26,7 @@ public class BlockingChatServer extends ChatServerAbstract {
      *             Se omitido, é utilizado 127.0.0.1.
      */
     public static void main(String[] args) {
-        final String serverAddress = getServerAddressFromCmdLine(args);
-
-        try (final BlockingChatServer server = new BlockingChatServer(serverAddress)){
+        try (final BlockingChatServer server = new BlockingChatServer()){
             server.start();
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -36,17 +34,15 @@ public class BlockingChatServer extends ChatServerAbstract {
         }
     }
 
-    private BlockingChatServer(final String serverAddress) throws IOException {
-        super(serverAddress);
+    private BlockingChatServer() throws IOException {
+        super();
         final String fileName = getClass().getClassLoader().getResource("security-manager.policy").getPath();
         System.out.println("Security manager configuration file: " + fileName);
         System.setProperty("java.security.policy", fileName);
         outOfMemoryError = null;
 
         try {
-            serverSocket = new ServerSocket(
-                    PORT, MAX_PENDING_CONNECTIONS,
-                    InetAddress.getByName(getServerAddress()));
+            serverSocket = new ServerSocket(PORT, MAX_PENDING_CONNECTIONS);
             System.setSecurityManager(new MySecurityManager());
             System.out.println("Servidor de chat bloqueante iniciado no endereço " + serverSocket.getInetAddress()+":"+PORT);
         } catch (IOException e) {
