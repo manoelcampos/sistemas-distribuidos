@@ -1,4 +1,4 @@
-= Aplicação de Chat utilizando WebSocket com Node.js
+= Aplicação de Mensagens Instantâneas utilizando WebSocket com Node.js
 
 Web chat utilizando http://nodejs.org:[Node.js] no lado da app servidor. Com Node.js podemos então usar JavaScript no lado servidor e no cliente. A aplicação utiliza http://websocket.org[WebSockets (recurso do HTML5)] com a biblioteca http://socket.io para implementar o chat.
 
