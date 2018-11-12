@@ -15,7 +15,7 @@ Todo projeto maven possui um arquivo link:pom.xml[pom.xml] na raiz. Tal arquivo 
 
 == Utilizando um servidor XMPP para a aplicação
 
-A aplicação pode utilizar qualquer servidor XMPP. Por exemplo, podemos conectar em servidores gratuitos como https://jabber.at ou
+A aplicação pode utilizar qualquer servidor XMPP. Por exemplo, podemos conectar em servidores gratuitos como https://www.xabber.com, https://jabber.at ou
 https://www.jabbim.com. Para isto, basta criar uma conta em algum deles que será possível executar a aplicação para troca de mensagens instantâneas. Uma lista de outros servidores XMPP públicos está disponível no https://xmpp.net/directory.php[xmpp.net]
 ou https://list.jabber.at[jabber.at], por exemplo.
 
@@ -28,14 +28,14 @@ ou https://github.com/jabberd2/jabberd2[JabberD].
 
 Após criar uma conta em um servidor XMPP gratuito ou instalar seu próprio servidor, as credenciais utilizadas no servidor devem ser usadas para logar na aplicação.
 
-Por exemplo, se você criar uma conta em https://jabber.at, será fornecido um login. É importante notar que este login não é seu email. Um login XMPP tem o formato de um email, mas não é um endereço de email de fato.
-Considerando que você tenha criado uma conta no site acima com o nome de usuário `manoelcampos`, então seu login será `manoelcampos@jabber.at`. Este é o login que deve usar para logar na aplicação aqui fornecida.
+Por exemplo, se você criar uma conta em https://www.xabber.com, será fornecido um login. É importante notar que este login não é seu email. Um login XMPP tem o formato de um email, mas não é um endereço de email que você possivelmente informou ao fazer o cadastro.
+Considerando que você tenha criado uma conta no site acima com o nome de usuário `manoelcampos`, então seu login será `manoelcampos@xabber.org`. Este é o login que deve usar para logar na aplicação aqui fornecida.
 A partir do login, a aplicação descobre qual o domínio ao qual os usuários deste servidor XMPP estão associados.
-Neste exemplo, o domínio é `jabber.at`.
+Neste exemplo, o domínio é `xabber.org`.
 
 Com estes dados, é possível então enviar mensagens por meio da aplicação disponibilizada. Mas para isso, provavelmente é preciso adicionar os contatos com quem deseja conversar. Se você está apenas testando a aplicação e criou várias contas no mesmo servidor, após adicionar uma conta nos contatos da outra, poderá enviar mensagens entre tais contas.
 
-Por exemplo, o site jabber.at fornece uma interface web em https://jabber.at/chat. Usando tal interface, é possível então adicionar e aceitar contatos. Você pode roda a aplicação disponibiliza aqui, utilizando uma determinada conta de um destes servidores e abrir a interface web acima com outro usuário. Desta forma, conseguirá ver a troca de mensagens entre diferentes usuários. Neste exemplo, como os usuários estão no mesmo servidor, este realiza todo o processo de comunicação.
+O site xabber.com fornece uma interface web em https://web.xabber.com. Já o jabber.at fornece uma interface em https://jabber.at/chat. Usando tal interface, é possível então adicionar e aceitar contatos. Você pode roda a aplicação disponibiliza aqui, utilizando uma determinada conta de um destes servidores e abrir a interface web acima com outro usuário. Desta forma, conseguirá ver a troca de mensagens entre diferentes usuários. Neste exemplo, como os usuários estão no mesmo servidor, este realiza todo o processo de comunicação.
 
 Se você criar uma conta em outro serviço como o https://www.jabbim.com e acessar https://chat.jabb.im, poderá adicionar um contato do servidor https://jabber.at. Assim, ao executar a aplicação fornecendo as credenciais do seu usuário do jabbim.com e enviar uma mensagem para um usuário do jabber.at, a mensagem chegará até o servidor do jabbim.com, que encaminhará a mesma para o jabber.at.
 
