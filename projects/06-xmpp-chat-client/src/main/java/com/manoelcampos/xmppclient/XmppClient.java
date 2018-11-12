@@ -343,12 +343,22 @@ public class XmppClient implements Closeable {
      * Lista os contatos do usuário logado (recurso não disponível em todos os servidores XMPP).
      */
     private void listContacts() {
-        roster = Roster.getInstanceFor(connection);
-        Set<RosterEntry> contacts = roster.getEntries();
-        if(!contacts.isEmpty()) {
-            System.out.println("Lista de contatos");
-            contacts.forEach(System.out::println);
-        } else System.out.println("Lista de contatos vazia");
-        System.out.println();
+        try {
+            roster = Roster.getInstanceFor(connection);
+            if (!roster.isLoaded()) {
+                roster.reloadAndWait();
+            }
+
+            Set<RosterEntry> contacts = roster.getEntries();
+            if(!contacts.isEmpty()) {
+                System.out.println("\nLista de contatos");
+                for (RosterEntry contact : contacts) {
+                    System.out.println("\t"+contact);
+                }
+            } else System.out.println("Lista de contatos vazia");
+            System.out.println();
+        } catch (SmackException.NotLoggedInException | SmackException.NotConnectedException | InterruptedException e) {
+            System.err.println("Não foi possível obter a lista de contatos: " + e.getMessage());
+        }
     }
 }
