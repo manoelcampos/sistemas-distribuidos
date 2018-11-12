@@ -152,7 +152,7 @@ io.on('connect', function(socket){
     socket.on('chat msg', function(msg){
         console.log('Mensagem: ' + msg)
         io.emit('chat msg', msg)
-    });    
+    })    
 
     /*
     A chamada socket.on abaixo indica que queremos que uma função anônima seja chamada quando 
@@ -168,6 +168,6 @@ io.on('connect', function(socket){
     socket.on('status', function(msg){
         console.log(msg)
         socket.broadcast.emit('status', msg)
-    });
-});
+    })
+})
 

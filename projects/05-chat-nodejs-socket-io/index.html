@@ -80,8 +80,9 @@
                  * para que eles saibam que um usuário está digitando.
                  */
                 $('#msg').keypress(function(evt){
-                    if(nickname == '')
+                    if(nickname == ''){
                         return
+                    }
                     socket.emit('status', nickname + ' está escrevendo...')
                 })
 

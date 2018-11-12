@@ -8,6 +8,11 @@
     <artifactId>blocking-chat</artifactId>
     <version>1.0.0</version>
     <description>Cliente e servidor de chat utilizando Sockets em Java 8</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <build>
         <plugins>
             <plugin>

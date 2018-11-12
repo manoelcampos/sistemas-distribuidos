@@ -27,7 +27,17 @@
 - http://peerjs.com (WebRTC)
 - https://webrtc.org / https://ortc.org
 
-- Extensible Messaging and Presence Protocol (XMPP): usado pelo WhatsApp (https://xmpp.org/uses/instant-messaging.html)
+=== XMPP https://xmpp.org
+- Extensible Messaging and Presence Protocol (XMPP)
+- Usado pelo WhatsApp (https://xmpp.org/uses/instant-messaging.html / https://github.com/mgp25/Chat-API/wiki/FunXMPP-Protocol)
+
+http://www.blikoontech.com/category/xmpp
+
+Servidores gratuitos XMPP
+https://xmpp.net/directory.php
+
+==== Messaging
+
 - http://mqtt.org Message Queue Telemetry Transport (MQTT) / MQTT Broker https://mosquitto.org
 - AMQP / RabbitMQ
 
@@ -53,7 +63,7 @@ https://www.javaworld.com/article/2853780/core-java/socket-programming-for-scala
 = Web Services
 
 == SOAP
-http://www.webservicex.net/
+http://www.webservicex.net
 
 jax-ws: https://javaee.github.io/metro-jax-ws/
 jax-b: https://javaee.github.io/jaxb-v2/

@@ -1,0 +1,16 @@
+= Cliente de XMPP
+
+Projeto disponibiliza uma aplicação de chat que utiliza o protocolo http://xmpp.org[XMPP].
+A rede XMPP possui uma arquitetura cliente/servidor descentralizada para troca de mensagens praticamente em tempo real.
+
+O projeto utiliza a https://github.com/igniterealtime/Smack[biblioteca Smack] para implementar
+a aplicação cliente. Tal biblioteca pode inclusive ser utilizada em aplicações Android.
+
+A aplicação utiliza o servidor XMPP gratuito disponível em http://jabber.at.
+Basta criar uma conta lá que será possível executar a aplicação para troca de mensagens instantâneas. O endereço de tal servidor já está configurado no código fonte.
+Uma lista de outros servidores XMPP públicos está disponível https://xmpp.net/directory.php[aqui].
+
+Também é possível instalar seus próprios servidores utilizando
+projetos como o https://www.igniterealtime.org/projects/openfire/[Openfire]
+ou https://github.com/jabberd2/jabberd2[JabberD].
+ 

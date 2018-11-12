@@ -32,10 +32,10 @@ proc enter_ssh_password {} {
     #expect "*\]"
 }
 
-#NonBlockingChatServer BlockingChatServer AppSocketChatScalability
 spawn scp -o "StrictHostKeyChecking no" target/scalability-tests-1.0.0.jar start-server.sh virtual-network-interfaces.sh $username@$hostname:/tmp/
 enter_ssh_password
 
+#BlockingChatServer NonBlockingChatServer
 spawn ssh -o "StrictHostKeyChecking no" $username@$hostname "cd /tmp && ./start-server.sh NonBlockingChatServer"
 enter_ssh_password
 interact
