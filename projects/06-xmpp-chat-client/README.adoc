@@ -42,5 +42,5 @@ Se você criar uma conta em outro serviço como o https://www.jabbim.com e acess
 == Referências
 
 - https://books.google.com.br/books?isbn=0596555598[Livro "XMPP: The Definitive Guide: Building Real-Time Applications with Jabber"]
-- http://professionalxmpp.com[Livro "Professional XMPP Programming with JavaScript and jQuery"]
+- https://books.google.com.br/books?isbn=0470633905[Livro "Professional XMPP Programming with JavaScript and jQuery"]
  
