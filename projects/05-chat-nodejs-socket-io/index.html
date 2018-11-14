@@ -54,7 +54,6 @@
                  * para todos os clientes.
                  */
                 socket.on('chat msg', function(msg){
-                    console.log(msg)
                     $('#messages').append($('<li>').text(msg))
                 })
 

@@ -39,7 +39,7 @@ Como o WebSocket trafega dados sobre o protocolo TCP,
 nosso servidor http então é indicado abaixo como sendo o canal
 a ser utilizado para trafegar os dados do WebSocket.
  */
-var io = require('socket.io')(http)
+var serverSocket = require('socket.io')(http)
 
 /*Porta na qual o servidor vai ficar aguardando requisições HTTP.
 Usar a porta 80 pode exigir permissões de root no Linux.*/
@@ -98,7 +98,7 @@ express.get('/', function (requisicao, resposta) {
 });
 
 /*
- * A chamada io.on indica que queremos que uma determinada função seja executada 
+ * A chamada serverSocket.on('connect') indica que queremos que uma determinada função seja executada 
  * sempre que um cliente conectar ao servidor.
  * Isto ocorre quando o cliente abre a página
  * http://localhost:porta/
@@ -119,11 +119,11 @@ express.get('/', function (requisicao, resposta) {
  * que representa o WebSocket pelo qual o servidor
  * pode se comunicar com o cliente.
  */
-io.on('connect', function(socket){
+serverSocket.on('connect', function(socket){
     console.log('\nCliente conectado: ' + socket.id)
 
     /*
-    A chamada socket.on abaixo indica que queremos que uma função anônima seja chamada quando o cliente
+    A chamada socket.on('disconnect') abaixo indica que queremos que uma função anônima seja chamada quando o cliente
     do socket acima desconectar do servidor 
     (fechando a aba ou janela do navegador ou perdendo a conexão).
     Neste caso, uma função anônima será chamada e apenas exibirá uma mensagem no terminal.
@@ -133,7 +133,7 @@ io.on('connect', function(socket){
     });
         
     /*
-    A chamada socket.on abaixo indica que queremos que uma função anônima seja chamada quando
+    A chamada socket.on('chat msg') abaixo indica que queremos que uma função anônima seja chamada quando
     uma mensagem do tipo "chat msg" for enviada pelo cliente do socket acima.
     Tal mensagem representa um conversa do cliente.
     O tipo "chat msg" foi definido por nós. 
@@ -151,11 +151,15 @@ io.on('connect', function(socket){
     */
     socket.on('chat msg', function(msg){
         console.log('Mensagem: ' + msg)
-        io.emit('chat msg', msg)
+        /*Usando socket.broadcast, encaminhamos a mensagem recebida para todos os clientes conectados,
+        incluindo o que enviou a mensagem. 
+        Assim, a mensagem aparecerá na lista do emissor também.
+        */
+        serverSocket.emit('chat msg', msg)
     })    
 
     /*
-    A chamada socket.on abaixo indica que queremos que uma função anônima seja chamada quando 
+    A chamada socket.on('status') abaixo indica que queremos que uma função anônima seja chamada quando 
     o cliente do socket acima enviar uma mensagem de status
     para o servidor. Tal mensagem pode indicar, por exemplo, que
     o usuário está digitando.
@@ -167,6 +171,8 @@ io.on('connect', function(socket){
      */
     socket.on('status', function(msg){
         console.log(msg)
+        /*A chamada socket.broadcast reencaminha a mensagem de status recebida
+         para todos os clientes conectados, exceto o emissor da mensagem.*/
         socket.broadcast.emit('status', msg)
     })
 })
