@@ -20,8 +20,9 @@ https://www.jabbim.com. Para isto, basta criar uma conta em algum deles que ser�
 ou https://list.jabber.at[jabber.at], por exemplo.
 
 Também é possível instalar seus próprios servidores utilizando
-projetos como o https://www.igniterealtime.org/projects/openfire/[Openfire]
-ou https://github.com/jabberd2/jabberd2[JabberD].
+projetos como o https://www.igniterealtime.org/projects/openfire/[Openfire], 
+https://github.com/jabberd2/jabberd2[JabberD] ou
+https://tigase.net/content/tigase-xmpp-server[Tigase].
 
 
 == Executando a aplicação

@@ -1,0 +1,59 @@
+= 1. Aplicação de Support Center utilizando protocolo XMPP em Java
+
+Este projeto apresenta uma demonstração de uma aplicação de Support Center,
+para atendimento online de usuários de uma empresa utilizando o protocolo XMPP.
+Antes de tentar entender este projeto, é totalmente recomendado que você veja
+o projeto link:../06-xmpp-chat-client[anterior]. Ele possui inúmeros detalhes,
+incluindo uma apresentação mostrando o funcionamento do protocolo XMPP.
+
+Existem tecnologias mais simples e leves como link:../05-chat-nodejs-socket-io[WebSockets]
+para implementar um sistema como estes. No entanto, por padrão, utilizando WebSockets
+vamos conectar em um servidor central. Se a quantidade de usuários for muito grande 
+(como centenas de milhares), em uma escala global, um único servidor 
+pode não conseguir atender a demanda.
+
+Uma arquitetura distribuída e escalável como do XMPP é uma alternativa para a implementação
+de tais sistemas. Como o WebSockets é apenas um protocolo leve de transporte de mensagens sobre o TCP,
+ele inclusive https://tools.ietf.org/html/rfc7395[pode ser utilizada para o transporte das mensagens XMPP].
+
+Desta forma, o protocolo WebSockets pode ser utilizado de forma isolada para construir uma aplicação
+que não tenha uma grande demanda de usuários e acessos simultâneos. Por outro lado,
+o XMPP (possivelmente em conjunto com WebSockets) pode ser utilizada para construir 
+uma aplicação escalável cuja a demanda de usuários é muito grande.
+
+== 2. Aplicações
+O projeto é formato por duas aplicações (classes), como apresentado a seguir.
+
+=== 2.1. SupportCenter
+
+A aplicação da classe link:src/main/java/com/manoelcampos/supportcenter/SupportCenter.java[SupportCenter.java]
+deve ser utilizada por funcionários da empresa para receber solicitações dos clientes e iniciar um chat com estes.
+Cada funcionário atende um cliente por vez.
+
+=== 2.2 XmppClient
+
+A aplicação da classe link:src/main/java/com/manoelcampos/supportcenter/XmppClient.java[XmppClient.java]
+deve ser utilizada pelos clientes para serem atendidos por algum funcionário.
+
+== 3. Funcionamento
+
+Para o sistema funcionar, os funcionários e clientes devem estar cadatrados em algum
+servidor XMPP. Existem muitas alternativas como o https://xabber.org.
+Veja o projeto anterior para mais detalhes.
+
+Cada funcionário deve ter em sua lista de contatos todos os clientes.
+Para esta aplicação de demonstração, devemos fazer isso manualmente.
+Mas para um sistema real, isso pode ser feito de forma automática
+ao cadastrar um novo cliente.
+
+Após realizar tais ajustes, a aplicação SupportCenter pode ser executada e logada com uma conta de um suposto funcionário
+(qualquer usuário cadastrado no servidor XMPP).
+Em seguida, a aplicação XmppClient pode ser executada e logada com outra conta.
+Quando o cliente loga, a app SupportCenter recebe uma notificação e então esta envia uma mensagem
+ao cliente para iniciar atendimento.
+O cliente então confirma a solicitação de atendimento e as duas pessoas começam 
+a interagir por meio do chat.
+
+== 4. AVISO
+
+*As aplicações não estão completas e possuem alguns problemas a serem resolvidos e funções a serem implementadas.*
