@@ -10,7 +10,7 @@ if [[ $# -gt 0 ]]; then
    cep="$1"
 fi
 
-curl -X POST https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente \
+curl https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente \
   --data \
  "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:cli='http://cliente.bean.master.sigep.bsb.correios.com.br/'> 
    <soapenv:Body>
