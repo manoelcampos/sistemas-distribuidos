@@ -316,7 +316,7 @@ public abstract class AbstractXmppClient implements Closeable {
             return false;
         }
 
-        roster = Roster.getInstanceFor(getConnection());
+        roster = Roster.getInstanceFor(connection);
         //Subscrever para receber notificações de mudanças de status dos contatos
         Roster.setDefaultSubscriptionMode(Roster.SubscriptionMode.accept_all);
 

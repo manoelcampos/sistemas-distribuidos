@@ -88,13 +88,18 @@ public class SupportCenter extends AbstractXmppClient {
 
     /**
      * Uma classe interna usada para receber notificações de mudanças
-     * de status de contatos.
-     * Atualmente, implementa apenas um método que é executado quando
+     * de status de contatos. Sendo interna, ela tem acesso a todos os métodos
+     * e atributos da classe onde foi inserida. Se ela fosse declarada
+     * fora da classe {@link SupportCenter}, não haveria esse acesso por padrão.
+     *
+     * <p>Atualmente, implementa apenas um método que é executado quando
      * um contato fica online.
-     * O objeto {@link #roster} é responsável por chamar os métodos desta
-     * classe quando uma mudança de status de um contato ocorrer.
+     * O objeto {@link #getRoster() roster} é responsável por chamar os métodos desta
+     * classe quando uma mudança de status de um contato ocorrer.</p>
      */
     private class MyPresenceListener extends AbstractRosterListener {
+        private EntityBareJid toJabberId;
+
         /**
          * Método chamado automaticamente quando o status de um contato mudar.
          * @param presence o status do contato
@@ -106,7 +111,9 @@ public class SupportCenter extends AbstractXmppClient {
                 return;
             }
 
-            if(!isChatting()){
+            if(presence.getType() == Presence.Type.available && !isChatting()){
+                this.toJabberId = presence.getFrom().asEntityBareJidIfPossible();
+
                 //Pergunta ao cliente se ele ainda está aguardando
                 Chat chat = getChatManager().chatWith(presence.getFrom().asEntityBareJidIfPossible());
                 sendMessage(chat, "Está aguardando?");

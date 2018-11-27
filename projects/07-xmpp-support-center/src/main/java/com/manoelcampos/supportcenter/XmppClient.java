@@ -20,6 +20,8 @@ import org.jxmpp.jid.EntityBareJid;
  * @author Manoel Campos da Silva Filho
  */
 public class XmppClient extends AbstractXmppClient {
+    private String toJaberId;
+
     public static void main(String[] args) {
         try {
             try(XmppClient client = new XmppClient()){
@@ -39,6 +41,8 @@ public class XmppClient extends AbstractXmppClient {
     @Override
     protected void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat) {
         super.newIncomingMessage(fromJabberId, message, chat);
+
+        this.toJaberId = fromJabberId.toString();
 
         if(isChatting()) {
             return;

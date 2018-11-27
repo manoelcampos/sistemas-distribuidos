@@ -1,0 +1,12 @@
+= Web Services
+
+Fornece diversos projetos que implementam e consomem (acessam/utilizam) Serviços Web
+nos padrões SOAP e REST.
+
+A apresentação link:webservices.pptx[webservices.pptx] dá uma visão geral dessas duas tecnologias.
+O script link:consulta-cep.sh[consulta-cep.sh] é um exemplo de como acessar o Web Service de consulta
+de endereços a partir do CEP, disponibilizado pelos Correios.
+
+A intenção do script é apenas mostrar como é a requisição SOAP sendo trafegada via HTTP e como é a resposta obtida.
+
+Veja as pastas dos sub-projetos para detalhes.

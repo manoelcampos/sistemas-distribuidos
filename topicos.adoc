@@ -1,105 +1,100 @@
 = Modelo Cliente/Servidor
 
-= Modelo Multicamadas
+== Sockets: a base para comunicação em rede
 
-== Middleware (mais complexo, normalmente pesado, faz muitas tarefas) / Broker (mais simples, normalmente uma parte de um middleware que faz uma tarefa bem específica)
-
-== Service Discovery
-
-= RPC
-
-= RMI / .Net Remoting (IPC)
-
-= DCOM
-
-= COM+
-
-= Corba
-
-= Peer-to-Peer (P2P)
-
+- Comunicação síncrona e assíncrona
+- https://www.javaworld.com/article/2853780/core-java/socket-programming-for-scalable-systems.html
 - Java Sync Sockets (ServerSocket)
   e Async Sockets com NIO2 (https://www.baeldung.com/java-nio2-async-socket-channel)
 
+=== Modelo de requisição: blocking, non-blocking, sync, async, multiplexed IO
 
-- WebSockets
-- https://socket.io (js / node.js)
-- http://peerjs.com (WebRTC)
-- https://webrtc.org / https://ortc.org
+- https://notes.shichao.io/unp/ch6/
+- https://en.wikipedia.org/wiki/Asynchronous_I/O
+- https://www.ibm.com/developerworks/library/l-async/
 
-=== XMPP https://xmpp.org
-- Extensible Messaging and Presence Protocol (XMPP)
-- Usado pelo WhatsApp (https://xmpp.org/uses/instant-messaging.html / https://github.com/mgp25/Chat-API/wiki/FunXMPP-Protocol)
+= Modelo Multicamadas
 
-http://www.blikoontech.com/category/xmpp
+- Middleware: mais complexo, normalmente pesado, faz muitas tarefas
+- Broker: mais simples, normalmente uma parte de um middleware que faz uma tarefa bem específica
+- Service Discovery
 
-Servidores gratuitos XMPP
-https://xmpp.net/directory.php
+= RPC, RMI 
 
-==== Messaging
+= WebSockets
 
-- http://mqtt.org Message Queue Telemetry Transport (MQTT) / MQTT Broker https://mosquitto.org
-- AMQP / RabbitMQ
+- https://socket.io
+- WebRTC
+    * https://webrtc.org
+    * https://ortc.org
+    * http://peerjs.com
 
-- ZeroMQ (brokerless) http://zeromq.org
-- https://github.com/zeromq/jeromq
+= Peer-to-Peer (P2P)
 
-- https://developer.apple.com/documentation/multipeerconnectivity
-- https://developer.android.com/guide/topics/connectivity/wifip2p.html
+= Messaging
 
-= Sockets: a base para comunicação em rede
-https://www.javaworld.com/article/2853780/core-java/socket-programming-for-scalable-systems.html
+- http://mqtt.org Message Queue Telemetry Transport (MQTT) protocol - publish/subscribe
+- MQTT Broker https://mosquitto.org
 
-- Chat
+- Advanced Message Queuing Protocol (AMQP) - https://www.amqp.org 
+- RabbitMQ message broker - que suporta AMQP, MQTT, WebSocket e outros protocolos 
+    * https://www.rabbitmq.com
+    * https://en.wikipedia.org/wiki/RabbitMQ
+- ZeroMQ (brokerless) 
+    * http://zeromq.org
+    * https://github.com/zeromq/jeromq
+- Java Message Service (JMS): https://en.wikipedia.org/wiki/Java_Message_Service
+- Mobile Devices
+    * https://developer.apple.com/documentation/multipeerconnectivity
+    * https://developer.android.com/guide/topics/connectivity/wifip2p.html
+
+== Padrão de mensagens e modelo de entrega
+
+- Publish/Subscribe como padrão de mensagens. 
+    * https://aws.amazon.com/pub-sub-messaging/
+    * https://cloud.google.com/pubsub/docs/overview
+- Push/Pull como modelo de entrega
 
 = Application Server (AS)
 
-== Connection Pooling
-
-== Load Balancer
-
-= Comunicação síncrona e assíncrona
+- Connection Pooling
+- Load Balancer
 
 = Web Services
 
 == SOAP
-http://www.webservicex.net
 
-jax-ws: https://javaee.github.io/metro-jax-ws/
-jax-b: https://javaee.github.io/jaxb-v2/
-
-jax-b vs xml dom vs sax: https://dzone.com/articles/jaxb-sax-dom-performance
+- http://www.webservicex.net
+- jax-ws: https://javaee.github.io/metro-jax-ws/
+- jax-b vs xml dom vs sax
+    * https://dzone.com/articles/jaxb-sax-dom-performance
 
 == REST 
 
-Standard
-    jax-rs:
+- json-b: uma forma mais automática de pegar objetos java e converter para JSON e vice-versa 
+        (sem precisar percorrer cada atributo do objeto individualmente)
+    * http://json-b.net
+    * https://github.com/javaee/jsonb-spec
+    * https://javaee.github.io/jaxb-v2/ 
+    * https://dzone.com/articles/jsonb-java-api-for-json-binding
+- json-p: construir JSON manualmente via Java (adicionando cada chave individualmente. 
+          A home page abaixo mostra um exemplo claro)
+    * https://javaee.github.io/jsonp/
+- json-b vs json-p: www.quora.com/What-is-the-difference-between-Java-API-for-JSON-processing-JSON-P-and-Java-API-for-JSON-Binding-JSON-B-Dont-they-have-an-overlapping-job
+
+- jax-rs:
        Implementado e disponível no GlassFish
             https://github.com/jersey/jersey (reference implementation)
             https://jersey.github.io
        Implementado e disponível no JBoss
             http://resteasy.jboss.org
 
-    resteasy
+- resteasy
         Implementando classes proxy automaticamente no cliente para consumir serviços
         (sem precisar escrever ou gerar o código no NetBeans)
         https://dennis-xlc.gitbooks.io/restful-java-with-jax-rs-2-0-2rd-edition/content/en/part1/chapter16/resteasy_client_proxies.html
         https://dzone.com/articles/jsonb-java-api-for-json-binding
         
-
-Non-Standard
-    http://restfulie.caelum.com.br
-
-https://dzone.com/articles/jsonb-java-api-for-json-binding
-https://www.quora.com/What-is-the-difference-between-Java-API-for-JSON-processing-JSON-P-and-Java-API-for-JSON-Binding-JSON-B-Dont-they-have-an-overlapping-job
-    JSON-P:  construir JSON manualmente via Java (adicionando cada chave individualmente. A home page abaixo mostra um exemplo claro)
-        https://javaee.github.io/jsonp/
-
-    JSON-B: uma forma mais automática de pegar objetos java e converter para JSON e vice-versa 
-        (sem precisar percorrer cada atributo do objeto individualmente)
-        http://json-b.net
-        https://github.com/javaee/jsonb-spec
-
 == GraphQL
 
 === Swagger, SwaggerHub, SwaggerUI
@@ -107,7 +102,7 @@ https://www.quora.com/What-is-the-difference-between-Java-API-for-JSON-processin
 http://blog.caelum.com.br/modelando-apis-rest-com-swagger/
 http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
 
-= SOA / Windows Communication Foundation (WCF)
+= SOA
 
 = Cloud Computing
 
@@ -115,30 +110,13 @@ http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
 
 = Microservices
 
-http://microservices.io
+- http://microservices.io
 
 = CQRS
 
 = Circuit Breaker
-https://martinfowler.com/bliki/CircuitBreaker.html
+
+- https://martinfowler.com/bliki/CircuitBreaker.html
 
 = Architecture Patterns (ver livro na minha biblioteca digital)
 
-= Padrão de mensagens e modelo de entrega
-
-- Publish/Subscribe como padrão de mensagens. 
-    * https://aws.amazon.com/pub-sub-messaging/
-    * https://cloud.google.com/pubsub/docs/overview
-- Push/Pull como modelo de entrega
-
-= Modelo de requisição: blocking, non-blocking, sync, async, multiplexed IO
-
-https://notes.shichao.io/unp/ch6/
-https://en.wikipedia.org/wiki/Asynchronous_I/O
-https://www.ibm.com/developerworks/library/l-async/
-
-
-[bibliography]
-== Referências
-
-- [PP] Hunt, Andrew, and David Thomas. O Programador Pragmático: de aprendiz a mestre. Bookman Editora, 2009.

@@ -1,6 +1,6 @@
 = Cadastro com Banco de Dados MySQL utilizando WebService SOAP
 
-Esta aplicação criar um servidor SOAP que fornece um WebService para
+Esta aplicação cria um servidor SOAP que fornece um WebService para
 permitir a realização de cadastros em um banco de dados MySQL.
 
 O projeto usa a Java Persistence API (JPA) para Mapeamento Objeto-Relacional (Object Relational Mapping, ORM)
