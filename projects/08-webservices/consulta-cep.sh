@@ -11,13 +11,13 @@ if [[ $# -gt 0 ]]; then
 fi
 
 curl https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente \
-  --data \
- "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:cli='http://cliente.bean.master.sigep.bsb.correios.com.br/'> 
-   <soapenv:Body>
-     <cli:consultaCEP>
-       <cep>$cep</cep>
-     </cli:consultaCEP>
-   </soapenv:Body>
-  </soapenv:Envelope>"
+     --data \
+     "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:cli='http://cliente.bean.master.sigep.bsb.correios.com.br/'> 
+        <soapenv:Body>
+          <cli:consultaCEP>
+            <cep>$cep</cep>
+          </cli:consultaCEP>
+        </soapenv:Body>
+      </soapenv:Envelope>"
 
 echo -e "\n\n"
