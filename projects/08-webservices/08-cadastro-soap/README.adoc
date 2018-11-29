@@ -6,19 +6,28 @@ permitir a realização de cadastros em um banco de dados MySQL.
 O projeto usa a Java Persistence API (JPA) para Mapeamento Objeto-Relacional (Object Relational Mapping, ORM)
 por meio do framework Hibernate 5.
 
-== Estrutura do Projeto
+== Projetos
 
-=== Servidor
-O código do projeto do servidor está dividido em 3 pacotes:
+=== Aplicação Servidora
 
-- com.manoelcampos.soapserver.model
-- com.manoelcampos.soapserver.dao
-- com.manoelcampos.soapserver.ws
+O código do projeto do servidor está disponível na pasta link:cadastro-soap-server[cadastro-soap-server]. 
+Ele é dividido em 3 pacotes:
+
+- link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/model[model]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/model/package-info.java[package-info.java].
+- link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/dao[dao]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/dao/package-info.java[package-info.java].
+- link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/ws[ws]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/ws/package-info.java[package-info.java].
 
 Dentro de cada pacote há um arquivo package-info.java que contém a documentação JavaDoc
 do pacote, apresentando detalhes de como funcionam as classes e interfaces dentro dele.
 
-== Executando o Projeto
+=== Aplicação Cliente para consumir os Web Services
+
+Uma aplicação console está disponível para demonstrar como consumir o Web Service de produtos criado no 
+projeto apresentado acima. O código de tal projeto está disponível na pasta link:cadastro-soap-client[cadastro-soap-client]. 
+
+Observe que é preciso executar a aplicação servidora para depois executar o cliente.
+
+== Requisitos para executar a Aplicação Servidora
 
 === Servidor de Banco de Dados
 
@@ -38,7 +47,3 @@ Se tudo correr bem, o NetBeans abrirá o navegador no endereço http://localhost
 A página index.html incluída possui um link para a página de teste do WebService.
 Tal página também pode ser acessada pelo NetBeans, clicando com o botão
 direito em qualquer Web Service disponibilizado na pasta Web Services.
-
-=== Aplicação Cliente para consumir os Web Services
-
-A ser implementada (por enquanto os WebServices podem ser consumidos a partir das páginas de teste, como mostrado acima).
