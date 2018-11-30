@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.4.0 (wsit240-7e98ff4; 2017-08-03T21:19:54+0200) JAXWS-RI/2.3.0 JAXWS-API/2.3.0 JAXB-RI/2.3.0 JAXB-API/2.3.0 svn-revision#unknown. --><xs:schema xmlns:tns="http://ws.soapserver.manoelcampos.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.soapserver.manoelcampos.com/">
+
+<xs:element name="adicionar" type="tns:adicionar"/>
+
+<xs:element name="adicionarResponse" type="tns:adicionarResponse"/>
+
+<xs:element name="getById" type="tns:getById"/>
+
+<xs:element name="getByIdResponse" type="tns:getByIdResponse"/>
+
+<xs:complexType name="adicionar">
+<xs:sequence>
+<xs:element name="produto" type="tns:produto" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="produto">
+<xs:sequence>
+<xs:element name="descricao" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="marca" type="tns:marca" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="marca">
+<xs:sequence>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="nome" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="adicionarResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getById">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getByIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:produto" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -25,9 +25,9 @@ import javax.jws.WebParam;
  * @see http://tomee.apache.org/examples-trunk/injection-of-entitymanager/
  * @see https://www.javaworld.com/article/2071724/java-web-development/ejb-fundamentals-and-session-beans.html
  */
-@WebService(serviceName = "ProdutoWS")
+@WebService(serviceName = "GerenciaProduto")
 @Stateless
-public class ProdutoWS {
+public class GerenciaProduto {
     @Inject
     private DAO<Produto> dao;
 

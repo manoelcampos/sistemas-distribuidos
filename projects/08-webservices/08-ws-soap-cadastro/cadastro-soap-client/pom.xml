@@ -31,16 +31,16 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>localhost_8080/ProdutoWS/ProdutoWS.wsdl</wsdlFile>
+                                <wsdlFile>localhost_8080/GerenciaProduto/GerenciaProduto.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName>com.manoelcampos.soapclient</packageName>
                             <vmArgs>
                                 <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
                             </vmArgs>
-                            <wsdlLocation>http://localhost:8080/ProdutoWS/ProdutoWS?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/ProdutoWS.stale</staleFile>
+                            <wsdlLocation>http://localhost:8080/GerenciaProduto/GerenciaProduto?wsdl</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/GerenciaProduto.stale</staleFile>
                         </configuration>
-                        <id>wsimport-generate-ProdutoWS</id>
+                        <id>wsimport-generate-GerenciaProduto</id>
                         <phase>generate-sources</phase>
                     </execution>
                     <execution>
@@ -49,52 +49,16 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>localhost_8080/ProdutoWS/ProdutoWS.wsdl</wsdlFile>
+                                <wsdlFile>localhost_8080/GerenciaProduto/GerenciaProduto.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName>com.manoelcampos.soapclient</packageName>
                             <vmArgs>
                                 <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
                             </vmArgs>
-                            <wsdlLocation>http://localhost:8080/ProdutoWS/ProdutoWS?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/ProdutoWS_1.stale</staleFile>
+                            <wsdlLocation>http://localhost:8080/GerenciaProduto/GerenciaProduto?wsdl</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/GerenciaProduto_1.stale</staleFile>
                         </configuration>
-                        <id>wsimport-generate-ProdutoWS_1</id>
-                        <phase>generate-sources</phase>
-                    </execution>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>localhost_8080/ProdutoWS/ProdutoWS.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <packageName>com.manoelcampos.soapclient</packageName>
-                            <vmArgs>
-                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
-                            </vmArgs>
-                            <wsdlLocation>http://localhost:8080/ProdutoWS/ProdutoWS?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/ProdutoWS_2.stale</staleFile>
-                        </configuration>
-                        <id>wsimport-generate-ProdutoWS_2</id>
-                        <phase>generate-sources</phase>
-                    </execution>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>localhost_8080/ProdutoWS/ProdutoWS.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <packageName>com.manoelcampos.soapclient</packageName>
-                            <vmArgs>
-                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
-                            </vmArgs>
-                            <wsdlLocation>http://localhost:8080/ProdutoWS/ProdutoWS?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/ProdutoWS_3.stale</staleFile>
-                        </configuration>
-                        <id>wsimport-generate-ProdutoWS_3</id>
+                        <id>wsimport-generate-GerenciaProduto_1</id>
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>

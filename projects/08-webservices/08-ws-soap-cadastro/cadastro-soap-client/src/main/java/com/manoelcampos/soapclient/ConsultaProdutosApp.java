@@ -12,26 +12,29 @@ import java.util.Scanner;
  * cujo código é digitado pelo usuário.
  * 
  * <p>Para se certificar que o servidor está em execução,
- * tente acessar <a href="http://localhost:8080/ProdutoWS/ProdutoWS">este link</a>.</p>
+ * tente acessar <a href="http://localhost:8080/GerenciaProduto/GerenciaProduto">este link</a>.</p>
  * 
  * @author Manoel Campos da Silva Filho <http://github.com/manoelcampos>
  */
 public class ConsultaProdutosApp {
-    /** Objeto que permitirá acessar o Web Services de Produtos */
-    private final ProdutoWS produtoWS;
+    /** Objeto que representa a porta pela qual o Web Services de Produtos será acessado. */
+    private final GerenciaProduto port;
     private final Scanner scanner;
     
     public ConsultaProdutosApp(){
+        /*Instancia o objeto que dará acesso ao Web Service de Produtos.*/
+        GerenciaProduto_Service service = new GerenciaProduto_Service();
+        
         /*
          * Instancia o objeto que permitirá acessar o Web Service de Produtos. A classe
-         * ProdutoWS_Service foi criada pelo NetBeans quando o arquivo WSDL que descreve
+         * GerenciaProdutoService foi criada pelo NetBeans quando o arquivo WSDL que descreve
          * as funções existentes no Web Service de Produtos foi lido. 
-         * A classe ProdutoWS também foi criada pelo NetBeans neste processo.
+         * A classe GerenciaProduto também foi criada pelo NetBeans neste processo.
          * No entanto, ela é uma classe local que permitirá acessar
          * a classe remota de mesmo nome. Tal classe remota é que implementa
          * de fato o Web Service de Produtos.
          */
-        this.produtoWS = new ProdutoWS_Service().getProdutoWSPort();
+        this.port = service.getGerenciaProdutoPort();
         this.scanner = new Scanner(System.in);
     }
     
@@ -43,13 +46,13 @@ public class ConsultaProdutosApp {
             if(idProduto >= 0){
                 try{
                     //Tenta acessar o Web Service de Produtos e chamar o método getById
-                    Produto produto = produtoWS.getById(idProduto);
+                    Produto produto = port.getById(idProduto);
                     imprimeProduto(produto);
                 } catch(ClientTransportException e){
                     System.err.println(
                         "\nErro ao tentar fazer comunicação com o Web Service de Produtos. " + 
                         "\nVerifique se o servidor está em execução em " + 
-                        "http://localhost:8080/ProdutoWS/ProdutoWS\n");
+                        "http://localhost:8080/GerenciaProduto/GerenciaProduto\n");
                 }
             }
         }while(idProduto >= 0);
