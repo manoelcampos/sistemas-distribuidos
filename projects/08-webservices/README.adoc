@@ -4,9 +4,13 @@ Fornece diversos projetos que implementam e consomem (acessam/utilizam) Serviço
 nos padrões SOAP e REST.
 
 A apresentação link:webservices.pptx[webservices.pptx] dá uma visão geral dessas duas tecnologias.
+O Capítulo 2 da minha dissertação de mestrado, que trata especificamente da tecnologia de Web Services e os
+padrões conhecidos, é disponibilizado no arquivo link:dissertacao-mestrado-cap2-web-services.pdf[dissertacao-mestrado-cap2-web-services.pdf]. 
+Tal capítulo contém informações resumidas obtidas de diversas referências, apresentando
+apenas as partes importantes das tecnologias de Web Services (que foram reduzidas aqui para apenas 15 páginas).
+
 O script link:consulta-cep.sh[consulta-cep.sh] é um exemplo de como acessar o Web Service de consulta
 de endereços a partir do CEP, disponibilizado pelos Correios.
-
 A intenção do script é apenas mostrar como é a requisição SOAP sendo trafegada via HTTP e como é a resposta obtida.
 
-Veja as pastas dos sub-projetos para detalhes.
+Veja as sub-pastas dos projetos para detalhes.
