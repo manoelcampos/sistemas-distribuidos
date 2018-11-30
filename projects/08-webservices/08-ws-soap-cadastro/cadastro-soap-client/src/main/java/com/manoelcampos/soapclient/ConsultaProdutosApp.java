@@ -17,21 +17,32 @@ import java.util.Scanner;
  * @author Manoel Campos da Silva Filho <http://github.com/manoelcampos>
  */
 public class ConsultaProdutosApp {
+    /** Objeto que permitirá acessar o Web Services de Produtos */
     private final ProdutoWS produtoWS;
     private final Scanner scanner;
     
     public ConsultaProdutosApp(){
+        /*
+         * Instancia o objeto que permitirá acessar o Web Service de Produtos. A classe
+         * ProdutoWS_Service foi criada pelo NetBeans quando o arquivo WSDL que descreve
+         * as funções existentes no Web Service de Produtos foi lido. 
+         * A classe ProdutoWS também foi criada pelo NetBeans neste processo.
+         * No entanto, ela é uma classe local que permitirá acessar
+         * a classe remota de mesmo nome. Tal classe remota é que implementa
+         * de fato o Web Service de Produtos.
+         */
         this.produtoWS = new ProdutoWS_Service().getProdutoWSPort();
-        scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in);
     }
     
-    private void start(){
+    public void iniciar(){
         int idProduto;
         do{
             System.out.print("Digite o id do produto que deseja consultar (ou -1 pra sair): ");
             idProduto = scanner.nextInt();
             if(idProduto >= 0){
                 try{
+                    //Tenta acessar o Web Service de Produtos e chamar o método getById
                     Produto produto = produtoWS.getById(idProduto);
                     imprimeProduto(produto);
                 } catch(ClientTransportException e){
@@ -40,7 +51,6 @@ public class ConsultaProdutosApp {
                         "\nVerifique se o servidor está em execução em " + 
                         "http://localhost:8080/ProdutoWS/ProdutoWS\n");
                 }
-                
             }
         }while(idProduto >= 0);
     }
@@ -48,16 +58,16 @@ public class ConsultaProdutosApp {
     private void imprimeProduto(Produto produto) {
         if(produto == null){
             System.err.println("\nProduto não encontrado!\n");
-        } else {
-            System.out.println("\nProduto: " + produto.getDescricao());
-            System.out.println("Marca: " + produto.getMarca().getNome());
-            System.out.println();
-        }
+            return;
+        } 
+
+        System.out.println("\nProduto: " + produto.getDescricao());
+        System.out.println("Marca: " + produto.getMarca().getNome());
+        System.out.println();
     }
     
     public static void main(String[] args) {
         ConsultaProdutosApp app = new ConsultaProdutosApp();
-        app.start();
+        app.iniciar();
     }
-    
 }

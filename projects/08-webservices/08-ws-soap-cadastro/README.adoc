@@ -13,9 +13,9 @@ por meio do framework Hibernate 5.
 O código do projeto do servidor está disponível na pasta link:cadastro-soap-server[cadastro-soap-server]. 
 Ele é dividido em 3 pacotes:
 
-- link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/model[model]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/model/package-info.java[package-info.java].
-- link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/dao[dao]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/dao/package-info.java[package-info.java].
-- link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/ws[ws]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/ws/package-info.java[package-info.java].
+- link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/model[model]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/model/package-info.java[model/package-info.java].
+- link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/dao[dao]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/dao/package-info.java[dao/package-info.java].
+- link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/ws[ws]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/ws/package-info.java[ws/package-info.java].
 
 Dentro de cada pacote há um arquivo package-info.java que contém a documentação JavaDoc
 do pacote, apresentando detalhes de como funcionam as classes e interfaces dentro dele.
