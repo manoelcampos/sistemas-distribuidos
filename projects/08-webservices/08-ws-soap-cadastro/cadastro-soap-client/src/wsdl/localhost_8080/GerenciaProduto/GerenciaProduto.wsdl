@@ -4,31 +4,31 @@
 <xsd:import namespace="http://ws.soapserver.manoelcampos.com/" schemaLocation="http://localhost:8080/GerenciaProduto/GerenciaProduto?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="getById">
-<part name="parameters" element="tns:getById"/>
-</message>
-<message name="getByIdResponse">
-<part name="parameters" element="tns:getByIdResponse"/>
-</message>
 <message name="adicionar">
 <part name="parameters" element="tns:adicionar"/>
 </message>
 <message name="adicionarResponse">
 <part name="parameters" element="tns:adicionarResponse"/>
 </message>
+<message name="getById">
+<part name="parameters" element="tns:getById"/>
+</message>
+<message name="getByIdResponse">
+<part name="parameters" element="tns:getByIdResponse"/>
+</message>
 <portType name="GerenciaProduto">
-<operation name="getById">
-<input wsam:Action="http://ws.soapserver.manoelcampos.com/GerenciaProduto/getByIdRequest" message="tns:getById"/>
-<output wsam:Action="http://ws.soapserver.manoelcampos.com/GerenciaProduto/getByIdResponse" message="tns:getByIdResponse"/>
-</operation>
 <operation name="adicionar">
 <input wsam:Action="http://ws.soapserver.manoelcampos.com/GerenciaProduto/adicionarRequest" message="tns:adicionar"/>
 <output wsam:Action="http://ws.soapserver.manoelcampos.com/GerenciaProduto/adicionarResponse" message="tns:adicionarResponse"/>
 </operation>
+<operation name="getById">
+<input wsam:Action="http://ws.soapserver.manoelcampos.com/GerenciaProduto/getByIdRequest" message="tns:getById"/>
+<output wsam:Action="http://ws.soapserver.manoelcampos.com/GerenciaProduto/getByIdResponse" message="tns:getByIdResponse"/>
+</operation>
 </portType>
 <binding name="GerenciaProdutoPortBinding" type="tns:GerenciaProduto">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="getById">
+<operation name="adicionar">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -37,7 +37,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="adicionar">
+<operation name="getById">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

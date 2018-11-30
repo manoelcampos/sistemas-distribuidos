@@ -43,24 +43,6 @@
                         <id>wsimport-generate-GerenciaProduto</id>
                         <phase>generate-sources</phase>
                     </execution>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>localhost_8080/GerenciaProduto/GerenciaProduto.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <packageName>com.manoelcampos.soapclient</packageName>
-                            <vmArgs>
-                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
-                            </vmArgs>
-                            <wsdlLocation>http://localhost:8080/GerenciaProduto/GerenciaProduto?wsdl</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/GerenciaProduto_1.stale</staleFile>
-                        </configuration>
-                        <id>wsimport-generate-GerenciaProduto_1</id>
-                        <phase>generate-sources</phase>
-                    </execution>
                 </executions>
                 <dependencies>
                     <dependency>

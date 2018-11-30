@@ -12,9 +12,11 @@ import javax.jws.WebParam;
  * Classe que publica um Web Service com métodos que podem ser chamados 
  * remotamente via protocolo SOAP.
  * A anotação {@link WebService} é que permite tal funcionalidade.
+ * O Web Service permite gerenciar cadastro de produtos no servidor.
  * 
  * @author Manoel Campos da Silva Filho
  * 
+ * @see https://docs.jboss.org/author/display/WFLY8/JAX-WS+User+Guide
  * @see https://www.developer.com/java/creating-soap-web-services-with-jax-ws.html
  * 
  * @see http://setgetweb.com/p/WAS85x/ae/jaxws.html
