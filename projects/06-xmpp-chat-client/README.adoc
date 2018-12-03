@@ -15,7 +15,7 @@ Todo projeto maven possui um arquivo link:pom.xml[pom.xml] na raiz. Tal arquivo 
 
 == Utilizando um servidor XMPP para a aplicação
 
-A aplicação pode utilizar qualquer servidor XMPP. Por exemplo, podemos conectar em servidores gratuitos como https://www.xabber.com, https://jabber.at ou
+A aplicação pode utilizar qualquer servidor XMPP. Por exemplo, podemos conectar em servidores gratuitos como https://www.xabber.com, https://jabber.at, https://chinwag.im ou
 https://www.jabbim.com. Para isto, basta criar uma conta em algum deles que será possível executar a aplicação para troca de mensagens instantâneas. Uma lista de outros servidores XMPP públicos está disponível no https://xmpp.net/directory.php[xmpp.net]
 ou https://list.jabber.at[jabber.at], por exemplo.
 
