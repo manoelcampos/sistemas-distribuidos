@@ -15,6 +15,8 @@ O projeto é composto por duas aplicações console:
 - link:src/main/java/com/manoelcampos/chat/ChatClient.java[Cliente]
 - link:src/main/java/com/manoelcampos/chat/ChatServer.java[Servidor]
 
+A apresentação link:non-blocking-chat.pptx[non-blocking-chat.pptx] apresenta alguns detalhes do funcionamento deste projeto.
+
 == Servidor
 
 O servidor escuta numa porta configurada por meio de uma constante em sua classe.
