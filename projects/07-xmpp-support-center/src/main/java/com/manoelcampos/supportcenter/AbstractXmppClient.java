@@ -95,7 +95,7 @@ public abstract class AbstractXmppClient implements Closeable {
      * Tal identificação segue o formato usuario@dominio.
      * Por exemplo: pedro@jabber.net
      */
-    private String toJabberId = "";
+    private String destinationUser = "";
 
     /** @see #isChatting() */
     private boolean chatting;
@@ -235,12 +235,12 @@ public abstract class AbstractXmppClient implements Closeable {
      * Tal identificação segue o formato usuario@dominio.
      * Por exemplo: pedro@jabber.net
      */
-    public String getToJabberId() {
-        return toJabberId;
+    public String getDestinationUser() {
+        return destinationUser;
     }
 
-    public void setToJabberId(String toJabberId) {
-        this.toJabberId = toJabberId;
+    public void setDestinationUser(String destinationUser) {
+        this.destinationUser = destinationUser;
     }
 
     /**
@@ -317,6 +317,7 @@ public abstract class AbstractXmppClient implements Closeable {
         }
 
         roster = Roster.getInstanceFor(connection);
+
         //Subscrever para receber notificações de mudanças de status dos contatos
         Roster.setDefaultSubscriptionMode(Roster.SubscriptionMode.accept_all);
 
@@ -375,8 +376,8 @@ public abstract class AbstractXmppClient implements Closeable {
                 break;
             }
 
-            if(sendMessage(msg, toJabberId)) {
-                System.out.println("Mensagem enviada para " + toJabberId);
+            if(sendMessage(msg, destinationUser)) {
+                System.out.println("Mensagem enviada para " + destinationUser);
             }
         }
     }

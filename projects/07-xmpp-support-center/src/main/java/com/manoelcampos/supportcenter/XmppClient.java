@@ -66,7 +66,7 @@ public class XmppClient extends AbstractXmppClient {
             setChatting(true);
 
             //Define o ID do funcionário que enviou a mensagem e que vai atender o cliente.
-            setToJabberId(fromJabberId.toString());
+            setDestinationUser(fromJabberId.toString());
         }
     }
 }

@@ -81,7 +81,7 @@ public class SupportCenter extends AbstractXmppClient {
             setChatting(true);
 
             //Define o ID do cliente que será atendido
-            setToJabberId(fromJabberId.toString());
+            setDestinationUser(fromJabberId.toString());
             return;
         }
     }
@@ -98,7 +98,7 @@ public class SupportCenter extends AbstractXmppClient {
      * classe quando uma mudança de status de um contato ocorrer.</p>
      */
     private class MyPresenceListener extends AbstractRosterListener {
-        private EntityBareJid toJabberId;
+        private EntityBareJid destinationUser;
 
         /**
          * Método chamado automaticamente quando o status de um contato mudar.
@@ -106,13 +106,16 @@ public class SupportCenter extends AbstractXmppClient {
          */
         @Override
         public void presenceChanged(Presence presence) {
-            final String user = presence.getFrom().asEntityBareJidIfPossible().toString();
+            final String user =
+                    presence.getFrom()
+                            .asEntityBareJidIfPossible()
+                            .toString();
             if(user.equalsIgnoreCase(getJabberId())){
                 return;
             }
 
             if(presence.getType() == Presence.Type.available && !isChatting()){
-                this.toJabberId = presence.getFrom().asEntityBareJidIfPossible();
+                this.destinationUser = presence.getFrom().asEntityBareJidIfPossible();
 
                 //Pergunta ao cliente se ele ainda está aguardando
                 Chat chat = getChatManager().chatWith(presence.getFrom().asEntityBareJidIfPossible());

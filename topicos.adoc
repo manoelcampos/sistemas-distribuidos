@@ -120,3 +120,5 @@ http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
 
 = Architecture Patterns (ver livro na minha biblioteca digital)
 
+- http://artofscalability.com
+
