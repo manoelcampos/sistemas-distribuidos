@@ -23,6 +23,25 @@ Ele é dividido em 3 pacotes:
 Dentro de cada pacote há um arquivo package-info.java que contém a documentação JavaDoc
 do pacote, apresentando detalhes de como funcionam as classes e interfaces dentro dele.
 
+==== Configurando o acesso ao Banco de Dados
+
+Como o projeto usa Hibernate, temos o arquivo link:cadastro-soap-server/src/main/resources/META-INF/persistence.xml[persistence.xml] com as configurações necessárias. No entanto, para este projeto, as conexões com o banco de dados estão sendo criadas por meio de um DataSource. Com isto, o App Server se encarrega de configurar e criar as conexões, deixando a aplicação totalmente livre de de saber detalhes de conexão (como IP do servidor de banco de dados, usuário, senha, etc).
+Usando um DataSource, o App Server permite criar um _pool_ (piscina/tanque) de conexões para o banco de dados. 
+Com o _pool_, diversas conexões são abertas. Quando um cliente conectar e precisar ser feito acesso ao banco, uma destas conexões já estabelecidas é fornecida à aplicação. Isto torna o sistema muito rápido e escalável, uma vez que reaproveitando conexões abertas.
+
+Assim, no arquivo `persistence.xml` devemos apenas indicar, dentro da tag `<jta-data-source>`, o nome do DataSource a ser criado no App Server. Como o DataSource normalmente de ser criado pela interface de administração Web do App Server, para evitar que tenhamos que fazer esse processo manualmente, as configurações de fato da conexão para criação do DataSource são definidas no arquivo link:cadastro-soap-server/src/main/webapp/WEB-INF/glassfish-resources.xml[glassfish-resources.xml].
+*Assim, é preciso abrir tal arquivo para verificar se os dados como usuário e senha do MySQL estão corretos.*
+Quando você cria um _Persistence Unit_ (o arquivo persistence.xml) pelo NetBeans, selecionando a criação de um DataSource, este arquivo `glassfish-resources.xml` é automaticamente criado.
+
+Ao executar a aplicação, este arquivo é automaticamente lido e o DataSource criado no GlassFish.
+Observe que o nome do DataSource usado no arquivo `persistence.xml` deve ser o mesmo definido no atributo
+`jndi-name` da tag `<jdbc-resource enabled>` dentro do arquvo `glassfish-resources.xml`.
+O nome do DataSource deve ser único para todos os projetos instalados no App Server. 
+Assim, se você já tiver uma aplicação que usa um determinado nome de DataSource, para este projeto, deverá escolher outro.
+Se você estiver executando o projeto em um laboratório de informática onde outros alunos também rodaram o mesmo projeto,
+um erro como `Unable to lookup JNDI name [NomeDoDataSource]` pode ocorrer. Neste caso, tente alterar o nome do DataSource nos arquivos xml indicados acima.
+
+
 === Aplicação Cliente para consumir os Web Services
 
 O cliente é apenas um projeto Maven >> Java Application.
@@ -65,14 +84,14 @@ Como nosso projeto usa um banco MySQL, é preciso baixar o driver JDBC que permi
 
 O driver (que nada mais é que um arquivo .jar) deve ser baixado em https://dev.mysql.com/downloads/connector/j/.
 Baixe a versão da biblioteca compatível com a versão do servidor MySQL que estiver usando.
-Se tiver MySQL Server 5, precisará da versão 5 do driver JDBC. No entanto, no ambiente de desenvolvimento, normalmente não há problema em usar uma versão mais nova do driver. No link acima, certifique-se de escolher a opção "Platform Independent", que vai disponibilizar um arquivo zip ou tar.gz.
+Se tiver MySQL Server 5, precisará da versão 5 ou superior do driver JDBC. No link acima, certifique-se de escolher a opção "Platform Independent", que vai disponibilizar um arquivo zip ou tar.gz.
 
 Após baixar o zip, descompacte ele em uma pasta temporária, pois vamos precisar apenas de um arquivo com o nome no formato `mysql-connector-java-VERSAO-bin.jar`. Considerando que você descompactou o GlassFish em uma pasta chamada `glassfish5`, copie tal arquivo jar para
 `glassfish5/glassfish/domains/domain1/lib`.
 
-Por fim, precisamos adicionar o GlassFish 5 no NetBeans para conseguirmos executar a aplicação servidora no GlassFish a partir do NetBeans. Para isto, basta ir na aba "Services" do NetBeans e clicar com o botão direito em "Servers", escolhendo "Add Server...", como mostra https://youtu.be/skBxfTgAQm4[este vídeo].
+Por fim, precisamos adicionar o GlassFish 5 no NetBeans para conseguirmos executar a aplicação servidora no GlassFish a partir do NetBeans. Para isto, basta ir na aba "Services" do NetBeans e clicar com o botão direito em "Servers", escolhendo "Add Server...", como mostra https://youtu.be/Z87oeoaAxDI[este vídeo].
 
-=== Iniciando a Aplicação a partir do NetBeans
+== Iniciando a Aplicação a partir do NetBeans
 
 Para iniciar o projeto no NetBeans, o ideal é recompilar todos os fontes clicando em Executar >> Limpar e Construir (SHIFT+F11). Depois disso, basta executar o projeto clicando no botão "Play" (F6). Se nenhum AppServer estiver configurado, o NetBeans
 vai abrir um assistente para que um seja configurado.
