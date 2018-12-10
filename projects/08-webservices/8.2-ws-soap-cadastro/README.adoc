@@ -6,11 +6,14 @@ permitir a realização de cadastros em um banco de dados MySQL.
 O projeto usa a Java Persistence API (JPA) para Mapeamento Objeto-Relacional (Object Relational Mapping, ORM)
 por meio do framework Hibernate 5.
 
+O projeto foi criado e testado no NetBeans 8.2, uma vez que a versão 9 ainda não possui os plugins para desenvolvimento pré-instalados e a versão gratuita do IntelliJ IDEA (Community) não possui suporte a Java EE para desenvolvimento Web.
+
 == Projetos
 
 === Aplicação Servidora
 
-O código do projeto do servidor está disponível na pasta link:cadastro-soap-server[cadastro-soap-server]. 
+O servidor é um projeto Maven >> Web Application.
+O código fonte está disponível na pasta link:cadastro-soap-server[cadastro-soap-server]. 
 Ele é dividido em 3 pacotes:
 
 - link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/model[model]: ver descrição do pacote em link:cadastro-soap-server/src/main/java/com/manoelcampos/soapserver/model/package-info.java[model/package-info.java].
@@ -22,25 +25,56 @@ do pacote, apresentando detalhes de como funcionam as classes e interfaces dentr
 
 === Aplicação Cliente para consumir os Web Services
 
-Uma aplicação console está disponível para demonstrar como consumir o Web Service de produtos criado no 
-projeto apresentado acima. O código de tal projeto está disponível na pasta link:cadastro-soap-client[cadastro-soap-client]. 
+O cliente é apenas um projeto Maven >> Java Application.
+Ele fornece uma aplicação console para demonstrar como consumir o Web Service de produtos criado no 
+projeto servidor apresentado acima. O código do cliente está disponível na pasta link:cadastro-soap-client[cadastro-soap-client]. 
 
-Observe que é preciso executar a aplicação servidora para depois executar o cliente.
+Observe que é preciso executar a aplicação servidora antes de executar o cliente.
 
 == Requisitos para executar a Aplicação Servidora
 
 === Servidor de Banco de Dados
 
 O MySQL deve estar instalado e executando na máquina local.
-O arquivo link:criar-banco.sh[criar-banco.sh] conecta ao MySQL e criar o banco de dados "cadastro_soap" caso ele não exista.
+O arquivo link:criar-banco.sh[criar-banco.sh] conecta ao MySQL e criar o banco de dados "cadastro_soap",
+criando as tabelas e inserindo dados de teste.
+
 Certifique-se de editar o arquivo para fornecer a senha de root do seu servidor MySQL.
 O arquivo pode ser executado no terminal com `sh criar-banco.sh`
 
 === Servidor de Aplicação
 
-O projeto requer um servidor de aplicação (Application Server, comumente chamados de AppServer ou simplesmente AS) instalado e registrado no NetBeans. Ele foi testado com GlassFish 5. 
-Para iniciar o projeto no NetBeans, o ideal é recompilar todos os fontes clicando em Executar >> Limpar e Construir (SHIFT+F11).
-Depois disso, basta executar o projeto clicando no botão "Play" (F6). Se nenhum AppServer estiver configurado, o NetBeans
+O projeto requer um servidor de aplicação (Application Server, comumente chamados de AppServer ou simplesmente AS) instalado e registrado no NetBeans. Ele foi testado com GlassFish 5. Apesar de o NetBeans 8.2 já vir com o Glass Fish 4.2 instalado e configurado, tal versão apresentou apresentou problemas para funcionar com Web Services SOAP e o Hibernate 5. Por esse motivo, foi utilizado o https://javaee.github.io/glassfish/[GlassFish 5 Full Platform] que pode ser baixado diretamente http://download.oracle.com/glassfish/5.0/release/glassfish-5.0.zip[aqui].
+
+Após baixar o GlassFish, basta descompactar o zip em qualquer lugar, como na pasta do seu usuário no sistema operacional.
+Como a maioria dos servidores de aplicação, o GlassFish tem um console de administração web.
+Para definir/alterar a senha para acesso a tal console (senha que também é necessária para configurar o GlassFish no NetBeans),
+abra um terminal na pasta `bin` onde descompactou o GlassFish. Lá execute o comando abaixo. 
+
+[source,bash]
+----
+./asadmin change-admin-password
+----
+
+Digite `admin` na primeira pergunta para indicar o nome do usuário do GlassFish. Na segunda pergunta apenas digite enter para digitar a senha atual. 
+Digite a nova senha como `admin` também, assim fica fácil de lembrar que o usuário e a senha são os mesmos. No ambiente de desenvolvimento isto é perfeito, só não podemos definir uma senha assim em um ambiente de produção.
+
+Se necessário, execute o comando acima como root. O comando acima não funciona com as últimas versões do JDK (pelo menos não o JDK 11).
+
+Como nosso projeto usa um banco MySQL, é preciso baixar o driver JDBC que permite que aplicações Java possam se comunicar com o banco. Uma vez que estamos usando Hibernate para acesso ao banco (mapeamento objeto-relacional), nossa aplicação não depende de tal biblioteca. No entanto, o App Server depende dela, pois ele que vai gerenciar as conexões com o banco.
+
+O driver (que nada mais é que um arquivo .jar) deve ser baixado em https://dev.mysql.com/downloads/connector/j/.
+Baixe a versão da biblioteca compatível com a versão do servidor MySQL que estiver usando.
+Se tiver MySQL Server 5, precisará da versão 5 do driver JDBC. No entanto, no ambiente de desenvolvimento, normalmente não há problema em usar uma versão mais nova do driver. No link acima, certifique-se de escolher a opção "Platform Independent", que vai disponibilizar um arquivo zip ou tar.gz.
+
+Após baixar o zip, descompacte ele em uma pasta temporária, pois vamos precisar apenas de um arquivo com o nome no formato `mysql-connector-java-VERSAO-bin.jar`. Considerando que você descompactou o GlassFish em uma pasta chamada `glassfish5`, copie tal arquivo jar para
+`glassfish5/glassfish/domains/domain1/lib`.
+
+Por fim, precisamos adicionar o GlassFish 5 no NetBeans para conseguirmos executar a aplicação servidora no GlassFish a partir do NetBeans. Para isto, basta ir na aba "Services" do NetBeans e clicar com o botão direito em "Servers", escolhendo "Add Server...", como mostra https://youtu.be/skBxfTgAQm4[este vídeo].
+
+=== Iniciando a Aplicação a partir do NetBeans
+
+Para iniciar o projeto no NetBeans, o ideal é recompilar todos os fontes clicando em Executar >> Limpar e Construir (SHIFT+F11). Depois disso, basta executar o projeto clicando no botão "Play" (F6). Se nenhum AppServer estiver configurado, o NetBeans
 vai abrir um assistente para que um seja configurado.
 
 Se tudo correr bem, o NetBeans abrirá o navegador no endereço http://localhost:8080/cadastro-soap-server/.
