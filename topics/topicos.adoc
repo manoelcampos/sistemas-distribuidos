@@ -62,6 +62,9 @@
 
 = Web Services
 
+- https://chrome.google.com/webstore/detail/restlet-client-rest-api-t/aejoelaoggembcahagimdiliamlcdmfm[Restlet Client Chrome Extension]
+- https://www.soapui.org[SoapUI]
+
 == SOAP
 
 - http://www.webservicex.net
@@ -110,7 +113,9 @@ http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
 
 = Microservices
 
+- http://microprofile.io (ver free e-book)
 - http://microservices.io
+- https://blogs.mulesoft.com/dev/microservices-dev/microservices-versus-esb/
 
 = CQRS
 
