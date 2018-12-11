@@ -26,3 +26,11 @@ Em seguida, basta executar a aplicação normalmente que os resultados serão ex
 A documentação do Web Service está disponível http://www.corporativo.correios.com.br/encomendas/sigepweb/doc/Manual_de_Implementacao_do_Web_Service_SIGEP_WEB.pdf[aqui]. 
 
 Os correios ainda fornecem https://www.correios.com.br/para-sua-empresa/logistica-integrada/correioslog-comercio-eletronico/pdf/CorreiosWebServicePadresTcnicosdeComunicaodoServioefulfillmentv1_1.pdf[outros Web Services SOAP], mas o serviço não é gratuito.
+
+= Aviso
+
+Como indicado na apresentação link:../webservices.pptx[webservices.pptx], SOAP é um protocolo obsoleto.
+Os projetos SOAP disponibilizados aqui visam apenas mostrar o básico, caso você
+precise manter um sistema que ainda usa tal protocolo.
+
+Ferramentas como o `wsimport` (usada para ler arquivos WSDL e gerar código Java para acesso a um Web Service) nem são mais disponibilizadas nas versões atuais da plataforma Java como a 11.
