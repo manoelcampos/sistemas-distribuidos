@@ -1,0 +1,4 @@
+= Projetos Desenvolvidos
+
+Esta pasta fornece uma lista de projetos desenvolvidos no curso.
+Acesse a pasta de cada projeto para obter informações detalhadas.
