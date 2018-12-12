@@ -1,4 +1,4 @@
-:imagesdir: images
+:imagesdir: ../images
 
 == Conclusão do Capítulo
 O amplo acesso à internet e dispositivos móveis como notebooks, smartphones, tablets e uma http://manoelcampos.com/invasao-equipamentos-smart/slides.html[infinidade de equipamentos inteligentes] tem tornado as exigências por recursos computacionais cada vez maiores.
