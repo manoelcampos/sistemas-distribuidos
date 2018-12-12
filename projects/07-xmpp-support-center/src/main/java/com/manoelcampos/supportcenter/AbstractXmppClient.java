@@ -5,12 +5,12 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat2.Chat;
 import org.jivesoftware.smack.chat2.ChatManager;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smack.roster.AbstractRosterListener;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jxmpp.jid.EntityBareJid;
-import org.jxmpp.jid.impl.JidCreate;
-import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -20,10 +20,18 @@ import java.util.Scanner;
  * Uma classe abstrata que fornece as funcionalidades básicas
  * para implementar um cliente de chat usando o protocolo XMPP.
  *
+ * <p>A classe estende {@link AbstractRosterListener} para permitir que subclasses
+ * possam redefinir (override) métodos para detecção de mudanças
+ * na lista de contatos do usuário. Por exemplo,
+ * o método {@link AbstractRosterListener#presenceChanged(Presence)},
+ * é chamado sempre que o status de presença de algum contato mudar.
+ * Assim, ao redefininr tal método, conseguimos detectar tais mudanças e
+ * executar alguma operação que desejarmos.</p>
+ *
  * @author Manoel Campos da Silva Filho
  * @see <a href="https://github.com/igniterealtime/Smack/blob/master/documentation/roster.md">Documentação do Roster (Serviço de Contatos do XMPP)</a>
  */
-public abstract class AbstractXmppClient implements Closeable {
+public abstract class AbstractXmppClient extends AbstractRosterListener implements Closeable {
     private final Scanner scanner;
 
     /**
@@ -95,10 +103,7 @@ public abstract class AbstractXmppClient implements Closeable {
      * Tal identificação segue o formato usuario@dominio.
      * Por exemplo: pedro@jabber.net
      */
-    private String destinationUser = "";
-
-    /** @see #isChatting() */
-    private boolean chatting;
+    private EntityBareJid destinationUser;
 
     /**
      * Instancia os objetos básicos utilizados pela aplicação.
@@ -228,18 +233,16 @@ public abstract class AbstractXmppClient implements Closeable {
     }
 
     /**
-     * Nome de usuário para quem a última mensagem foi enviada.
+     * Obtém o nome de usuário para quem a última mensagem foi enviada.
      * Jabber foi o primeiro nome dado ao protocolo XMPP e é usado
      * até hoje por questões históricas.
      * Logo, um jabber id é a identificação de um usuário em uma rede XMPP.
-     * Tal identificação segue o formato usuario@dominio.
-     * Por exemplo: pedro@jabber.net
      */
-    public String getDestinationUser() {
+    public EntityBareJid getDestinationUser() {
         return destinationUser;
     }
 
-    public void setDestinationUser(String destinationUser) {
+    public synchronized void setDestinationUser(final EntityBareJid destinationUser) {
         this.destinationUser = destinationUser;
     }
 
@@ -260,10 +263,12 @@ public abstract class AbstractXmppClient implements Closeable {
         }
 
         afterConnected();
+
         /*Usando thread não sei pq não é feita a troca de msgs.
         * Mas sem usar, depois da troca, ele não mostra a prompt pra
         * o usuario digitar msg pra enviar*/
         //new Thread(this).start();
+
         sendMessageLoop();
         return true;
     }
@@ -278,7 +283,7 @@ public abstract class AbstractXmppClient implements Closeable {
              * e depois construir um objeto contendo tais parâmetros.*/
             configBuilder
                     .setUsernameAndPassword(username, password)
-                    .setResource("notebook")
+                    .setResource("desktop")
                     .setXmppDomain(domain)
                     .setHost(domain);
 
@@ -355,7 +360,7 @@ public abstract class AbstractXmppClient implements Closeable {
      * @param chat objeto que permite a comunicação com o usuário emissor da mensagem
      */
     protected void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat){
-        System.out.println(fromJabberId + " diz: " + message.getBody());
+        System.out.println("\n" + fromJabberId + " diz: " + message.getBody());
     }
 
     /**
@@ -370,7 +375,7 @@ public abstract class AbstractXmppClient implements Closeable {
         }
 
         while(true){
-            System.out.print("Digite uma mensagem (ou 'sair' para fechar): ");
+            System.out.print("\nDigite uma mensagem (ou 'sair' para fechar): ");
             msg = scanner.nextLine();
             if (msg.equalsIgnoreCase("sair")) {
                 break;
@@ -385,18 +390,15 @@ public abstract class AbstractXmppClient implements Closeable {
     /**
      * Envia uma mensagem para um determinado usuário
      * @param msg texto da mensagem a ser enviada
-     * @param toJabberId ID do usuário para quem deseja-se enviar a mensagem (nome de usuário/login),
-     *                   seguindo o formato usuario@domínio
+     * @param destinationUser ID do usuário para quem deseja-se enviar a mensagem (nome de usuário/login)
      */
-    protected boolean sendMessage(final String msg, final String toJabberId){
+    protected boolean sendMessage(final String msg, final EntityBareJid destinationUser){
         if (connection.isConnected()) {
             try {
-                //Cria um objeto que representa o usuário destinatário da mensagem.
-                EntityBareJid jid = JidCreate.entityBareFrom(toJabberId);
                 //Envia a mensagem para tal usuário
-                chatManager.chatWith(jid).send(msg);
+                chatManager.chatWith(destinationUser).send(msg);
                 return true;
-            } catch (SmackException.NotConnectedException | InterruptedException | XmppStringprepException e) {
+            } catch (SmackException.NotConnectedException | InterruptedException e) {
                 System.err.println("Erro ao enviar mensagem: " + e.getMessage());
             }
         }
@@ -404,13 +406,16 @@ public abstract class AbstractXmppClient implements Closeable {
         return false;
     }
 
+    /**
+     * Envia uma mensagem usando um objeto {@link Chat} previamente criado.
+     * @param chat o objeto {@link Chat} que representa uma conversa com um usuário de destino
+     * @param msg a mensagem a ser enviada
+     */
     protected void sendMessage(final Chat chat, final String msg){
         try {
             chat.send(msg);
-        } catch (SmackException.NotConnectedException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (SmackException.NotConnectedException | InterruptedException e) {
+            System.err.println("Não foi possível enviar a mensagem: " + e.getMessage());
         }
     }
 
@@ -422,12 +427,9 @@ public abstract class AbstractXmppClient implements Closeable {
      * Se foi aberto por um cliente, indica que ele está sendo atendido por um funcionário.
      */
     public synchronized boolean isChatting() {
-        return chatting;
+        return destinationUser != null;
     }
 
-    public synchronized void setChatting(boolean chatting) {
-        this.chatting = chatting;
-    }
 
     /**
      * Roster é o nome do serviço XMPP que implementa o gerenciamento de contatos.

@@ -58,15 +58,8 @@ public class XmppClient extends AbstractXmppClient {
          * indicando que o cliente agora está conversando com algum funcionário
          * (alterando atributo chatting pra true).*/
         else if(message.getBody().equalsIgnoreCase("Em que posso ajudá-lo?")){
-            /**
-             * Indica que agora o cliente está sendo atendido.
-             * Isto vai fazer com que entre automaticamente no loop de envio de mensagens.
-             * Ver o método {@link #sendMessageLoop()}.
-            */
-            setChatting(true);
-
             //Define o ID do funcionário que enviou a mensagem e que vai atender o cliente.
-            setDestinationUser(fromJabberId.toString());
+            setDestinationUser(fromJabberId);
         }
     }
 }

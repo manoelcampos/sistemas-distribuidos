@@ -65,8 +65,19 @@ public class SupportCenter extends AbstractXmppClient {
                 throw new RuntimeException(e);
             }
         }
+        System.out.println();
 
-        getRoster().addRosterListener(new MyPresenceListener());
+        /**
+         * Indica qual objeto {@link RosterListener} será responsável por ficar ouvindo (listening) mudanças
+         * em algum dos contatos do usuário logado para então executar algum código em reação
+         * a tais mudanças.
+         * Neste caso, como a classe {@link SupportCenter} estende {@link AbstractXmppClient}, que por sua vez estende
+         * a classe {@link AbstractRosterListener}, então o objeto atual da classe em que estamos (this)
+         * é um objeto RosterListener. Assim, apenas dizemos que a própria classe será responsável por
+         * monitorar mudanças em algum contato por meio dos métodos que ele redefine a partir da classe {@link AbstractRosterListener}.
+         * A classe atual apenas redefine o método {@link #presenceChanged(Presence)}.
+         */
+        getRoster().addRosterListener(this);
     }
 
     @Override
@@ -76,51 +87,36 @@ public class SupportCenter extends AbstractXmppClient {
         /*Verifica se o cliente que perguntou-se se ele estava aguardando atendimento
         * respondeu que está aguardando sim.*/
         if(message.getBody().equalsIgnoreCase("Estou aguardando sim")) {
+            //Define o ID do cliente que será atendido, que indica que o funcinário agora está ocupado.
+            setDestinationUser(fromJabberId);
             sendMessage(chat, "Em que posso ajudá-lo?");
-            //Indica que o funcionário está atendendo alguém.
-            setChatting(true);
-
-            //Define o ID do cliente que será atendido
-            setDestinationUser(fromJabberId.toString());
             return;
         }
     }
 
     /**
-     * Uma classe interna usada para receber notificações de mudanças
-     * de status de contatos. Sendo interna, ela tem acesso a todos os métodos
-     * e atributos da classe onde foi inserida. Se ela fosse declarada
-     * fora da classe {@link SupportCenter}, não haveria esse acesso por padrão.
-     *
-     * <p>Atualmente, implementa apenas um método que é executado quando
-     * um contato fica online.
+     * Método chamado automaticamente quando o status de um contato mudar.
      * O objeto {@link #getRoster() roster} é responsável por chamar os métodos desta
      * classe quando uma mudança de status de um contato ocorrer.</p>
+     * @param presence o status do contato
      */
-    private class MyPresenceListener extends AbstractRosterListener {
-        private EntityBareJid destinationUser;
+    @Override
+    public void presenceChanged(Presence presence) {
+        //Se um cliente conectou e o funcionário não está conversando com ninguém
+        if(presence.isAvailable() && !isChatting()){
+            this.setDestinationUser(presence.getFrom().asEntityBareJidIfPossible());
 
-        /**
-         * Método chamado automaticamente quando o status de um contato mudar.
-         * @param presence o status do contato
-         */
-        @Override
-        public void presenceChanged(Presence presence) {
-            final String user =
-                    presence.getFrom()
-                            .asEntityBareJidIfPossible()
-                            .toString();
-            if(user.equalsIgnoreCase(getJabberId())){
-                return;
-            }
-
-            if(presence.getType() == Presence.Type.available && !isChatting()){
-                this.destinationUser = presence.getFrom().asEntityBareJidIfPossible();
-
-                //Pergunta ao cliente se ele ainda está aguardando
-                Chat chat = getChatManager().chatWith(presence.getFrom().asEntityBareJidIfPossible());
-                sendMessage(chat, "Está aguardando?");
-            }
+            //Pergunta ao cliente se ele ainda está aguardando
+            Chat chat = getChatManager().chatWith(presence.getFrom().asEntityBareJidIfPossible());
+            sendMessage(chat, "Está aguardando?");
+        }
+        // Se o cliente que estávamos atendendo desconectar, então...
+        else if(presence.getType() == Presence.Type.unavailable && presence.getFrom().asEntityBareJidIfPossible().equals(getDestinationUser())){
+            /*
+            ...define o nome do usuário de destino (com quem o funcionário estava conversado)
+            para null. Assim, o funcionário vai ficar livre para atender outro cliente. */
+            System.out.print("\nCliente " + presence.getFrom() + " desconectou.");
+            setDestinationUser(null);
         }
     }
 }
