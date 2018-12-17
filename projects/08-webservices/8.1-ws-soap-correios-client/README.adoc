@@ -25,7 +25,9 @@ Em seguida, basta executar a aplicação normalmente que os resultados serão ex
 
 A documentação do Web Service está disponível http://www.corporativo.correios.com.br/encomendas/sigepweb/doc/Manual_de_Implementacao_do_Web_Service_SIGEP_WEB.pdf[aqui]. 
 
-Os correios ainda fornecem https://www.correios.com.br/para-sua-empresa/logistica-integrada/correioslog-comercio-eletronico/pdf/CorreiosWebServicePadresTcnicosdeComunicaodoServioefulfillmentv1_1.pdf[outros Web Services SOAP], mas o serviço não é gratuito.
+Os correios ainda fornecem outros Web Services SOAP para https://correios.com.br/solucoes-empresariais/comercio-eletronico/palestras-correios-1/pdf/ManualdeImplementacaodoCalculoRemotodePrecosePrazos.pdf/view[consulta de preços e prazos], mas não são gratuitos.
+
+Outros como https://www.correios.com.br/a-a-z/pdf/rastreamento-de-objetos/manual_rastreamentoobjetosws.pdf/view[serviço de rastreamento de encomendas] pode ser utilizado gratuitamente com o usuário *ECT* e senha *SRO*.
 
 = Aviso
 
