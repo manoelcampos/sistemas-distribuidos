@@ -88,7 +88,7 @@ image::glassfish-admin-console.gif[]
 
 == Estrutura do projeto
 
-Utilizaremos o https://pt.wikipedia.org/wiki/Hibernate[Hibernate] como framework de https://pt.wikipedia.org/wiki/Mapeamento_objeto-relacional[mapeamento objeto relacional (Object Relational Mapping - ORM)], que é uma implementação da especificação https://pt.wikipedia.org/wiki/Java_Persistence_API[JPA]. Ele nos permite esquecer os detalhes relacionados à BDs relacionais (como SQL, Primary Keys (PKs), Foreign Keys (FKs), criação de tabelas, etc) e assim podermos trabalhar exclusivamente em um modelo orientado a objetos, mesmo para manipulação dos dados no banco.
+Utilizaremos o https://pt.wikipedia.org/wiki/Hibernate[Hibernate] como framework de https://pt.wikipedia.org/wiki/Mapeamento_objeto-relacional[mapeamento objeto relacional (Object Relational Mapping - ORM)], que é uma implementação da especificação https://pt.wikipedia.org/wiki/Java_Persistence_API[JPA]. Ele nos permite esquecer os detalhes de BDs relacionais (como SQL, Primary Keys (PKs), Foreign Keys (FKs), criação de tabelas, etc) e assim podermos trabalhar exclusivamente em um modelo orientado a objetos, mesmo para manipulação dos dados no banco.
 
 A especificação http://cdi-spec.org[Context and Dependency Injection (CDI)] permite que objetos sejam injetados (ou seja, criados automaticamente) onde precisarmos. Tal especificação é implementada por servidores de aplicação como o GlassFish ou WildFly. Podemos fazer o deploy (implantar) aplicações utilizando CDI em Web Containers como Tomcat ou Jetty (que não implementam todas as especificações da plataforma Java EE e logo são mais leves), mas isto requer uma série de configurações.
 
@@ -118,7 +118,7 @@ Se nunca utilizou Maven antes, esta é uma ferramenta para gerenciamento de depe
 
 === Criando as classes de negócio
 
-Depois de criado o projeto, vamos criar as classes `Usuario` e `Cidade` dentro do pacote criado. Primeiro vamos criar a classe `Usuario` dentro de um subpacote chamado `model`, onde colocaremos todas as classes de negócio (que representam o modelo do negócio).
+Agora vamos criar as classes `Usuario` e `Cidade`. Primeiro vamos criar a classe `Usuario` dentro de um subpacote chamado `model`, onde colocaremos todas as classes de negócio (que representam o modelo do negócio).
 
 image::create-business-class.gif[]
 
