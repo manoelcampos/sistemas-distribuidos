@@ -18,20 +18,20 @@ por Manoel Campos da Silva Filho
 REST se tornou o padrão de fato para o desenvolvimento de Web Services (WS's) há alguns anos, em oposição ao protocolo SOAP padronizado pela W3C.
 Isto se deve a diversos fatores como:
 
-- Troca de mensagens simplificadas entre cliente e servidor, normalmente utilizando JSON no lugar de XML. Isto faz com o tráfego de dados e o delay causado pela troca de mensagens sejam reduzidos. Tais características são fundamentais para dispositivos móveis que normalmente possui pacotes de dados com franquia de tráfego e velocidade limitados.
+- Troca de mensagens simplificadas entre cliente e servidor, normalmente utilizando JSON no lugar de XML. Isto faz com o tráfego de dados e o delay causado pela troca de mensagens sejam reduzidos. Tais características são fundamentais para dispositivos móveis que normalmente possuem pacotes de dados com tráfego e velocidade limitados.
 - Utilização apenas dos recursos do protocolo HTTP para troca de mensagens, sem precisar empacotar os dados da requisição no cabeçalho de outro protocolo como o SOAP, que apenas aumenta o tamanho dos pacotes de dados sendo enviados.
 - Utilização de URLs convencionalmente amigáveis, tornando muito simples o teste de clientes REST utilizando ferramentas de linha de comando como curl ou outras como plugins para navegadores.
 - Ampla adoção pelo mercado, tornando-o um padrão de fato, amplamente suportado pela comunidade de software livre com a disponibilização de inúmeras bibliotecas e suporte nos mais conhecidos IDEs do mercado.
 - Grandes empresas como Google, Facebook, Twitter, Yahoo e muitas outras fornecem incontáveis serviços REST para as mais variadas finalidades. Tais WS's fornecem desde integração com serviços como Google Maps, YouTube e Google Translator, informações sobre previsão do tempo e cotação de moedas (inclusive de criptomoedas como Bitcoin), etc.
 
-Por estes motivos, o protocolo SOAP se tornou absoleto, dando lugar ao REST. Desta forma, neste tutorial será mostrado o desenvolvimento de uma aplicação servidora e outra cliente utilizando o padrão REST. Será mostrado um passo-a-passo para criar as aplicações do zero, explicando as tecnologias utilizadas e configurações necessárias. Então vamos lá.
+Por estes motivos, SOAP se tornou absoleto, dando lugar ao REST. Desta forma, neste tutorial será mostrado o desenvolvimento de uma aplicação servidora e outra cliente utilizando o padrão REST. Será mostrado um passo-a-passo para criar as aplicações do zero, explicando as tecnologias utilizadas e configurações necessárias. Então vamos lá.
 
 == Ferramentas Necessárias
 
 Para este projeto vamos utilizar as versões estáveis mais recentes das ferramentas apresentadas, como listado abaixo:
 
 . JDK 1.8
-. IDE NetBeans 8.2 para Java EE para desenvolvimento do projeto
+. IDE NetBeans 8.2 para Java EE
 . Servidor de aplicação GlassFish 5 Full Platform (informações de configuração a seguir)
 
 Considera-se que você já tem os itens 1 e 2 previamente instalados.
