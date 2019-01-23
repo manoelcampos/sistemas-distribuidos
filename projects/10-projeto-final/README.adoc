@@ -1,0 +1,31 @@
+= Projeto Final: Sistemas Distribuídos
+
+O objetivo deste projeto é desenvolver 4 sistemas distribuídos que interoperam por meio de
+web services REST utilizando a especificação JAX-RS.
+Nenhum destes sistemas precisa ter front-end, apenas o back-end com acesso a banco de dados e 
+disponibilização dos endpoints REST.
+
+= Sistema de Busca de Voos
+
+O sistema deve permitir o cadastro da companhia aérea, avião,
+cidades, estados, pilotos e voos com o respectivo preço.
+
+Para cada avião deve ser indicada a capacidade de passageiros.
+Para cada voo deve ser indicada a cidade de origem e destino,
+data/hora de partida e chegada, número do voo, preço do bilhete, avião, piloto e companhia
+áerea.
+
+O sistema deve disponibilizar os seguintes endpoints REST:
+
+- consultar voos por origem, destino
+- consultar voos por origem, destino e data de partida
+- consultar voos por faixa de preço
+
+= Sistema de Busca de Hotéis
+
+= Sistema de Busca de Carros de Aluguel
+
+= Sistema de Agência de Viagem
+
+O sistema deve permitir ao usuário fazer a compra de pacotes de viagem que incluam passagem aérea, hotel e/ou carro para alugar.
+Este sistema deve interoperar (integrar) com os outros sistemas.
