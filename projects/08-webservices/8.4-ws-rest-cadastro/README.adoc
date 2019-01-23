@@ -325,10 +325,10 @@ public interface DAO<T extends Cadastro> {
 
 Tal interface define métodos para:
 
-- localizar um objeto no BD a partir do seu id (`findById`);
-- localizar por um campo específico (`findByField`);
-- remover (`remove`);
-- e salvar (`save`) um objeto no BD. 
+- localizar um objeto no BD a partir do seu id: `findById()`;
+- localizar por um campo específico: `findByField()`;
+- remover: `remove()`;
+- e salvar um objeto no BD: `save()`. 
 
 A interface usa https://en.wikipedia.org/wiki/Generics_in_Java[Generics] para permitir indicar qual o tipo de objeto de negócio (que implementa a interface `Cadastro`) um DAO trabalhará. Assim, quando mandarmos localizar um `Usuario` utilizando seu id, teremos como retorno um objeto `Usuario` e não um objeto genérico como `Object`. Generics é um assunto bem extenso que está fora do escopo deste artigo.
 
