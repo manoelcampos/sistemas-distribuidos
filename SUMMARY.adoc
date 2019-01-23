@@ -8,4 +8,5 @@
 .. link:book/chapter01d-transparency.adoc[Transparência]
 .. link:book/chapter01e-conclusion.adoc[Conclusão]
 . link:book/chapter02.adoc[Capítulo 2]
+. link:projects/08-webservices/8.4-ws-rest-cadastro/README.adoc[Web Services REST em Java]
 . link:GLOSSARY.adoc[Glossário]
