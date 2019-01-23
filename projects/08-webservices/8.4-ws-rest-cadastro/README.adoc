@@ -12,6 +12,11 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
+
+ifdef::env-github[]
+IMPORTANT: Acesse o tutorial online https://manoelcampos.gitbooks.io/sistemas-distribuidos/content/projects/08-webservices/8.4-ws-rest-cadastro/[neste link]. **O acesso diretamente pelo GitHub não permite a exibição de vídeos.**
+endif::[]
+
 = Desenvolvimento Web Services REST em Java utilizando JAX-RS com JPA e CDI no NetBeans
 por Manoel Campos da Silva Filho
 
@@ -50,16 +55,19 @@ MySQL Server Community https://dev.mysql.com/downloads/mysql/[aqui].
 
 ==== Criando o Banco de Dados
 
-Utilize o NetBeans para criar o banco de dados chamado `cadastro-rest` para o nosso sistema, acessando a aba "Services".
+Utilize o NetBeans para criar o banco de dados chamado `cadastro-rest` para o nosso sistema, acessando a aba "Services",
+como mostrado neste https://youtu.be/g0R11_1Fv1I[vídeo].
 
-image::create-database.gif[link=https://youtu.be/g0R11_1Fv1I]
+video::g0R11_1Fv1I[youtube, 800, 600]
 
 Não precisaremos criar as tabelas manualmente, como veremos a seguir.
 
 === GlassFish 5
 
-Abaixo são mostrados os passos para instalar o GlassFish 5. Todos estes passos também podem
+Abaixo são mostrados os passos para instalar o GlassFish 5, que também podem
 ser acompanhados neste https://youtu.be/Z87oeoaAxDI[vídeo].
+
+video::Z87oeoaAxDI[youtube, 800, 600]
 
 Como vamos usar o GlassFish 5, vamos remover o GlassFish 4 do NetBeans.
 Este é um passo opcional. Você pode ter quantos servidores de aplicação
@@ -196,14 +204,11 @@ O mesmo processo de definir uma entidade, um `ID` e implementar `Serializable` d
 
 Projetos utilizando JPA precisam conter uma Persistence Unit (PU), que é uma arquivo chamado `persistence.xml` definindo as configurações para acesso ao BD, controle de transações, provedor de persistência a ser utilizado e outras configurações. Ele é o arquivo de configuração da JPA.
 
-Uma vez que já temos algumas Entities no nosso projeto, podemos facilmente adicionar uma PU utilizando o NetBeans.
+Uma vez que já temos algumas Entities no nosso projeto, podemos facilmente adicionar uma PU utilizando o NetBeans,
+como mostra este https://youtu.be/7y--ODvjdjQ[vídeo].
 
 video::7y--ODvjdjQ[youtube, 800, 600]
 
-ifdef::env-github[]
-Este vídeo mostra o processo:
-pass:[http://youtu.be/7y--ODvjdjQ]
-endif::[]
 
 No vídeo acima, definimos o nome da PU como `default` (um nome mais simples que o sugerido pelo NetBeans). Como teremos apenas uma PU no nosso projeto (para acessar um único BD), não precisaremos nos preocupar com este nome. Escolhemos o Persistence Provider como Hibernate (JPA 2.1), indicando que o Hibernate será a implementação da JPA que utilizaremos. No campo Data Source devemos escolher ou configurar uma conexão com o BD. Um Data Source (DS) é uma fábrica de conexões com o BD. 
 
