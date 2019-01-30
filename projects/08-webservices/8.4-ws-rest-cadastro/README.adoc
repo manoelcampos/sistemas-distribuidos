@@ -173,7 +173,7 @@ Faça o mesmo para a classe `Cidade`, definindo os atributos abaixo:
 
 === Utilizando a JPA para acesso ao Banco de Dados
 
-Como falado, a JPA é uma especificação Java que provê uma forma padrão para a implementação de frameworks de ORM como o Hibernate. Assim, se usarmos JPA, podemos traocar o framework por qualquer outro que implementa tal especificação, sem precisarmos alterar nosso código fonte (apenas configurações serão necessárias).
+Como falado, a JPA é uma especificação Java que provê uma forma padrão para a implementação de frameworks de ORM como o Hibernate. Assim, se usarmos JPA, podemos trocar o framework por qualquer outro que implementa tal especificação, sem precisarmos alterar nosso código fonte (apenas configurações serão necessárias).
 
 Para usarmos a JPA, e posteriormente o Hibernate em segundo plano, para fazer toda a comunicação com o BD, precisamos indicar quais classes representam tabelas no BD. Nossas classes de negócio `Usuario` e `Cidade` serão as únicas a serem mapeadas para tabelas no banco (por isso chama-se mapeamento objeto-relacional, pois mapeia-se objetos para um BD relacional como o MySQL).
 
@@ -205,7 +205,7 @@ O mesmo processo de definir uma entidade, um `ID` e implementar `Serializable` d
 Projetos utilizando JPA precisam conter uma Persistence Unit (PU), que é uma arquivo chamado `persistence.xml` definindo as configurações para acesso ao BD, controle de transações, provedor de persistência a ser utilizado e outras configurações. Ele é o arquivo de configuração da JPA.
 
 Uma vez que já temos algumas Entities no nosso projeto, podemos facilmente adicionar uma PU utilizando o NetBeans,
-como mostra este https://youtu.be/7y--ODvjdjQ[vídeo].
+como mostra este link:https://youtu.be/7y\--ODvjdjQ[vídeo].
 
 video::7y--ODvjdjQ[youtube, 800, 600]
 
@@ -245,7 +245,7 @@ Pelo menu `File >> New File` do NetBeans, podemos digitar `beans.xml` na janela 
 
 Isto indica que só podemos injetar objetos que estejam marcados com alguma anotação que define o escopo dos objetos a serem injetados. Algumas anotações de escopo disponibilizadas pelo CDI, que controlam o ciclo de vida de objetos, são o `@ApplicationScoped` e `@RequestScoped`. Um objeto marcado com `@ApplicationScoped` será criado quando requisitado e só será destruído quando a aplicação for finalizada. Um objeto marcado com `@RequestScoped` será criado sempre que for requisitado e será destruído ao final da requisição. Se não marcarmos um objeto com nenhum anotação de escopo, seu escopo é `@Dependent`, que indica que seu ciclo de vida depende do ciclo de vida do objeto onde ele foi criado.
 
-Para não sermos obrigamos a anotar todas as classes que desejamos criar objetos por injeção e assim tornar mais fácil o uso de CDI, podemos alterar o valor do atributo para `all`. Assim, poderemos injetar objetos de qualquer classe que desejarmos.
+Para não sermos obrigados a anotar todas as classes que desejamos criar objetos por injeção e assim tornar mais fácil o uso de CDI, podemos alterar o valor do atributo para `all`. Assim, poderemos injetar objetos de qualquer classe que desejarmos.
 
 === Adicionando dependências Maven
 
