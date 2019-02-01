@@ -507,9 +507,33 @@ publicados por um serviço REST como o serviço de usuários desenvolvido aqui.
 |Excluir Usuário  |DELETE |curl -X DELETE http://localhost:8080/server/api/usuario/1
 |===
 
+
+Para operações POST e PUT é comum passarmos no corpo da mensagem HTTP o conteúdo a ser enviado na requisição.
+Nos exemplos acima, é passado um objeto Usuario em formato JSON. Neste caso, precisamos incluir o cabeçalho
+Content-Type para indicar que estamos enviando um conteúdo em JSON na requisição HTTP.
+
+Usar o curl pode ser útil para enviar requisições simples como GET, 
+onde passamos apenas IDs como parâmetros na URL.
+Quando precisamos passar objetos complexos em JSON, por exemplo, fica difícil fazer isso pela linha
+de comando.
+
 === Usando extensões para navegadores Web
 
 Você pode utilizar o próprio navegador para testar seus serviços REST. Assim, você terá uma interface web amigável e intuitiva, facilitando muito os testes. A seguir são exibidas opções para Firefox e Chrome.
 
 - Para o Firefox você pode baixar o plugin https://addons.mozilla.org/pt-BR/firefox/addon/restclient/[RESTClient].
 - Para o Google Chrome utilizo a excelente extensão https://chrome.google.com/webstore/detail/restlet-client-rest-api-t/aejoelaoggembcahagimdiliamlcdmfm/[Restlet Client]. 
+
+A extensão Restlet Client tem um recurso extremamente útil de permitir criar projetos e salvar diferentes requisições HTTP
+dentro deste projeto. Assim, podemos facilmente reenviar tais requisições sem ter que configurá-las novamente.
+Muitas vezes, apenas alteramos valores de parâmetros e pronto. A imagem abaixo apresenta um exemplo de um projeto
+criado em tal ferramenta.
+
+image:restlet-client-chrome.png[]
+
+Todos os dados usadas nos exemplos de envio de requisição utilizando o comando curl na seção anterior devem
+ser utilizados para preencher os campos na tela da extensão que você estiver usando no seu navegador, incluindo:
+
+- o verbo HTTP;
+- o conteúdo do corpo da mensagem (como nos casos de POST e PUT)
+e cabeçalho para indicar o formato de tal conteúdo (no nosso caso, JSON).
