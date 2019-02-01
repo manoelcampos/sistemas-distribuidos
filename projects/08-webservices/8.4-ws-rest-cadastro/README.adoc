@@ -481,3 +481,35 @@ public class RestConfig extends Application {
 ----
 
 No entanto, o NetBeans adicionará código dentro de tal classe que de fato não funcionará (pelo menos não para as versões de bibliotecas e ferramentas utilizadas). Assim, se usar o recurso do NetBeans para criar tal classe, tenha certeza de apagar o código entre as chaves, deixando a classe vazia como acima. Lembre também de definir o nome pelo qual deseja acessar os recursos por meio de REST. 
+
+== Testando o serviço criado
+
+Para testar o serviço REST criado podemos criar uma aplicação cliente em qualquer linguagem que desejarmos,
+para qualquer plataforma (web, mobile, desktop). O projeto link:client[cliente] é um exemplo de uma aplicação
+de linha de comando em Java que consome tal serviço.
+
+Testar um método REST que usa o verbo HTTP GET é trivial: basta digitar a URL do método, passando os devidos parâmetros.
+No entanto, quando um método usa outro verbo HTTP, não conseguimos testar desta forma.
+Se você não quiser ou não for criar uma aplicação cliente, existem várias alternativas para testar seus serviços REST.
+
+=== Usando a ferramenta de linha de comando curl
+
+O curl é uma ferramenta que já vem instalada na maioria das distribuições Linux.
+Abaixo mostro o comando curl que pode usar na linha de comando para enviar uma requisição HTTP para diferentes métodos
+publicados por um serviço REST como o serviço de usuários desenvolvido aqui.
+
+
+|===
+|*Método* |*Verbo HTTP* |*Comando curl completo*
+|Inserir Usuário  |POST |curl -X POST -d '{"cpf": "99999999999", "nome": "João"}' -H "Content-Type: application/json" http://localhost:8080/server/api/usuario/
+|Buscar Usuário  |GET |curl http://localhost:8080/server/api/usuario/1
+|Alterar Usuário  |PUT |curl -X PUT -d '{"id": 1, "cpf": "11111111111", "nome": "Maria"}' -H "Content-Type: application/json" http://localhost:8080/server/api/usuario/
+|Excluir Usuário  |DELETE |curl -X DELETE http://localhost:8080/server/api/usuario/1
+|===
+
+=== Usando extensões para navegadores Web
+
+Você pode utilizar o próprio navegador para testar seus serviços REST. Assim, você terá uma interface web amigável e intuitiva, facilitando muito os testes. A seguir são exibidas opções para Firefox e Chrome.
+
+- Para o Firefox você pode baixar o plugin https://addons.mozilla.org/pt-BR/firefox/addon/restclient/[RESTClient].
+- Para o Google Chrome utilizo a excelente extensão https://chrome.google.com/webstore/detail/restlet-client-rest-api-t/aejoelaoggembcahagimdiliamlcdmfm/[Restlet Client]. 
