@@ -1,16 +1,24 @@
 = Chat cliente/servidor utilizando Sockets em Java 8
 
 Este é um projeto Java que mostra como criar uma aplicação de chat cliente/servidor utilizando as
-interfaces `ServerSocketChannel` e `SocketChannel` da API https://docs.oracle.com/javase/8/docs/technotes/guides/io/[NIO.2 do Java 7],
-mais atuais que as classes `ServerSocket` e `Socket` que vêm desde o Java 1.
+interfaces `ServerSocketChannel` e `SocketChannel` da https://docs.oracle.com/javase/8/docs/technotes/guides/io/[API NIO.2 do Java 7] e uma das formas mais atuais para a construção de aplicações de Socket.
 
-Esta é uma versão introdutória que mostra como desenvolver a aplicação ainda
-utilizando chamadas bloqueantes (blocking), o que obriga o uso de threads
+É mostrado como desenvolver a aplicação 
+utilizando chamadas não bloqueantes (non-blocking), 
 para permitir que o servidor possa aceitar conexões e receber mensagens de múltiplos usuários
-simultaneamente.
+simultaneamente, *sem a obrigatoriedade* de utilizar Threads para tratar tais requisições.
 
-A forma de implementação desta versão difere da link:../01-blocking-chat-socket[anterior] apenas pelo uso das novas interfaces
-`ServerSocketChannel` e `SocketChannel`.
+Apesar de não ser obrigado o uso de Threads, estas foram introduzidas no servidor
+de uma forma eficiente (diferente da link:1.1-blocking-socket[versão bloqueante]).
+Foi utilizado o recurso de link:http://blog.caelum.com.br/o-minimo-que-voce-deve-saber-de-java-8/[Streams do Java 8]
+(não confundir com InputStream e OutputStream utilizados na versão 01 do projeto)
+para permitir pegar um conjunto com requisições de múltiplos clientes 
+recebidas pelo servidor (como solicitações de conexão e envio de dados) e criar automaticamente
+um conjunto de Threads para processar tais dados.
+
+Utilizando tal recurso de Streams do Java 8, se tivermos um computador servidor com 4 núcleos de CPU,
+o recurso utilizado criará, por padrão, no máximo 3 Threads. Uma Thread é a principal da aplicação, automaticamente
+criada pela JVM quando a aplicação é executada, totalizando 4 Threads neste exemplo. Assim, se existirem 3000 requisições de clientes, estas são distribuídas uniformemente entre as 3 Threads, cada uma processando 1000 requisições.
 
 O projeto é composto por duas aplicações console:
 
@@ -22,8 +30,8 @@ O projeto é composto por duas aplicações console:
 O servidor escuta numa porta configurada por meio de uma constante em sua classe.
 Tal constante é utilizada pelo cliente para saber qual porta se conectar ao servidor.
 O servidor inicia e fica em loop infinito, aguardando conexões de clientes em tal porta.
-Para cada cliente conectado, o servidor cria uma Thread para atender as requisições do cliente.
-Para cada mensagem recebida do cliente, o servidor envia uma resposta de volta.
+Com uso da API não bloqueante NIO.2, conseguimos processar as conexões e recebimento de mensagens
+sem obrigatoriamente utilizarmos Threads. 
 
 == Cliente
 

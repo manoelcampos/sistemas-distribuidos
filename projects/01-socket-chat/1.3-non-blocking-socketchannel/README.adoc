@@ -8,7 +8,7 @@ utilizando chamadas não bloqueantes (non-blocking),
 para permitir que o servidor possa aceitar conexões e receber mensagens de múltiplos usuários
 simultaneamente, *sem a obrigatoriedade* de utilizar threads para tratar tais requisições.
 
-A forma de implementação desta versão difere da link:../02-blocking-chat-socketchannel-nio2[anterior] apenas pelo uso de requisições não bloqueantes.
+A forma de implementação desta versão difere da link:../1.2-blocking-socketchannel[anterior] apenas pelo uso de requisições não bloqueantes.
 
 O projeto é composto por duas aplicações console:
 
