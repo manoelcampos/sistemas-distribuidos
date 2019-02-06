@@ -12,9 +12,8 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-
 ifdef::env-github[]
-IMPORTANT: Acesse o tutorial online https://manoelcampos.gitbooks.io/sistemas-distribuidos/content/projects/08-webservices/8.4-ws-rest-cadastro/[neste link]. **O acesso diretamente pelo GitHub não permite a exibição de vídeos.**
+IMPORTANT: Acesse o tutorial online https://manoelcampos.gitbooks.io/sistemas-distribuidos/content/projects/04-webservices/4.4-ws-rest-cadastro/[neste link]. **O acesso diretamente pelo GitHub não permite a exibição de vídeos.**
 endif::[]
 
 = Desenvolvimento Web Services REST em Java utilizando JAX-RS com JPA e CDI no NetBeans
