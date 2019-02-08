@@ -63,6 +63,10 @@ Não precisaremos criar as tabelas manualmente, como veremos a seguir.
 
 === GlassFish 5
 
+Vamos utilizar o GlassFish 5 por ser a última versão até o momento de elaboração deste tutorial. Por conta de já termos utilizado tal servidor de aplicação no link:4.2-ws-soap-cadastro[projeto SOAP], uma vez que a versão 4.2 já disponível no NetBeans apresenta problemas com SOAP e o Hibernate 5.
+
+IMPORTANT: Não é preciso utilizar um servidor de aplicação completo como o GlassFish para este projeto. Um Web Container como http://tomee.apache.org[TomEE microprofile] é suficiente, uma vez que ele implementa as APIs JAX-RS, JPA, JTA e CDI que estamos usando. Já o conhecido http://tomcat.apache.org[Tomcat] não implementa tais APIs, pois ele é apenas um Servlet Container, como pode ser visto http://tomee.apache.org/comparison.html[aqui]. Mais detalhes de quais APIs diferentes servidores implementam pode ser visto nesta excelente https://youtu.be/iBJ8FlUA3ok[palestra] (slides disponíveis https://www.slideshare.net/agoncal/just-enough-app-server[aqui]).
+
 Abaixo são mostrados os passos para instalar o GlassFish 5, que também podem
 ser acompanhados neste https://youtu.be/Z87oeoaAxDI[vídeo].
 
@@ -506,10 +510,11 @@ publicados por um serviço REST como o serviço de usuários desenvolvido aqui.
 |Excluir Usuário  |DELETE |curl -X DELETE http://localhost:8080/server/api/usuario/1
 |===
 
-
 Para operações POST e PUT é comum passarmos no corpo da mensagem HTTP o conteúdo a ser enviado na requisição.
 Nos exemplos acima, é passado um objeto Usuario em formato JSON. Neste caso, precisamos incluir o cabeçalho
 Content-Type para indicar que estamos enviando um conteúdo em JSON na requisição HTTP.
+
+IMPORTANT: Observe que ao enviar conteúdo JSON, é preciso usar aspas duplas ao redor do nome de atributos e valores. Todo o código JSON deve ser envolvido em aspas simples, não o contrário. Se as aspas forem invertidas, o servidor indicará que o JSON é inválido. 
 
 Usar o curl pode ser útil para enviar requisições simples como GET, 
 onde passamos apenas IDs como parâmetros na URL.
