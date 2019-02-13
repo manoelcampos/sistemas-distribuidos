@@ -298,7 +298,7 @@ public class Producers {
 }
 ----
 
-O código acima declara um `EntityManager` (EM) e o anota com `@PersistenceContext`. Assim, um EM será automaticamente injetado quando requisitado, utilizando as configurações definidas no `persistence.xml`. Como temos apenas uma Persistence Unit (PU) dentro de tal arquivo, não precisamos nos preocupar em definir o nome de tal PU ao anotar o `EntityManager`. Mas se quisessemos explicitar o nome da PU (que não é recomendável, pois este pode ser renomeado no arquivo xml), poderíamos alterar a anotação para `@PersistenceContext(name = "default")`, onde `default` foi o nome que demos pra nossa PU. Mas isso só é aconsolhável se tivermos mais de uma PU no `persistence.xml`.
+O código acima declara um `EntityManager` (EM) e o anota com `@PersistenceContext`. Assim, o EM será gerenciado pelo servidor de aplicação (que é chamado de https://eclipse-ee4j.github.io/jakartaee-tutorial/persistence-intro004.html#BNBQZ[Container-managed EntityManager]) e automaticamente injetado quando requisitado, utilizando as configurações definidas no `persistence.xml`. Como temos apenas uma Persistence Unit (PU) dentro de tal arquivo, não precisamos nos preocupar em definir o nome de tal PU ao anotar o `EntityManager`. Mas se quisessemos explicitar o nome da PU (que não é recomendável, pois este pode ser renomeado no arquivo xml), poderíamos alterar a anotação para `@PersistenceContext(name = "default")`, onde `default` foi o nome que demos pra nossa PU. Mas isso só é aconsolhável se tivermos mais de uma PU no `persistence.xml`.
 
 Observe que o EM também está anotado com `@Produces`. Isto quer dizer que sempre que precisarmos de um EM, uma instância será criada neste atributo `em` e retornado para o local onde foi solicitado.
 
@@ -424,7 +424,7 @@ O parâmetro `ip` que tal método recebe, conterá informações sobre o local o
 
 === Implementando o Servidor REST
 
-Toda a infraestrutura da nossa aplicação está pronta. Agora, vamos criar nosso Web Service (WS) REST. Tal WS disponibilizará operações para manipular usuários no BD, assim como as operações definidas no `DAO`. Web Services REST são acessados normalmente por meio de URIs amigáveis. Cada URI dá acesso a um determinado recurso. 
+Toda a infraestrutura da nossa aplicação está pronta. Agora, vamos criar nosso Web Service (WS) REST. Tal WS disponibilizará operações para manipular usuários no BD, assim como as operações definidas no `DAO`. Web Services REST são acessados normalmente por meio de URIs amigáveis. Cada URI permite realizar operações sobre um determindao recurso, por meio de requisições utilizando os verbos do protocolo HTTP. Cada uma destas URIs é chamada de endpoints, que no código Java representam métodos a serem acessados remotamente por meio de requisições HTTP. 
 
 Na terminologia REST, um recurso pode ser um arquivo qualquer, uma imagem, um registro em um BD (como é o nosso caso), etc. Assim, para podermos disponibilizar as operações do `DAO` sobre objetos `Usuario` precisamos criar uma classe `UsuarioResource` no pacote `com.manoelcampos.server.rest`, como abaixo.
 
@@ -452,13 +452,15 @@ public class UsuarioResource {
     public Usuario findById(@PathParam("id") long id) {
         return dao.findById(id);
     }
-
 }
 ----
 
 Para publicar tal classe como um recurso acessível via HTTP, devemos anotá-la com `@Path` e indicar o nome que será utilizado para acessar tal recurso por meio de uma URI. Neste caso, indicamos que um recurso `Usuario` poderá ser acessado a partir do nome `/usuario`. O acesso ao recurso só pode ser feito de fato quando acessa-se um determinado método da classe. Cada método então define um novo caminho a partir de `/usuario` que permitirá o método ser chamado por uma requisição HTTP. No caso do método `findById` (que possui o mesmo nome que no `DAO`), ele será acessado a partir de `/usuario/{id}`, onde `{id}` representa o id do usuário que deseja-se obter. 
 
 Observe que o método `findById` possui um parâmetro id. Quando utilizamos a anotação `@Path` para indicar qual o caminho a ser utilizado para acessar tal método via HTTP, definimos o nome como `{id}` (entre chaves), para indicar que `id` deve ser um valor a ser passado na URI após `/usuario`. Esta valor será passado automaticamente para o parâmetro id do método, uma vez que utilizamos a tag `@ParamPath` para indicar isso. Note que no `@ParamPath` não se usa chaves. Assim, se acessarmos uma URI terminada em `/usuario/1`, estamos indicando que desejamos obter o usuário de id igual a 1. Ou seja, o valor para o parâmetro `id` é obtido a partir da URI.
+
+Este método está anotado com `@Produces`, para indicar que o retorno do método deve ser convertido para JSON.
+Tenha certeza de importar a anotação `@Produces` do pacote `javax.ws.rs.Produces` (pois existem anotação com o mesmo nome nos pacotes do CDI).
 
 === Configurando o Servidor REST e executando a aplicação
 
