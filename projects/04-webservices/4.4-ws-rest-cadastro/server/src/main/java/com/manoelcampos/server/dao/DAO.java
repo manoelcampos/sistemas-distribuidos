@@ -30,7 +30,7 @@ public interface DAO<T extends Cadastro> {
      * @return o objeto localizado ou null caso não seja encontrado
      */
     T findByField(String fieldName, Object value);
-    
+
     /**
      * Remove um objeto do banco a partir de uma instância do próprio objeto.
      * @param entity objeto a ser removido
@@ -44,7 +44,7 @@ public interface DAO<T extends Cadastro> {
      * @return true se o objeto foi localizado e removido com sucesso, false caso contrário
      */
     boolean delete(long id);
-
+    
     /**
      * Salva um objeto no banco,
      * que pode ser tanto uma inclusão ou alteração.

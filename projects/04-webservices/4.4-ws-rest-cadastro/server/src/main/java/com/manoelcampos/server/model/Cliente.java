@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 
 /**
  *
- * @author manoelcampos
+ * @author Manoel Campos da Silva Filho
  */
 @Entity
 public class Cliente implements Cadastro, Serializable {

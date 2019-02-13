@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType;
 public class UsuarioResource {
     @Inject 
     private DAO<Usuario> dao;
-        
+    
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)

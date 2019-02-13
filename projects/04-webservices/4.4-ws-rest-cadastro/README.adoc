@@ -327,8 +327,9 @@ import com.manoelcampos.server.model.Cadastro;
 public interface DAO<T extends Cadastro> {
     T findById(long id);
     T findByField(String fieldName, Object value);
-    boolean remove(T entity);
-    void save(T entity);
+    boolean delete(T entity);
+    boolean delete(long id);
+    long save(T entity);
 }
 ----
 
@@ -336,12 +337,12 @@ Tal interface define métodos para:
 
 - localizar um objeto no BD a partir do seu id: `findById()`;
 - localizar por um campo específico: `findByField()`;
-- remover: `remove()`;
-- e salvar um objeto no BD: `save()`. 
+- remover: `delete(T entity)` e `delte(long id)`;
+- e salvar um objeto no BD e retornar o id gerado: `save()`. 
 
-A interface usa https://en.wikipedia.org/wiki/Generics_in_Java[Generics] para permitir indicar qual o tipo de objeto de negócio (que implementa a interface `Cadastro`) um DAO trabalhará. Assim, quando mandarmos localizar um `Usuario` utilizando seu id, teremos como retorno um objeto `Usuario` e não um objeto genérico como `Object`. Generics é um assunto bem extenso que está fora do escopo deste artigo.
+A interface usa https://www.devmedia.com.br/usando-generics-em-java/28981[Generics] para permitir indicar qual o tipo de objeto de negócio (que implementa a interface `Cadastro`) um DAO trabalhará. Assim, quando mandarmos localizar um `Usuario` utilizando seu id, teremos como retorno um objeto `Usuario` e não um objeto genérico como `Object`. Generics é um assunto bem extenso que está fora do escopo deste artigo.
 
-Agora que definimos uma interface padrão para nossos DAOs, vamos criar uma classe que utilizará JPA para implementar o DAO. Definir a interface e criar uma classe que a implementa é muito útil se desejarmos criar outras formas de persistência para nossos objetos de negócio. Por exemplo, poderíamos desejar persistir os objetos em um BD usando JPA e também em arquivos, utilizando o recurso de serialização do Java. Para isso, poderíamos ter classes DAO implementando diferentes mecanismos de persistência de dados.
+Agora que definimos uma interface padrão para nossos DAOs, vamos criar uma classe que utilizará JPA para implementar tal interface. Definir a interface e criar uma classe que a implementa é muito útil se desejarmos criar outras formas de persistência para nossos objetos de negócio. Por exemplo, poderíamos desejar persistir os objetos em um BD usando JPA e também em arquivos, utilizando o recurso de serialização do Java. Para isso, poderíamos ter classes DAO implementando diferentes mecanismos de persistência de dados.
 
 Assim, crie a classe `JpaDAO` no pacote `com.manoelcampos.server.dao` como abaixo. Ela usa um `EntityManager` para persistir um objeto de negócio no BD. O tipo de objeto de negócio é definido utilizando Generics, como feito na interface `DAO`.
 
@@ -369,14 +370,24 @@ public class JpaDAO<T extends Cadastro> implements DAO<T> {
     }
 
     @Override
-    public boolean remove(T entity) {
+    public boolean delete(T entity) {
         em.remove(entity);
         return true;
     }
 
     @Override
-    public void save(T entity) {
-        em.persist(entity);
+    public boolean delete(long id) {
+        T entity = findById(id);
+        return delete(entity);
+    }
+
+    @Override
+    public long save(T entity) {
+        if(entity.getId() > 0)
+            em.merge(entity);
+        else em.persist(entity);
+        
+        return entity.getId();
     }
 
     @Override
@@ -390,11 +401,18 @@ public class JpaDAO<T extends Cadastro> implements DAO<T> {
 }
 ----
 
-Como pode ser observado acima, os métodos para fazer a manipulação dos dados no BD são extremamente simples. No entanto, a instanciação de um `JpaDAO` não é tão simples assim. Para criar tal objeto é preciso passar dois parâmetros para o construtor. Sempre que precisarmos instanciar um `JpaDAO`, precisaremos passar tais parâmetros. É nesses casos em que a injeção de dependências tem mais valor.
+Como pode ser observado acima, os métodos para fazer a manipulação dos dados no BD são extremamente simples. 
+Alguns métodos merecem maiores esclarecimentos:
 
-Quando usamos injeção de dependência com CDI, objetos podem ser criados automaticamente, desde que eles tenham um construtor padrão. Assim, não podemos injetar objetos DAO diretamente. Precisamos criar um código adicional para indicar ao CDI como objetos DAO devem ser criados, até porque se tivessemos mais de uma implementação do DAO, o CDI não saberia qual classe concreta instanciar para injetar um objeto que implementa a interface `DAO`.
+- o método `save()` pode tanto inserir ou alterar um objeto no BD. Assim, precisamos saber qual dessas duas operações deve ser realizada. Uma forma simplória (para não complicar as coisas aqui) de fazer isso é verificar se o objeto (parâmetro `entity`) possui um valor pro atributo `id`, ou seja, se tal atributo tem valor maior que zero. 
+Neste caso, isto indica que o objeto já existe no BD e precisamos fazer um update chamando o método `em.merge(entity)`. Caso contrário, chamamos o `em.persist(entity)` pra incluir o objeto no BD.
+- o método `delete()` possui duas versões: uma que recebe a entidade (objeto) a ser excluído e outra que recebe apenas o id do objeto. Na JPA, para excluir um objeto do banco, precisamos ter uma instância de tal objeto. Usando o método que recebe apenas o id, teremos que primeiro localizar o objeto no banco e então excluir tal objeto. Como no serviço REST o mais fácil é passarmos apenas o id do objeto a ser excluído, é mais simples usar a versão do método que recebe apenas o id.
 
-A grande vantagem é que, apesar de termos um trablaho adicional para informar ao CDI como criar DAOs, teremos que fazer isso em um único lugar, ao invés de ter que passar esses parâmetros para criar um DAO em todo lugar que declararmos um. Para fazer isso, vamos alterar a classe `Producers` como abaixo:
+Já a instanciação de um `JpaDAO` não é tão simples assim. Para criar tal objeto é preciso passar dois parâmetros para o construtor. Sempre que precisarmos instanciar um `JpaDAO`, precisaremos passar estes parâmetros. É nesses casos em que a injeção de dependências tem mais valor.
+
+Quando usamos injeção de dependência com CDI, objetos podem ser criados automaticamente, desde que eles tenham um construtor padrão. Como a classe `JpaDAO` (que é a única implementação da interface `DAO`) não possui um construtor padrão, não podemos injetar objetos `DAO` diretamente. Precisamos criar um código adicional para indicar ao CDI como objetos `DAO` devem ser criados, até porque se tivessemos mais de uma implementação da interface `DAO`, o CDI não saberia qual classe concreta instanciar para injetar um objeto que implementa tal interface.
+
+A grande vantagem é que, apesar de termos um trabalho adicional para informar ao CDI como criar DAOs, teremos que fazer isso em um único lugar, ao invés de ter que passar esses parâmetros para criar um DAO em todo lugar que declararmos um. Para fazer isso, vamos alterar a classe `Producers` como abaixo:
 
 [source,java]
 ----
@@ -423,16 +441,52 @@ public class Producers {
 }
 ----
 
-Neste caso, definimos um método anotado com `@Produces`, uma vez que para criar um DAO é bem mais complicado que criar um `EntityManager` usando CDI.
-Este método será chamado automaticamente, toda vez que declararmos um objeto `DAO` e anotarmos ele com `@Inject` para indicar que um DAO deve ser injetado alí.
+Neste caso, definimos um método anotado com `@Produces`. Isto é necessário pois o CDI não sabe como instanciar um `DAO`, uma vez que esta é uma classe que nós criamos. Por mais que um `EntityManager` seja ainda mais complexo de ser criado, o CDI já tem recursos para instanciar tais objetos pra nós.
+O método `getDao` então será chamado automaticamente, toda vez que um objeto `DAO` anotado com `@Inject` precisar ser criado. Lembre que o `@Inject` indica que um objeto deve ser injetado alí.
 
-O parâmetro `ip` que tal método recebe, conterá informações sobre o local onde foi solicitada a injeção de um `DAO`. Como para declarar um `DAO`, por exemplo, para manipular objetos `Usuario` tem que ser feita como `@Inject DAO<Usuario> dao`, indicando quais objetos de negócio o `DAO` manipulará, este parâmetro `ip` fornecerá informações como qual tipo genérico (definido entre < e >) que está sendo associado ao `DAO`. Com isto, conseguimos obter a classe entre < e > e assim criar um `DAO` instanciando um objeto `JpaDAO`. Como tal objeto também requer um `EntityManager`, podemos simplesmente acessar o atributo `em`. Quando fizermos isso, um `EntityManager` será produzido e passado para o `JpaDAO` criado.
+O parâmetro `ip` que tal método recebe, conterá informações sobre o local onde foi solicitada a injeção do `DAO`. Para declarar um `DAO` (por exemplo, para manipular objetos `Usuario`) temos que escrever `@Inject DAO<Usuario> dao`. A classe entre < e > indica quais objetos de negócio o `DAO` manipulará. Este parâmetro `ip` conterá informações como qual tipo genérico (definido entre < e >) está associado ao `DAO`. Com isto, conseguimos obter a classe entre < e > e assim criar um `DAO` instanciando um objeto `JpaDAO` para manipular objetos de tal classe. Como tal objeto também requer um `EntityManager`, podemos simplesmente acessar o atributo `em` declarado dentro da própria classe `Producers`. Quando fizermos isso, um `EntityManager` será produzido e passado para o `JpaDAO` criado.
+
+=== Configurando o Servidor REST
+
+Para criarmos e executarmos nossos serviços REST, precisamos habilitar o uso de REST no projeto. Para isto, basta criar uma classe como `RestConfig` no pacote `com.manoelcampos.server.config` (o nome da classe e do pacote podem ser qualquer um). Tal classe deve extender `javax.ws.rs.core.Application` e deve ser anotada com `@javax.ws.rs.ApplicationPath("api")`, onde `api` pode ser qualquer nome que indica a raiz a partir da qual os seviços REST estarão disponíveis. Tal classe não precisa ter métodos, construtor nem atributo algum, como mostrado abaixo.
+
+[source,java]
+----
+package com.manoelcampos.server.config;
+
+import javax.ws.rs.core.Application;
+
+@javax.ws.rs.ApplicationPath("api")
+public class RestConfig extends Application {
+
+}
+----
+
+Uma vez que estamos rodando o GlassFish localmente e que nosso projeto chama `server`, a URL para acessar a aplicação seria http://localhost:8080/server/. 
+
+Ao executar o projeto, uma página como http://localhost:8080/server/ será acessada. A API REST estará disponível a partir de outro diretório, como especificado na anotação `@javax.ws.rs.ApplicationPath`. Neste caso, a URL base para acesso aos recursos será http://localhost:8080/server/api. Mas não adianta tentar acessar tal URL, pois ela por si só não funciona: precisamos implementar nosso primeiro serviço que vai ser acessar a partir de um caminho adicional depois de tal URL.
 
 === Implementando o Servidor REST
 
-Toda a infraestrutura da nossa aplicação está pronta. Agora, vamos criar nosso Web Service (WS) REST. Tal WS disponibilizará operações para manipular usuários no BD, assim como as operações definidas no `DAO`. Web Services REST são acessados normalmente por meio de URLs amigáveis. Cada URL permite realizar operações sobre um determindao recurso, por meio de requisições utilizando os verbos do protocolo HTTP. Cada uma destas URLs é chamada de endpoints, que no código Java representam métodos a serem acessados remotamente por meio de requisições HTTP. 
+O serviço REST que vamos implementar vai fornecer as famosas operações CRUD (Create, Read, Update e Delete)
+que permite inserir (Criar), obter (Ler), alterar (Atualizar) e deletar registros de uma tabela de um BD.
+Como pode ser visto link:../webservices.pptx[nesta apresentação], em serviços REST, tais métodos CRUD devem ser associados a determinados métodos HTTP. A tabela abaixo a associação entre verbos HTTP, operações CRUD e comandos SQL.
 
-Na terminologia REST, um recurso pode ser um arquivo qualquer, uma imagem, um registro em um BD (como é o nosso caso), etc. Assim, para podermos disponibilizar as operações do `DAO` sobre objetos `Usuario` precisamos criar uma classe `UsuarioResource` no pacote `com.manoelcampos.server.rest`, como abaixo.
+|===
+|*Verbo (Método) HTTP* |*Operação CRUD* |*Comando SQL*
+|POST                  |**C**reate      | insert
+|GET                   |**R**ead        | select
+|PUT                   |**U**pdate      | update
+|DELETE                |**D**elete      | delete
+|===
+
+Assim, para cada método a ser implementado na classe do serviço em Java, precisamos indicar qual o verbo HTTP que deve ser usado para acessar o método remotamente.
+
+==== Criando a classe do primeiro serviço REST
+
+Toda a infraestrutura da nossa aplicação está pronta. Agora, vamos criar nosso Web Service (WS) REST. Tal WS disponibilizará operações para manipular usuários no BD, assim como as operações definidas no `DAO`. Web Services REST são acessados normalmente por meio de URLs amigáveis. Cada URL permite realizar operações sobre um determindao recurso, por meio de requisições utilizando os verbos do protocolo HTTP. Cada uma destas URLs é chamada de _endpoints_, que no código Java representam métodos a serem acessados remotamente por meio de requisições HTTP. 
+
+Na terminologia REST, um recurso pode ser um arquivo qualquer, uma imagem, dados obtidos de uma tabela em um BD (como é o nosso caso), etc. Assim, para podermos disponibilizar as operações do `DAO` para objetos `Usuario`, precisamos criar uma classe `UsuarioResource` no pacote `com.manoelcampos.server.rest`, como abaixo.
 
 [source,java]
 ----
@@ -461,56 +515,86 @@ public class UsuarioResource {
 }
 ----
 
-Para publicar tal classe como um recurso acessível via HTTP, devemos anotá-la com `@Path` e indicar o nome que será utilizado para acessar tal recurso por meio de uma URL. Neste caso, indicamos que um recurso `Usuario` poderá ser acessado a partir do nome `/usuario`. O acesso ao recurso só pode ser feito de fato quando acessa-se um determinado método da classe. Cada método então define um novo caminho a partir de `/usuario` que permitirá o método ser chamado por uma requisição HTTP. No caso do método `findById` (que possui o mesmo nome que no `DAO`), ele será acessado a partir de `/usuario/{id}`, onde `{id}` representa o id do usuário que deseja-se obter. 
+Para publicar tal classe como um recurso acessível via HTTP, precisamos incluir a anotação `@Path` antes da declaração da classe e indicar o caminho que será utilizado para acessar tal recurso por meio de uma URL. Neste caso, indicamos que um recurso `Usuario` poderá ser acessado a partir do caminho `/usuario`. O acesso ao recurso só acontece quando um determinado método da classe é executado. Cada método então define um caminho adicional a partir de `/usuario` que permitirá que o método seja chamado por uma requisição HTTP. No caso do método `findById` (que possui o mesmo nome que no `DAO`), ele será acessado a partir de `/usuario/{id}`, onde `{id}` representa o id do usuário que deseja-se obter. 
 
-IMPORTANT: Certifique-se de incluir a anotação `@PathParam` correta, do pacote `javax.ws.rs`. Como existe uma anotação de mesmo nome no pacote `javax.websocket.server`, incluir esta vai causar o erro `The request entity cannot be empty`. Tal erro indica que o parâmetro anotado com a `@PathParam` incorreta não receberá o valor passado pela URL (como especificado na anotação `@Path` do método `findById()`).
+[IMPORTANT]
+====
+A URL para acesso a um determinado método é formada pela:
 
-Observe que o método `findById` possui um parâmetro id. Quando utilizamos a anotação `@Path` para indicar qual o caminho a ser utilizado para acessar tal método via HTTP, definimos o nome como `{id}` (entre chaves), para indicar que `id` deve ser um valor a ser passado na URL após `/usuario`. Esta valor será passado automaticamente para o parâmetro id do método, uma vez que utilizamos a tag `@ParamPath` para indicar isso. Note que no `@ParamPath` não se usa chaves. Assim, se acessarmos uma URL terminada em `/usuario/1`, estamos indicando que desejamos obter o usuário de id igual a 1. Ou seja, o valor para o parâmetro `id` é obtido a partir da URL.
+- URL base da aplicação, normalmente http://localhost:8080/NomeDaAplicacao
+- mais o caminho (@Path) base do serviço REST, definido na classe RestConfig como `api`
+- mais o caminho da classe do serviço
+- mais o caminho do método a ser acessado
+
+Assim, a URL completa para acesso ao método findById() da classe UsuarioResource seria algo como http://localhost:8080/server/api/usuario/{id}, onde {id} deve ser substituído pelo id do usuário que deseja-se obter.
+====
+
+Observe que o método `findById` possui um parâmetro id. Quando utilizamos a anotação `@Path` para indicar qual o caminho a ser utilizado para acessar tal método via HTTP, definimos o nome como `{id}` (entre chaves), para indicar que `id` deve ser um valor a ser passado na URL após `/usuario`. Esta valor será passado automaticamente para o parâmetro id do método, uma vez que utilizamos a tag `@PathParam` para indicar isso. Note que no `@PathParam` não se usa chaves. Assim, se acessarmos uma URL terminada em `/usuario/1`, estamos querendo obter o usuário de id igual a 1. Assim, o valor para o parâmetro `id` é obtido a partir da URL e passado para o parâmetro id no método.
+
+IMPORTANT: Certifique-se de incluir a anotação `@PathParam` correta, do pacote `javax.ws.rs`. Como existe uma anotação de mesmo nome no pacote `javax.websocket.server`, incluir esta vai causar o erro `The request entity cannot be empty`. Tal erro indica que o parâmetro anotado com a `@PathParam` incorreta não recebeu o valor passado pela URL (como especificado na anotação `@Path` do método `findById()`).
 
 Este método está anotado com `@Produces`, para indicar que o retorno do método deve ser convertido para JSON.
-Tenha certeza de importar a anotação `@Produces` do pacote `javax.ws.rs.Produces` (pois existem anotação com o mesmo nome nos pacotes do CDI).
+Esta anotação não é a mesma `@Produces` vista anteriormente para o CDI. Apesar de ter o mesmo nome, a finalidade é outra.
+A anotação `@Produces` do JAX-RS é usada para indicar que formato deve ser usado para converter os dados retornados por um método. Como o mais usual em serviços REST é o formato JSON, usamos tal anotação para que o JAX-RS faça a conversão do objeto usuário retornado pelo método `findById()` para JSON.
+Assim, tenha certeza de importar a anotação `@Produces` do pacote `javax.ws.rs.Produces` e não a anotação do CDI.
 
-=== Configurando o Servidor REST e executando a aplicação
+Por fim, também anotamos o método `findById()` com `@GET` para indicar que este método só aceita requisições HTTP com o verbo GET. Se utilizarmos um verbo que o método não aceita, receberemos o erro _405 Method Not Allowed_: Erro HTTP 405 Método (Verbo)não Permitido.
 
-Para o recurso `Usuario` ficar de fato disponível via HTTP, precisamos habilitar o uso de REST no projeto. Para isto, basta criar uma classe como `RestConfig` no pacote `com.manoelcampos.server.config` (o nome da classe e do pacote podem ser qualquer um). Tal classe deve extender `javax.ws.rs.core.Application` e deve ser anotada com `@javax.ws.rs.ApplicationPath("api")`, onde `api` pode ser qualquer nome que indica a raiz a partir da qual os recursos (as classes anotadas com `@Path`), estarão disponíveis. 
+==== Implementando método para inserir usuário
 
-Uma vez que estamos rodando o GlassFish localmente e que nosso projeto chama `server`, a URL para acessar a aplicação seria http://localhost:8080/server/. Antes de acessar tal URL, precisamos clicar no botão `Build` para compilar todo o projeto. Sempre que salvamos o projeto, as classes alteradas são compiladas e o projeto é reimplantado (redeployed) automaticamente. Normalmente, como fizemos inúmeras alterações no projeto e nunca executamos o mesmo, é aconselhável clicar no botão `Clean and Build` (Limpar e Construir) para apagar quaisquer versões anteriores das classes e implantar as novas. Muitos erros ocorrem quando fazemos alterações estruturais no projeto e não usamos tal opção. Agora, podemos clicar no botão `Play` (F6) para executar o projeto. Sem isso, o WS REST não poderá ser acessadso.
-
-Ao executar o projeto, uma página como http://localhost:8080/server/ será acessada. A API REST estará disponível a partir de outro diretório, como especificado na anotação `@javax.ws.rs.ApplicationPath`. Neste caso, a URL base para acesso aos recursos será http://localhost:8080/server/api.
-Então, para acessar o método `findById` do recurso `Usuario`, a URL completa seria algo como http://localhost:8080/server/api/usuario/1.
-
-Se uma classe como a `RestConfig` não for criada, o NetBeans dará um aviso na linha da declaração de qualquer classe anotada com `@Path` e permitirá adicionar a classe de configuração automaticamente. No entanto, tal classe precisa apenas ter o código mínimo definido abaixo:
+Definimos que o método `findById()` será acessado remotamente por meio do verbo GET do HTTP. Assim, estamos implementando a operação Read do CRUD. Como já temos o DAO implementando as operações CRUD, é bastante simples disponibilizar tais operações no nosso serviço REST. Vamos começar adicionando o método insert na classe `UsuarioResource`.
 
 [source,java]
 ----
-package com.manoelcampos.server.config;
-
-import javax.ws.rs.core.Application;
-
-@javax.ws.rs.ApplicationPath("api")
-public class RestConfig extends Application {
-
+@POST
+@Consumes(MediaType.APPLICATION_JSON)
+public long insert(Usuario usuario) {
+    return dao.save(usuario);
 }
 ----
 
-No entanto, o NetBeans adicionará código dentro de tal classe que de fato não funcionará (pelo menos não para as versões de bibliotecas e ferramentas utilizadas). Assim, se usar o recurso do NetBeans para criar tal classe, tenha certeza de apagar o código entre as chaves, deixando a classe vazia como acima. Lembre também de definir o nome pelo qual deseja acessar os recursos por meio de REST. 
+De acordo com a tabela mostrada anteriormente, para inserir um registro no banco (operação Create do CRUD), devemos usar o verbo POST do HTTP, anotando o método `insert()` com `@POST`. Neste caso, não incluímos uma anotação `@Path` pois não queremos que seja utilizado um caminho adicional, além do já existente `/usuario`, para inserir um usuário no banco. Se acessarmos tal URL por meio do verbo POST, o servidor REST entenderá que queremos chamar o método `insert()` mostrado acima.
+Neste caso, como vamos passar um usuário a ser inserido no banco, o parâmetro do `insert()` é um objeto da classe `Usuario` e não um id numérico. 
+
+No caso de requisições POST, os dados passados não vão na URL (como no verbo GET). Assim, não usamos a anotação `@PathParam` no parâmetro do método e nem incluímos parâmetro algum na anotação `@Path`. Até porque, neste exemplo não quisemos definir um caminho adicional para acessar o método, logo, não precisamos da `@Path`.
+
+Observe que anotamos o método `insert()` com `@Consumes` e não `@Produces`, pois este método consome (recebe) dados em formato JSON, no lugar de produzir (retornar) dados em JSON. Como o método está retornando um tipo primitivo (o id do usuário inserido), não precisamos converter o retorno para JSON. Assim, o método apenas consome JSON.
+
+[TIP]
+====
+Uma dica fácil para saber qual anotação usar é: 
+
+- quando o método recebe um objeto, ele vai consumir (`@Consumes`);
+- quando retorna um objeto ele vai produzir (`@Produces`).
+====
+
+=== Executando a aplicação
+
+Antes de acessar uma URL de um método de um serviço REST implementado, precisamos clicar no botão `Build` para compilar todo o projeto. Sempre que salvamos o projeto, as classes alteradas são compiladas e o projeto é reimplantado (_redeployed_) automaticamente. Normalmente, como fizemos inúmeras alterações no projeto e nunca executamos o mesmo, é aconselhável clicar no botão `Clean and Build` (Limpar e Construir) para apagar quaisquer versões anteriores das classes compiladas e implantar as novas. Muitos erros ocorrem quando fazemos alterações estruturais no projeto (como mudar nome de classes e métodos, remover métodos, mudar parâmetros, etc) e não usamos tal botão. Agora, podemos clicar no botão `Play` (F6) para executar o projeto. Sem isso, o WS REST não poderá ser acessadso.
+
+Ao executar o projeto, uma página como http://localhost:8080/server/ será exibida, apenas pelo fato de um arquivo index.html ser criado automaticamente quando criamos o projeto. Então, esta página de fato não exibirá nada. A API REST estará disponível a partir de um caminho adicional. Já sabemos que a URL base dos serviços REST será http://localhost:8080/server/api/PathDeUmRecurso/PathDeUmMetodo. 
+
+Então, para acessar o método `findById` do recurso `Usuario`, a URL completa seria algo como http://localhost:8080/server/api/usuario/1.
+
+Se uma classe como a `RestConfig` (mostrada no início da seção) não foi criada, o NetBeans dará um aviso na linha da declaração de qualquer classe anotada com `@Path` e permitirá adicionar a classe de configuração automaticamente. Esta é uma forma simples de não precisarmos ter que lembrar como deve ser esta classe `RestConfig`. Apenas lembre que a classe não precisa ter método algum. 
+
+Usando este assistente do NetBeans, ele adicionará código dentro de tal classe que de fato não funcionará (pelo menos não para as versões de bibliotecas e ferramentas utilizadas). Assim, se usar tal assistente para criar a classe, apague qualquer método e atributo adicionado. Lembre também de definir o nome pelo qual deseja acessar os recursos por meio de REST, dentro da anotação `@ApplicationPath()`. No nosso caso definimos o caminho como _"api"_. 
 
 == Testando o serviço criado
 
-Para testar o serviço REST criado podemos criar uma aplicação cliente em qualquer linguagem que desejarmos,
+Para testar o serviço REST, podemos desenvolver uma aplicação cliente em qualquer linguagem que desejarmos,
 para qualquer plataforma (web, mobile, desktop). O projeto link:client[cliente] é um exemplo de uma aplicação
 de linha de comando em Java que consome tal serviço.
 
 Testar um método REST que usa o verbo HTTP GET é trivial: basta digitar a URL do método, passando os devidos parâmetros.
 No entanto, quando um método usa outro verbo HTTP, não conseguimos testar desta forma.
-Se você não quiser ou não for criar uma aplicação cliente, existem várias alternativas para testar seus serviços REST.
+Se você não quiser criar uma aplicação cliente apenas para testar o serviço, existem várias alternativas para isto, como mostrado a seguir.
 
 === Usando a ferramenta de linha de comando curl
 
 O curl é uma ferramenta que já vem instalada na maioria das distribuições Linux.
-Abaixo mostro o comando curl que pode usar na linha de comando para enviar uma requisição HTTP para diferentes métodos
-publicados por um serviço REST como o serviço de usuários desenvolvido aqui.
-
+Abaixo mostro como usar o comando curl no terminal para enviar uma requisição HTTP para diferentes métodos
+publicados por um serviço REST (como o serviço de usuários desenvolvido aqui). 
 
 |===
 |*Método* |*Verbo HTTP* |*Comando curl completo*
@@ -520,20 +604,17 @@ publicados por um serviço REST como o serviço de usuários desenvolvido aqui.
 |Excluir Usuário  |DELETE |curl -X DELETE http://localhost:8080/server/api/usuario/1
 |===
 
-Para operações POST e PUT é comum passarmos no corpo da mensagem HTTP o conteúdo a ser enviado na requisição.
-Nos exemplos acima, é passado um objeto Usuario em formato JSON. Neste caso, precisamos incluir o cabeçalho
-Content-Type para indicar que estamos enviando um conteúdo em JSON na requisição HTTP.
+WARNING: Observe que ainda não implementamos os métodos para alterar e excluir usuários (operações POST e PUT). *No caso da operação de inserir usuários, se tentar acessá-la, verá que ocorrerá um erro. Isto será explicado na próxima seção.*
+
+Para operações POST e PUT, é comum passarmos no corpo da mensagem HTTP o conteúdo a ser enviado na requisição.
+Nos exemplos acima, é passado um objeto `Usuario` em formato JSON. Neste caso, precisamos incluir o cabeçalho
+`Content-Type` para indicar que estamos enviando um conteúdo em JSON na requisição HTTP.
 
 IMPORTANT: Observe que ao enviar conteúdo JSON, é preciso usar aspas duplas ao redor do nome de atributos e valores. Todo o código JSON deve ser envolvido em aspas simples, não o contrário. Se as aspas forem invertidas, o servidor indicará que o JSON é inválido. 
 
-Usar o curl pode ser útil para enviar requisições simples como GET, 
-onde passamos apenas IDs como parâmetros na URL.
-Quando precisamos passar objetos complexos em JSON, por exemplo, fica difícil fazer isso pela linha
-de comando.
-
 === Usando extensões para navegadores Web
 
-Você pode utilizar o próprio navegador para testar seus serviços REST. Assim, você terá uma interface web amigável e intuitiva, facilitando muito os testes. A seguir são exibidas opções para Firefox e Chrome.
+Você também pode utilizar o próprio navegador para testar seus serviços REST. Assim, você terá uma interface web amigável e intuitiva, facilitando muito os testes. A seguir são exibidas opções para Firefox e Chrome.
 
 - Para o Firefox você pode baixar o plugin https://addons.mozilla.org/pt-BR/firefox/addon/restclient/[RESTClient].
 - Para o Google Chrome utilizo a excelente extensão https://chrome.google.com/webstore/detail/restlet-client-rest-api-t/aejoelaoggembcahagimdiliamlcdmfm/[Restlet Client]. 
@@ -551,3 +632,39 @@ ser utilizados para preencher os campos na tela da extensão que você estiver u
 - o verbo HTTP;
 - o conteúdo do corpo da mensagem (como nos casos de POST e PUT)
 e cabeçalho para indicar o formato de tal conteúdo (no nosso caso, JSON).
+
+=== Testando o método de incluir usuário
+
+Se você tentar acessar o método `insert()` da classe `UsuarioResource` para incluir um usuário, verá que ocorre a exceção _javax.persistence.TransactionRequiredException_, provavelmente sem apresentar nenhuma mensagem de erro. Tal exceção indica que tentamos executar uma operação que exigia uma transação, mas esta não foi aberta. Neste caso, estamos falando de transações de banco de dados. Como estamos usando JPA, para fazer alguma operação que altera dados no banco, precisamos: 
+
+1. iniciar uma transação; 
+2. executar a(s) operação(ões); 
+3. se a(s) operação(ões) foi(foram) executada(s) com sucesso, devemos fazer um _commit_ na transação para efetivamente confirmar as alterações no banco;
+4. se ocorrer algum erro ocorreu, devemos fazer um _rollback_ para desfazer qualquer operação que tenha sido feita depois que a transação foi iniciada.
+
+Lembra que lá no início configuramos a tal da JTA (Java Transaction API)? Pois é, esta API permite que o servidor de aplicação (GlassFish no nosso caso) controle este ciclo de vida de transações apresentado acima. Assim, não temos que escrever código para definir tais passos. Com a JTA, podemos apenas usar uma simples anotação para indicar que queremos usar transações de banco de dados nas nossas classes de serviços REST e tudo funcionará automaticamente, feito mágica. Costumamos dizer que este tipo de recurso é *automágico* 🤣.
+
+Então, para os métodos de inserção, alteração e exclusão funcionarem, podemos anotar a classe `UsuarioResource` com `@Transactional`.
+
+=== Implementando método para alterar e excluir usuário
+
+Por fim, vamos adicionar o código na classe `UsuarioResource` para os métodos de alteração e exclusão de usuários, como mostrado a seguir.
+O código dispensa comentários, pois todos os detalhes já foram explicados na implementação dos métodos anteriores.
+
+[source,java]
+----
+@PUT
+@Consumes(MediaType.APPLICATION_JSON)
+public boolean update(Usuario usuario) {
+    //Se retornou um id maior que 0, é porque o usuário foi salvo no BD
+    return dao.save(usuario) > 0;
+}
+
+@DELETE
+@Path("{id}")
+public boolean delete(@PathParam("id") long id) {
+    return dao.delete(id);
+}
+----
+
+Pronto, agora pode usar qualquer uma das formas mostradas anteriormente para testar qualquer um dos métodos do serviço REST implementado.

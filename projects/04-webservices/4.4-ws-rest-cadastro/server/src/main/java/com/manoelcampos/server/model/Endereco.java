@@ -21,7 +21,7 @@ import javax.persistence.ManyToOne;
  * no método getCliente() na classe Endereco. No entanto, isto não funcionou.
  * A única maneira foi simplesmente remover tal método e deixar apenas o setter.</p>
  * 
- * @author manoelcampos
+ * @author Manoel Campos da Silva Filho
  */
 @Entity
 public class Endereco implements Cadastro, Serializable {
