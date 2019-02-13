@@ -188,7 +188,7 @@ Observe que após salvarmos, é apresentado um erro na linha da declaração da 
 
 Já temos um atributo que chamamos de `id` e que representa a identificação única de cada objeto da classe (ou seja, a PK na tabela do BD). Assim, apenas indicamos que queremos usar um campo existente como `ID` e então selecionamos o campo chamado `id`. Com isto, uma anotação `@Id` é colocada no campo.
 
-Para indicarmos que desejamos que o valor deste campo seja gerado automaticamente no BD (para que ele seja definido como autoincremento no MySQL), vamos adicionar a anotação `@GeneretedValue`, indicando que a estatégia para geração do valor do campo será `IDENTITY`. O atributo `id` deve ficar como abaixo. 
+Para indicarmos que desejamos que o valor deste campo seja gerado automaticamente no BD (para que ele seja definido como autoincrement no MySQL), vamos adicionar a anotação `@GeneretedValue`, indicando que a estatégia para geração do valor do campo será `IDENTITY`. O atributo `id` deve ficar como abaixo. 
 
 [source,java]
 ----
@@ -196,6 +196,8 @@ Para indicarmos que desejamos que o valor deste campo seja gerado automaticament
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 ----
+
+IMPORTANT: Se estivessemos usando o banco de dados que não suporta campos autoincrement mas apenas o recurso de sequences (como o PostgreSQL), deveríamos usar o valor `GenerationType.SEQUENCE` na anotação `@GeneratedValue`.
 
 As classes anotadas com `@Entity` (que a partir de agora, por simplificação chamaremos apenas de Entity) devem implementar a interface `Serializable`, indicando que objetos de tais classes podem ser persistidos (salvos). Também podemos usar o NetBeans para fazer essa modificação para nós.
 
