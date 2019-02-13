@@ -57,4 +57,9 @@ public class JpaDAO<T extends Cadastro> implements DAO<T> {
         query.setParameter(fieldName, value);
         return query.getSingleResult();
     }
+
+    @Override
+    public TypedQuery<T> createQuery(String jpql) {
+        return em.createQuery(jpql, classe);
+    }
 }

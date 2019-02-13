@@ -1,6 +1,7 @@
 package com.manoelcampos.server.dao;
 
 import com.manoelcampos.server.model.Cadastro;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -8,6 +9,13 @@ import com.manoelcampos.server.model.Cadastro;
  * @param <T>
  */
 public interface DAO<T extends Cadastro> {
+    /**
+     * Cria um objeto para executar uma consulta JPQL.
+     * @param jpql consulta JPQL para localizar um objeto
+     * @return o objeto query criado
+     */
+    TypedQuery<T> createQuery(String jpql);
+
     /**
      * Busca um objeto a partir do seu id
      * @param id id do objeto a ser localizado

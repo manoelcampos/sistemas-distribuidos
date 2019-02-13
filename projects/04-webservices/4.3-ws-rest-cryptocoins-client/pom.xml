@@ -34,6 +34,9 @@
             <version>2.5.1</version>
         </dependency>
         <dependency>
+            <!-- Biblioteca para incluir novos recursos em implementações do JAX-RS.
+            Um exemplo é a inclusão da anotação @JsonProperty que permite
+            indicar se um atributo vai ser serializado ou não. -->
             <groupId>com.owlike</groupId>
             <artifactId>genson</artifactId>
             <version>1.4</version>

@@ -16,6 +16,25 @@
     
     <dependencies>
         <dependency>
+            <!-- Usa o jackson para permitir ignorar
+            atributos no momento da serialização (ao converter objetos Java para JSON)
+            com @JsonIgnore-->
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.4.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <!-- 
+            Permite usar o jackson como provedor de manipulação de json 
+            https://cassiomolin.com/2016/08/10/using-jackson-as-json-provider-in-jersey-2x/
+            -->
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.28</version>
+        </dependency>        
+        
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
@@ -35,7 +54,7 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>5.1.0.Final</version>
-        </dependency>            
+        </dependency>          
     </dependencies>
 
     <build>
