@@ -158,8 +158,12 @@ Nossa classe `Usuario` terá apenas os atributos abaixo, com os respectivos gett
     private long id;
     private String nome;
     private String cpf;
+
+    @ManyToOne
     private Cidade cidade;
 ----
+
+Observe que na classe `Usuario` temos um atributo do tipo `Cidade`. Isto representa um relacionamento entre as duas classes. Neste caso, a cardinalidade da associação entre `Usuario` e `Cidade` (nesta direção) é n..1, ou seja, muitos usuários são de uma mesma cidade. Para representar tal associação precisamos usar a anotação `@ManyToOne` no atributo. Desta forma, no banco de dados será criada uma chave estrangeira dentro da tabela `Usuario` para armazenar o id da `Cidade`. 
 
 Podemos usar o NetBeans para criar tais métodos para gente. Temos apenas que apagar o código gerado para os métodos `getId()` e `setId()` e definir o código apropriado.
 
