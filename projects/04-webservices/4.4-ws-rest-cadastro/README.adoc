@@ -13,7 +13,7 @@ ifdef::env-github[]
 endif::[]
 
 ifdef::env-github[]
-IMPORTANT: Acesse o tutorial online https://manoelcampos.gitbooks.io/sistemas-distribuidos/content/projects/04-webservices/4.4-ws-rest-cadastro/[neste link]. **O acesso diretamente pelo GitHub não permite a exibição de vídeos.**
+IMPORTANT: ACESSE O TUTORIAL ONLINE https://manoelcampos.gitbooks.io/sistemas-distribuidos/content/projects/04-webservices/4.4-ws-rest-cadastro/[NESTE LINK]. **O ACESSO DIRETAMENTE PELO GITHUB NÃO PERMITE A EXIBIÇÃO DE VÍDEOS.**
 endif::[]
 
 = Desenvolvimento Web Services REST em Java utilizando JAX-RS com JPA e CDI no NetBeans
@@ -201,7 +201,7 @@ Para indicarmos que desejamos que o valor deste campo seja gerado automaticament
     private long id;
 ----
 
-IMPORTANT: Se estivessemos usando o banco de dados que não suporta campos autoincrement mas apenas o recurso de sequences (como o PostgreSQL), deveríamos usar o valor `GenerationType.SEQUENCE` na anotação `@GeneratedValue`.
+IMPORTANT: Se estivessemos usando um banco de dados que não suporta campos autoincrement mas apenas o recurso de sequences (como o PostgreSQL), deveríamos usar o valor `GenerationType.SEQUENCE` na anotação `@GeneratedValue`.
 
 As classes anotadas com `@Entity` (que a partir de agora, por simplificação chamaremos apenas de Entity) devem implementar a interface `Serializable`, indicando que objetos de tais classes podem ser persistidos (salvos). Também podemos usar o NetBeans para fazer essa modificação para nós.
 
@@ -312,7 +312,7 @@ Observe que o EM também está anotado com `@Produces`. Isto quer dizer que semp
 
 Supondo que estamos desenvolvendo esta aplicação para um determinado cliente, nossas classes de negócio `Usuario` e `Cidade` são classes específicas do negócio do cliente. O EM disponibiliza métodos para persistir objetos no BD. Assim, para incluir, alterar ou excluir um objeto no BD, precisamos chamar estes métodos do EM. 
 
-Para não incluir tal código dentro das classes de negócio (que devem ter apenas código referente ao negócio do cliente), é comum a utilização do padrão https://pt.wikipedia.org/wiki/Objeto_de_acesso_a_dados[Data Access Object (DAO)] para permitir a separação de conceitos (https://pt.wikipedia.org/wiki/Separação_de_conceitos[Separation of Concerns, SoC]). Isto evita misturar código de um determinado nível de abstração com outros de outro nível. As classes de negócio como `Usuario` podem ter código para validar o CPF, enquanto operações de BD não estão relacionadas com o negócio e assim devem ser mantidas separadas.
+Para não incluir tal código dentro das classes de negócio (que devem ter apenas código referente ao negócio do cliente), é comum a utilização do padrão https://pt.wikipedia.org/wiki/Objeto_de_acesso_a_dados[Data Access Object (DAO)] para permitir a separação de conceitos (https://pt.wikipedia.org/wiki/Separação_de_conceitos[Separation of Concerns, SoC]). A SoC evita misturar código de um determinado nível de abstração com outros de outro nível. As classes de negócio como `Usuario` podem ter código para validar o CPF, enquanto operações de BD não estão relacionadas com o negócio e assim devem ser mantidas separadas.
 
 Para implementar o padrão DAO, precisaríamos criar uma classe DAO para cada classe de negócio. Assim, teríamos uma classe `UsuarioDAO` e `CidadeDAO`. Como um DAO proverá métodos para manipular dados no BD, como `salvar` e `remover`, tais métodos acabam ficando duplicados entre os DAOs. Para evitar isso, podemos criar um DAO genérico que funciona para qualquer classe de negócio. Isto pode ter suas desvantagens, mas não vamos discutí-las nesse artigo.
 
@@ -522,23 +522,23 @@ Para publicar tal classe como um recurso acessível via HTTP, precisamos incluir
 A URL para acesso a um determinado método é formada pela:
 
 - URL base da aplicação, normalmente http://localhost:8080/NomeDaAplicacao
-- mais o caminho (@Path) base do serviço REST, definido na classe RestConfig como `api`
+- mais o caminho (`@Path`) base do serviço REST, definido na classe `RestConfig` como `api`
 - mais o caminho da classe do serviço
 - mais o caminho do método a ser acessado
 
-Assim, a URL completa para acesso ao método findById() da classe UsuarioResource seria algo como http://localhost:8080/server/api/usuario/{id}, onde {id} deve ser substituído pelo id do usuário que deseja-se obter.
+Assim, a URL completa para acesso ao método `findById()` da classe `UsuarioResource` seria algo como http://localhost:8080/server/api/usuario/{id}, onde {id} deve ser substituído pelo id do usuário que deseja-se obter.
 ====
 
 Observe que o método `findById` possui um parâmetro id. Quando utilizamos a anotação `@Path` para indicar qual o caminho a ser utilizado para acessar tal método via HTTP, definimos o nome como `{id}` (entre chaves), para indicar que `id` deve ser um valor a ser passado na URL após `/usuario`. Esta valor será passado automaticamente para o parâmetro id do método, uma vez que utilizamos a tag `@PathParam` para indicar isso. Note que no `@PathParam` não se usa chaves. Assim, se acessarmos uma URL terminada em `/usuario/1`, estamos querendo obter o usuário de id igual a 1. Assim, o valor para o parâmetro `id` é obtido a partir da URL e passado para o parâmetro id no método.
 
-IMPORTANT: Certifique-se de incluir a anotação `@PathParam` correta, do pacote `javax.ws.rs`. Como existe uma anotação de mesmo nome no pacote `javax.websocket.server`, incluir esta vai causar o erro `The request entity cannot be empty`. Tal erro indica que o parâmetro anotado com a `@PathParam` incorreta não recebeu o valor passado pela URL (como especificado na anotação `@Path` do método `findById()`).
+IMPORTANT: Certifique-se de incluir a anotação `@PathParam` correta, do pacote `javax.ws.rs`. Como existe uma anotação de mesmo nome no pacote `javax.websocket.server`, incluir esta vai causar o erro _"The request entity cannot be empty"_. Tal erro indica que o parâmetro anotado com a `@PathParam` incorreta não recebeu o valor passado pela URL (como especificado na anotação `@Path` do método `findById()`).
 
 Este método está anotado com `@Produces`, para indicar que o retorno do método deve ser convertido para JSON.
 Esta anotação não é a mesma `@Produces` vista anteriormente para o CDI. Apesar de ter o mesmo nome, a finalidade é outra.
 A anotação `@Produces` do JAX-RS é usada para indicar que formato deve ser usado para converter os dados retornados por um método. Como o mais usual em serviços REST é o formato JSON, usamos tal anotação para que o JAX-RS faça a conversão do objeto usuário retornado pelo método `findById()` para JSON.
 Assim, tenha certeza de importar a anotação `@Produces` do pacote `javax.ws.rs.Produces` e não a anotação do CDI.
 
-Por fim, também anotamos o método `findById()` com `@GET` para indicar que este método só aceita requisições HTTP com o verbo GET. Se utilizarmos um verbo que o método não aceita, receberemos o erro _405 Method Not Allowed_: Erro HTTP 405 Método (Verbo)não Permitido.
+Por fim, também anotamos o método `findById()` com `@GET` para indicar que este método só aceita requisições HTTP com o verbo GET. Se utilizarmos um verbo que o método não aceita, receberemos o erro _"405 Method Not Allowed_", ou seja "Erro HTTP 405: Método (Verbo) não Permitido".
 
 ==== Implementando método para inserir usuário
 
@@ -606,7 +606,7 @@ publicados por um serviço REST (como o serviço de usuários desenvolvido aqui)
 |Excluir Usuário  |DELETE |curl -X DELETE http://localhost:8080/server/api/usuario/1
 |===
 
-WARNING: Observe que ainda não implementamos os métodos para alterar e excluir usuários (operações POST e PUT). *No caso da operação de inserir usuários, se tentar acessá-la, verá que ocorrerá um erro. Isto será explicado na próxima seção.*
+WARNING: Observe que ainda não implementamos os métodos para alterar e excluir usuários (verbos POST e PUT). *No caso da operação de inserir usuários, se tentar acessá-la, verá que ocorrerá um erro. Isto será explicado na próxima seção.*
 
 Para operações POST e PUT, é comum passarmos no corpo da mensagem HTTP o conteúdo a ser enviado na requisição.
 Nos exemplos acima, é passado um objeto `Usuario` em formato JSON. Neste caso, precisamos incluir o cabeçalho
@@ -669,4 +669,6 @@ public boolean delete(@PathParam("id") long id) {
 }
 ----
 
-Pronto, agora pode usar qualquer uma das formas mostradas anteriormente para testar qualquer um dos métodos do serviço REST implementado.
+Pronto, agora pode usar alguma das formas mostradas anteriormente para testar qualquer método do serviço REST implementado.
+Espero que o tutorial tenha sido completo e esclarecedor.
+Se encontrar algum erro, algo que ficou mal explicado ou que pode ser melhorado, basta criar uma nova issue https://github.com/manoelcampos/sistemas-distribuidos/issues[aqui].
