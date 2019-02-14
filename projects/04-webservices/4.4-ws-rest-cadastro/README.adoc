@@ -556,6 +556,8 @@ public long insert(Usuario usuario) {
 De acordo com a tabela mostrada anteriormente, para inserir um registro no banco (operação Create do CRUD), devemos usar o verbo POST do HTTP, anotando o método `insert()` com `@POST`. Neste caso, não incluímos uma anotação `@Path` pois não queremos que seja utilizado um caminho adicional, além do já existente `/usuario`, para inserir um usuário no banco. Se acessarmos tal URL por meio do verbo POST, o servidor REST entenderá que queremos chamar o método `insert()` mostrado acima.
 Neste caso, como vamos passar um usuário a ser inserido no banco, o parâmetro do `insert()` é um objeto da classe `Usuario` e não um id numérico. 
 
+IMPORTANT: Tenha certeza de importar a anotação `@POST` correta, do pacote `javax.ws.rs`. Importando outra anotação que possa aparecer nas opções do IDE irá fazer com que o projeto não compile.
+
 No caso de requisições POST, os dados passados não vão na URL (como no verbo GET). Assim, não usamos a anotação `@PathParam` no parâmetro do método e nem incluímos parâmetro algum na anotação `@Path`. Até porque, neste exemplo não quisemos definir um caminho adicional para acessar o método, logo, não precisamos da `@Path`.
 
 Observe que anotamos o método `insert()` com `@Consumes` e não `@Produces`, pois este método consome (recebe) dados em formato JSON, no lugar de produzir (retornar) dados em JSON. Como o método está retornando um tipo primitivo (o id do usuário inserido), não precisamos converter o retorno para JSON. Assim, o método apenas consome JSON.
