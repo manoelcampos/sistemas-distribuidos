@@ -3,7 +3,7 @@
 Web chat utilizando http://nodejs.org:[Node.js] no lado da app servidor. Com Node.js podemos então usar JavaScript no lado servidor e no cliente. A aplicação utiliza http://websocket.org[WebSockets (recurso do HTML5)] com a biblioteca http://socket.io para implementar o chat.
 
 A biblioteca socket.io apenas facilita o uso do recurso de WebSocket.
-WebSocket é um protocolo full-duplex leve para transmissão de dados em aplicações web.
+WebSocket é um protocolo https://pt.wikipedia.org/wiki/Duplex#Full-duplex[full-duplex] leve para transmissão de dados em aplicações web.
 Se embutida em um servidor HTTP, quando uma conexão é realizada à página web que dá acesso
 à interface de usuário da aplicação, todo o extenso cabeçalho
 e corpo de uma mensagem HTTP é trafegado pela rede. Depois que a conexão é realizada,
@@ -16,7 +16,7 @@ o tráfego de rede e tempo para recebimento de respostas.
 No Firefox, podemos monitorar o tráfego HTTP e ver a quantidade de dados trafegados
 por meio do menu Ferramentas >> Web Developer >> Network.
 
-No Chrome devemos acessar ... >> More Tools >> Developer Tools >> Network.
+No Chrome devemos acessar o botão `...`, depois `More Tools >> Developer Tools >> Network`.
 Na mesma aba, na parte inferior, podemos ver os frames WebSocket enviados
 e como tais frames são pequenos.
 

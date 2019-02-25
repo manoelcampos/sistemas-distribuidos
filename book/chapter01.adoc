@@ -8,9 +8,8 @@ NOTE: Em sistemas centralizados que possuem terminais remotos conhecidos como ht
 
 Os _mainframes_ eram utilizados para realizar tarefas que demandavam alto poder de processamento, normalmente processadas em lote (https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zmainframe/zconc_batchproc.htm[batch processing]), como: 
 
-- processamento de folhas de pagamento de empresas;
-- processamento de declarações de imposto de renda;
-- processamento de imagens;
+- folhas de pagamento de empresas;
+- declarações de imposto de renda;
 - computação científica com a realização de cálculos complexos;
 - análise estatística de grande volume de dados como no caso de um censo;
 - etc.
