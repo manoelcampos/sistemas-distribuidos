@@ -21,7 +21,7 @@ O servidor escuta numa porta configurada por meio de uma constante em sua classe
 Tal constante é utilizada pelo cliente para saber qual porta se conectar ao servidor.
 O servidor inicia e fica em loop infinito, aguardando conexões de clientes em tal porta.
 
-Para cada cliente conectado, o servidor é obrigado a criar uma Thread para atender as requisições de tal cliente.
+Para cada cliente conectado, o servidor é obrigado a criar um Thread para atender as requisições de tal cliente.
 O problema deste modelo é que ele não é escalável: se a quantidade de clientes simultâneos aumentar drasticamente,
 o sistema operacional pode não ser capaz de criar Threads suficientes. 
 

@@ -1,8 +1,7 @@
 = Chat cliente/servidor utilizando Sockets em Java 8
 
 Este é um projeto Java que mostra como criar uma aplicação de chat cliente/servidor utilizando as
-interfaces `ServerSocketChannel` e `SocketChannel` da API https://docs.oracle.com/javase/8/docs/technotes/guides/io/[NIO.2 do Java 7],
-mais atuais que as classes `ServerSocket` e `Socket` que vêm desde o Java 1.
+interfaces `ServerSocketChannel` e `SocketChannel` da API https://docs.oracle.com/javase/8/docs/technotes/guides/io/[NIO.2 do Java 7], mais atuais que as classes `ServerSocket` e `Socket` do Java 1.
 
 Esta é uma versão introdutória que mostra como desenvolver a aplicação ainda
 utilizando chamadas bloqueantes (blocking), o que obriga o uso de threads
