@@ -19,7 +19,7 @@
 17. P2P. Skype | Spotify - Large Scale, Low Latency, P2P Music-on-Demand Streaming https://www.csc.kth.se/~gkreitz/spotify-p2p10/
 18. a
 19. Projeto
-20. Recuperação (sex, 15/02/2019)
+20. Recuperação
 
 Server-Side Rendering (SSR) vs Client-Side Rendering (CSR)
 https://medium.com/walmartlabs/the-benefits-of-server-side-rendering-over-client-side-rendering-5d07ff2cefe8
