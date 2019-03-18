@@ -2,7 +2,7 @@
 
 == Transparência de Distribuição
 
-Como visto anteriormente, parte da definição de sistemas distribuídos é que eles normalmente se apresentam como um sistema único aos usuários, ocultando o fato de processos e recursos estarem fisica e muitas vezes geograficamente distribuídos <<SDPP>>. Tal característica define o sistema como transparente. Transparência neste contexto então significa que o programador e/ou usuário não pode ver ou identificar que o sistema é distribuído. As principais formas de transparência são: acesso, localização, migração/mobilidade, relocação, replicação, concorrência e falha. <<SDCP>> <<SDPP>>
+Como visto anteriormente, parte da definição de sistemas distribuídos é que eles normalmente se apresentam como um sistema único aos usuários, ocultando o fato de processos e recursos estarem fisica e muitas vezes geograficamente distribuídos <<SDPP>>. Tal característica define o sistema como transparente <<SDCP>>. Transparência neste contexto então significa que o programador e/ou usuário não pode ver ou identificar que o sistema é distribuído. As principais formas de transparência são: acesso, localização, migração/mobilidade, relocação, replicação, concorrência e falha. <<SDCP>> <<SDPP>>
 
 === Transparência de Acesso
 
@@ -19,7 +19,9 @@ Como apresentado, a transmissão de dados usando TCP/IP é feita em _big endian_
 
 Diferentes linguagens de programação podem ter formatos distintos para números, strings, booleans e outros dados. Por exemplo, em C, boolean é representado como um número inteiro. Em Java temos um tipo boolean específico. Strings em C são um vetor de caracteres terminados com `\0`. Em Java não há tal caractere no final das Strings.
 
-Em <<SDCP>> ainda é citado que a transparência de acesso permite que não haja distinção nas operações para acesso a recursos locais ou remotos. Desta forma, nem o programador tem que usar operações (funções) diferentes para tais acessos. 
+Em <<SDCP>> ainda é citado que a transparência de acesso permite que não haja distinção nas operações para acesso a recursos locais ou remotos. Desta forma, nem o programador tem que usar operações (funções) diferentes para tais acessos. Os usuário e aplicativos não devem perceber se estão acessando um recurso local ou remoto. 
+
+Recursos como a https://support.apple.com/pt-br/HT206996[Otimização de Armazenamento] introduzido no macOS garantem transparência de acesso. O usuário salva um arquivo local e, caso o sistema comece a ficar com pouco espaço em disco, o arquivo é automaticamente movido para a nuvem, mas continua sendo acessado como se fosse um arquivo local.
 
 Conveções de nomes de arquivos também devem ser ocultados de usuários e aplicações <<SDPP>>. Servidores web fazem isso. Por exemplo, no Windows é usada \ para separar diretórios, enquanto no Linux é usada /. Mas na web, o padrão é / independente de qual seja o sistema operacional do servidor.
 
@@ -90,13 +92,13 @@ DDDDDDD
 
 A transparência de concorrência precisa lidar com tais tipos de problemas. Ela precisa ainda garantir que o recurso (neste caso o arquivo) se mantenha consistente <<SDPP>>. Por exemplo, tentativas de alterações simultâneas *não* podem corromper o arquivo, tornando impossível ler seu conteúdo.
 
-_Locks_ são mecanismos de trava muito utilizados para dar acesso exclusivo a um recurso para um usuário <<SDPP>> ou aplicação, criando uma fila de espera para tal recurso. O uso de _locks_ evita os problemas apresentados acima, porém, traz uma grande perda de desempenho pois não podemos atender vários usuários simultaneamente. Isto prejudica enormente a escalabilidade do sistema. 
+_Locks_ são mecanismos de trava muito utilizados para dar acesso exclusivo a um recurso para um usuário <<SDPP>> <<SDCP>> ou aplicação, criando uma fila de espera para tal recurso. O uso de _locks_ evita os problemas apresentados acima, porém, traz uma grande perda de desempenho pois não podemos atender vários usuários simultaneamente. Isto prejudica enormente a escalabilidade do sistema. 
 
-Sem o uso de transações com _lock_ em aplicações de banco de dados, a alteração de um mesmo registro por vários usuários pode resultar em um usuário sobrescrevendo os dados fornecidos por outro. O vídeo a seguir exemplifica este problema.
+Sem o uso de transações com _lock_ em aplicações de banco de dados, a alteração de um mesmo registro por vários usuários pode resultar em um usuário sobrescrevendo os dados fornecidos por outro. Este é o conhecido problema da atualização perdida: as atualizações de um usuário são perdidas quando outro usuário atualiza um registro <<SDCP>>. O vídeo a seguir exemplifica este problema.
 
 video::lJwAgEtpKmk[youtube, width=640, height=300]
 
-Em <<SDPP>> é discutido que um recurso mais adequado são as transações. Transações são muito conhecidas em bancos de dados e garantem que, ao executar um conjunto de operações, ou todas as operações são executadas com sucesso ou nenhuma delas é confirmada. No entanto, o livro deixa entender que transações são uma alternativa aos _locks_, quando na verdade, elas utilizam _locks_ para garantir consistência dos dados. De fato, bancos de dados como https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html[MySQL] e https://www.postgresql.org/docs/9.5/sql-select.html#SQL-FOR-UPDATE-SHARE[PostgreSQL] permitem o uso de _locks_ em transações para isto, por meio de comandos como `select ... for update`.
+Em <<SDPP>> é discutido que um recurso mais adequado para resolver este problema são as transações. Transações são muito conhecidas em bancos de dados e garantem que, ao executar um conjunto de operações, ou todas as operações são executadas com sucesso ou nenhuma delas é confirmada. No entanto, o livro deixa entender que transações são uma alternativa aos _locks_, quando na verdade, elas utilizam _locks_ para garantir consistência dos dados. De fato, bancos de dados como https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html[MySQL] e https://www.postgresql.org/docs/9.5/sql-select.html#SQL-FOR-UPDATE-SHARE[PostgreSQL] permitem o uso de _locks_ em transações para isto, por meio de comandos como `select ... for update`.
 
 O livro cita ainda que implementar tal recurso em sistemas distribuídos é bastante desafiador. 
 Mas é importante ficar claro que o desafio consiste em utilizar transações em um SGBD distribuído, onde um mesmo dado pode estar replicado em vários servidores. Imagine que uma atualização em um servidor precisa ser replicada pra outros servidores
@@ -106,10 +108,24 @@ e ainda garantindo que:
 - ou em caso de erro, as alterações confirmadas em qualquer um sejam desfeitas.
 
 No caso de um banco de dados não distribuído, evitar o problema apresentado no vídeo acima é bem fácil. Bibliotecas de acesso a bancos de dados normalmente possuem recursos para lidar com alterações concorrentes, que são os _locks_ otimistas e pessismistas.
-O método otimista considera que alterações concorrentes ocorrem excepcionalmente. Tal método não usa _locks_ do banco, mas normalmente requer um campo "versão" na tabela. Quando um usuário altera um registro em tal tabela, o número da versão daquele registro é automaticamente incrementando. Assim, se entre a leitura de um registro e a alteração do mesmo, a biblioteca detectar que o número de versão do registro mudou, é porque outro usuário alterou tal registro. Neste caso, é exibido um erro de modificação concorrente, indicando tal situação. Nestes casos, o usuário pode tentar novamente. https://vladmihalcea.com/a-beginners-guide-to-java-persistence-locking/[<1>] https://en.wikibooks.org/wiki/Java_Persistence/Locking[<2>] https://www.baeldung.com/jpa-optimistic-locking[<3>] https://www.baeldung.com/jpa-pessimistic-locking[<4>] https://www.objectdb.com/java/jpa/persistence/lock[<5>]
+Este é o caso da Java Persistence API (JPA) que vai aplicar mecanismos de lock de acordo com o banco de dados sendo utilizado.
+O método otimista considera que alterações concorrentes ocorrem excepcionalmente. Tal método não usa _locks_ do banco, mas normalmente requer um campo "versão" na tabela. Quando um usuário altera um registro em tal tabela, o número da versão daquele registro é automaticamente incrementando. Assim, se entre a leitura de um registro e a alteração do mesmo, a biblioteca detectar que o número de versão do registro mudou, é porque outro usuário alterou tal registro. Neste caso, é exibido um erro de modificação concorrente, indicando tal situação. Nestes casos, o usuário pode tentar novamente. [https://vladmihalcea.com/a-beginners-guide-to-java-persistence-locking/[1, ] https://en.wikibooks.org/wiki/Java_Persistence/Locking[2, ] https://www.baeldung.com/jpa-optimistic-locking[3, ] https://www.baeldung.com/jpa-pessimistic-locking[4, ] https://www.objectdb.com/java/jpa/persistence/lock[5]]
 
-O vídeo a seguir apresenta tal processo.
+O vídeo a seguir apresenta o _locking_ otimista.
 
 video::SALUHrZz2OQ[youtube, width=640, height=300]
 
 O método pessimista considera que há maior probabilidade de modificações concorrentes. Assim, ele usa o recurso de _lock_ do banco para travar um registro até que as operações feitas por um usuário sejam finalizadas. Nestes casos, como já sabemos, isto reduz a escalabilidade do sistema.
+
+Modificações concorrentes podem ser um grande problema, principalmente em sistemas financeiros e bancários <<SDCP>>. Sem o controle de concorrência, duas pessoas com cartões de uma mesma conta que possue apenas R$100,00 poderiam tentar sacar dinheiro duas vezes este valor. 
+
+Por fim, quando um _lock_ é aplicado no banco de dados por um usuário, outros usuários tentando acessar o mesmo registro esperarão por um determinado tempo até que ocorra _timeout_ <<SDCP>>. Neste caso, o _timeout_ é definido nas configurações do banco e/ou da conexão [https://dev.mysql.com/doc/refman/8.0/en/innodb-parameters.html#sysvar_innodb_lock_wait_timeout[1, ] https://www.postgresql.org/docs/9.4/runtime-config-client.html:[2]].
+
+== Transparência a Falhas
+
+Permite ocultar falhas para que usuários e programas consigam finalizar suas tarefas, sem mesmo perceberem que a falha ocorreu <<SDCP>>. Se um componente do sistema falhar, outro deve assumir automaticamente para tornar o sistema tolerante a falhas. 
+Assim como escalabilidade não é infinita, a tolerância a falhas também não. Um sistema com um nível de tolerância a falhas _k_ é capaz de continuar em funcionamento mesmo após _k_ falhas. Isto indica que ele precisa de pelo menos _k+1_ elementos replicados (como servidores ou links de internet). Tal sistema é classificado como http://u.cs.biu.ac.il/~ariel/download/ds590/pdfs/chp08.pdf[_k-fault tolerant_]. A tolerância neste caso também inclui os clientes e usuários <<SDCP>>: o navegador envia uma requisição a um servidor e aguarda um determinado tempo pela resposta. Se o tempo expirar, ocorre _timeout_ e uma mensagem de erro é exibida. Neste caso, o usuário tem a possibilidade de tentar novamente. 
+
+Replicação de componentes é um recurso apresentado para permitir a escalabilidade de um sistema, que também é fundamental para garantir tolerância a falhas. Com recursos como balanceamento de carga, quando um componente falha, as requisições dos usuários podem ser automaticamente redirecionadas para outro componente.
+
+Há ainda preocupações com recuperação de falhas. Se o sistema estava no meio de um processo que não foi finalizado, o estado de tal processo pode ser salvo para que possa ser resumido do ponto onde parou. Se alterações de dados foram concluídas apenas parcialmente depois de uma falha, as transações de banco de dados garantem que tais operações incompletas não sejam confirmadas. Assim, o sistema volta a um estado consistente depois de reiniciar. No caso de dados enviados pelo cliente que não foram persistidos no banco, após a falha, o cliente tem a possibilidade de tentar novamente e re-enviar os dados.

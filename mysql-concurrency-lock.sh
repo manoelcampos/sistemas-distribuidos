@@ -40,7 +40,7 @@ select * from cidade where id = 1 for update;
 \! echo ''
 
 # Altera o nome da cidade para um valor aleatório (aguardando 10 segundos para concluir o update)
-update cidade set nome = concat('Aleatório ', rand()) where id = 1 and sleep(10) >= 0;
+update cidade set nome = concat('Aleatório ', rand()) where id = 1 and sleep(60) >= 0;
 
 # Confirma as alterações e libera o lock.
 # Se foi o script foi aberto em outro terminal,
