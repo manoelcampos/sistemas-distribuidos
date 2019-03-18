@@ -22,7 +22,7 @@ use concorrencia;
 # Cria a tabela se ela não existir e insere um registro nela.
 create table if not exists cidade as select 1 as id, 'Palmas                                            ' as nome;
 
-select '    Tentando selecionar dados (pode demorar por conta de lock em outra operação paralela)' as Mensagem;
+select '# Tentando selecionar dados (pode demorar por conta de lock em outra operação paralela)' as '';
 
 # Locks só funcionam dentro de transações
 start transaction;
@@ -33,14 +33,14 @@ start transaction;
 # neste meio tempo.
 select * from cidade where id = 1 for update;
 
-# Altera o nome da cidade para um valor aleatório
-update cidade set nome = concat('Aleatório ', rand()) where id = 1;
+\! echo ''
+\! echo '# Alterando registro e aguardando alguns segundos para conseguirmos perceber o lock.'
+\! echo '# Neste intervalo, execute o script em outro terminal'
+\! echo '# e verá que ele não consegue nem sequer obter os dados do registro usando o primeiro select.'
+\! echo ''
 
-select '    Aguardando alguns segundos para conseguirmos perceber o lock' as Mensagem;
-
-# Aguarda alguns seguindos. Neste intervalo você pode executar o script em outro terminal
-# e verá que ele não consegue nem sequer obter os dados do registro com o primeiro select acima.
-select sleep(10);
+# Altera o nome da cidade para um valor aleatório (aguardando 10 segundos para concluir o update)
+update cidade set nome = concat('Aleatório ', rand()) where id = 1 and sleep(10) >= 0;
 
 # Confirma as alterações e libera o lock.
 # Se foi o script foi aberto em outro terminal,

@@ -96,13 +96,6 @@ Sem o uso de transações com _lock_ em aplicações de banco de dados, a altera
 
 video::lJwAgEtpKmk[youtube, width=640, height=300]
 
-// JPA Locking
-// https://vladmihalcea.com/a-beginners-guide-to-java-persistence-locking/
-// https://en.wikibooks.org/wiki/Java_Persistence/Locking
-// https://www.baeldung.com/jpa-optimistic-locking
-// https://www.baeldung.com/jpa-pessimistic-locking
-// https://www.objectdb.com/java/jpa/persistence/lock
-
 Em <<SDPP>> é discutido que um recurso mais adequado são as transações. Transações são muito conhecidas em bancos de dados e garantem que, ao executar um conjunto de operações, ou todas as operações são executadas com sucesso ou nenhuma delas é confirmada. No entanto, o livro deixa entender que transações são uma alternativa aos _locks_, quando na verdade, elas utilizam _locks_ para garantir consistência dos dados. De fato, bancos de dados como https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html[MySQL] e https://www.postgresql.org/docs/9.5/sql-select.html#SQL-FOR-UPDATE-SHARE[PostgreSQL] permitem o uso de _locks_ em transações para isto, por meio de comandos como `select ... for update`.
 
 O livro cita ainda que implementar tal recurso em sistemas distribuídos é bastante desafiador. 
@@ -112,4 +105,11 @@ e ainda garantindo que:
 - ou todos os servidores são atualizados;
 - ou em caso de erro, as alterações confirmadas em qualquer um sejam desfeitas.
 
-Este é realmente um cenário desafiador.
+No caso de um banco de dados não distribuído, evitar o problema apresentado no vídeo acima é bem fácil. Bibliotecas de acesso a bancos de dados normalmente possuem recursos para lidar com alterações concorrentes, que são os _locks_ otimistas e pessismistas.
+O método otimista considera que alterações concorrentes ocorrem excepcionalmente. Tal método não usa _locks_ do banco, mas normalmente requer um campo "versão" na tabela. Quando um usuário altera um registro em tal tabela, o número da versão daquele registro é automaticamente incrementando. Assim, se entre a leitura de um registro e a alteração do mesmo, a biblioteca detectar que o número de versão do registro mudou, é porque outro usuário alterou tal registro. Neste caso, é exibido um erro de modificação concorrente, indicando tal situação. Nestes casos, o usuário pode tentar novamente. https://vladmihalcea.com/a-beginners-guide-to-java-persistence-locking/[<1>] https://en.wikibooks.org/wiki/Java_Persistence/Locking[<2>] https://www.baeldung.com/jpa-optimistic-locking[<3>] https://www.baeldung.com/jpa-pessimistic-locking[<4>] https://www.objectdb.com/java/jpa/persistence/lock[<5>]
+
+O vídeo a seguir apresenta tal processo.
+
+video::SALUHrZz2OQ[youtube, width=640, height=300]
+
+O método pessimista considera que há maior probabilidade de modificações concorrentes. Assim, ele usa o recurso de _lock_ do banco para travar um registro até que as operações feitas por um usuário sejam finalizadas. Nestes casos, como já sabemos, isto reduz a escalabilidade do sistema.
