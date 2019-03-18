@@ -1,5 +1,24 @@
 = Modelo Cliente/Servidor
 
+== Cloud 
+
+Usar o provedor de PaaS Heroku para implantar sistemas e fazer balanceamento de carga.
+Cada aluno pode criar uma conta sem informar cartão de crédito.
+Assim, podemos tentar fazer load balancing entre diferentes contas tendo a mesma app.
+A conta de um aluno poderia tem uma app web que usaria um Roud Robin para balancer
+a carga entre os diferentes servidores.
+
+Até mesmo um único aluno pode criar vários containers e balancer carga entre eles.
+Os containers no Heroku são chamados de https://www.heroku.com/dynos[Dynos].
+Existem recursos para https://devcenter.heroku.com/articles/http-routing[Load Balancing].
+
+AWS Educate não obrigatoriamente exige que o estudante tenha um email institucional.
+Um professor participante pode convidá-lo. 
+Os alunos podem ser convidados para uma AWS Educate Classrooms.
+O login no AWS Educate deve ser feito 
+pelo botão "Login do AWS Educate", não pelo "Sign in to Console"
+em https://aws.amazon.com/education/awseducate/.
+
 == Sockets: a base para comunicação em rede
 
 - Comunicação síncrona e assíncrona
@@ -33,7 +52,7 @@
 
 = Messaging
 
-- http://mqtt.org Message Queue Telemetry Transport (MQTT) protocol - publish/subscribe
+- http://mqtt.org Message Queue Telemetry Transport (MQTT) protocol - publish/subscribe (Facebook Messenger)
 - MQTT Broker https://mosquitto.org
 
 - Advanced Message Queuing Protocol (AMQP) - https://www.amqp.org 

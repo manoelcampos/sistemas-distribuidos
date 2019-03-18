@@ -4,7 +4,7 @@
 . link:book/chapter01.adoc[Capítulo 1]
 .. link:book/chapter01a-resource-sharing.adoc[Compartilhamento de Recursos]
 .. link:book/chapter01b-scalability.adoc[Escalabilidade]
-.. link:book/chapter01c-disponibility.adoc[Disponibilidade e Abertura]
+.. link:book/chapter01c-availability[Disponibilidade e Abertura]
 .. link:book/chapter01d-transparency.adoc[Transparência]
 .. link:book/chapter01e-conclusion.adoc[Conclusão]
 . link:book/chapter02.adoc[Capítulo 2]
