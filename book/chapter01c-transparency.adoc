@@ -128,4 +128,6 @@ Assim como escalabilidade não é infinita, a tolerância a falhas também não.
 
 Replicação de componentes é um recurso apresentado para permitir a escalabilidade de um sistema, que também é fundamental para garantir tolerância a falhas. Com recursos como balanceamento de carga, quando um componente falha, as requisições dos usuários podem ser automaticamente redirecionadas para outro componente.
 
+NOTE: Para detalhes sobre computação em nuvem e balanceamento de carga, veja seções 2.1 e 2.2 nesta http://cloudsimplus.org/docs/MScDissertation-RaysaOliveira.pdf[dissertação de mestrado].
+
 Há ainda preocupações com recuperação de falhas. Se o sistema estava no meio de um processo que não foi finalizado, o estado de tal processo pode ser salvo para que possa ser resumido do ponto onde parou. Se alterações de dados foram concluídas apenas parcialmente depois de uma falha, as transações de banco de dados garantem que tais operações incompletas não sejam confirmadas. Assim, o sistema volta a um estado consistente depois de reiniciar. No caso de dados enviados pelo cliente que não foram persistidos no banco, após a falha, o cliente tem a possibilidade de tentar novamente e re-enviar os dados.
