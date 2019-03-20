@@ -100,6 +100,8 @@ video::lJwAgEtpKmk[youtube, width=640, height=300]
 
 Em <<SDPP>> é discutido que um recurso mais adequado para resolver este problema são as transações. Transações são muito conhecidas em bancos de dados e garantem que, ao executar um conjunto de operações, ou todas as operações são executadas com sucesso ou nenhuma delas é confirmada. No entanto, o livro deixa entender que transações são uma alternativa aos _locks_, quando na verdade, elas utilizam _locks_ para garantir consistência dos dados. De fato, bancos de dados como https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html[MySQL] e https://www.postgresql.org/docs/9.5/sql-select.html#SQL-FOR-UPDATE-SHARE[PostgreSQL] permitem o uso de _locks_ em transações para isto, por meio de comandos como `select ... for update`.
 
+NOTE: Se você quiser verificar como funciona o mecanismo de _lock_ do MySQL, pode acessar o script link:../projects/mysql-concurrency-lock.sh[mysql-concurrency-lock.sh]. Você apenas precisa ter o servidor MySQL instalado em uma máquina Linux/macOS. Ao executar o script com `sh mysql-concurrency-lock.sh` será mostrado como ele funciona e como deve proceder. Certifique-se editar o script para informar a senha do usuário root do MySQL.
+
 O livro cita ainda que implementar tal recurso em sistemas distribuídos é bastante desafiador. 
 Mas é importante ficar claro que o desafio consiste em utilizar transações em um SGBD distribuído, onde um mesmo dado pode estar replicado em vários servidores. Imagine que uma atualização em um servidor precisa ser replicada pra outros servidores
 e ainda garantindo que: 
