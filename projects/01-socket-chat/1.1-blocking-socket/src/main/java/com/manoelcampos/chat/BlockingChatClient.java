@@ -71,7 +71,8 @@ public class BlockingChatClient implements Runnable {
      *                     ou o cliente não tem acesso à rede.
      */
     private void start() throws IOException {
-        clientSocket = new ClientSocket(new Socket(SERVER_ADDRESS, BlockingChatServer.PORT));
+        Socket socket = new Socket(SERVER_ADDRESS, BlockingChatServer.PORT);
+        clientSocket = new ClientSocket(socket);
         System.out.println(
             "Cliente conectado ao servidor no endereço " + SERVER_ADDRESS +
             " e porta " + BlockingChatServer.PORT);

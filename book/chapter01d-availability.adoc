@@ -3,7 +3,7 @@
 == Disponibilidade
 
 Disponibilidade é uma medida que indica o percentual de tempo que espera-se que o sistema esteja em funcionamento <<SDCP>>.
-Tal medida é calculada como `tempo de atividade do sistema/(tempo de atividade + tempo de inatividade)` (Ver http://cloudsimplus.org/docs/MScDissertation-RaysaOliveira.pdf[Tabela 2.1 aqui]).
+Tal medida é calculada como `tempo de atividade/(tempo de atividade + tempo de inatividade)` (Ver http://cloudsimplus.org/docs/MScDissertation-RaysaOliveira.pdf[Tabela 2.1 aqui]).
 Um sistema distribuído deve fornecer um alto grau de disponibilidade perante falhas <<SDCP>>.
 Uma tabela disponível https://en.wikipedia.org/wiki/High_availability#Percentage_calculation[neste link] mostra o tempo de _downtime_ (em que o serviço fica indisponível) de acordo com o grau de disponibilidade. Um sistema com 99% de disponibilidade fica em média indisponível 3.65 dias no ano.
 
@@ -14,3 +14,4 @@ Com os recursos da computação em nuvem, serviços de monitoramente podem detec
 e automaticamente iniciar um nova VM, garantindo assim que o nível de tolerância não seja reduzido e que o balanceamento de carga não seja prejudicado com uma redução do número de máquinas.
 
 == Abertura
+

@@ -137,7 +137,7 @@ public class ClientSocket implements Closeable {
     public boolean sendMsg(String msg) {
         out.println(msg);
         
-        //retorna true se não ouve nenhum erro ao enviar mensagem ou false caso tenha havido
+        //retorna true se não houve nenhum erro ao enviar mensagem ou false caso tenha havido
         return !out.checkError();
     }
 
