@@ -19,15 +19,15 @@ import java.util.stream.IntStream;
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ConcorrenciaAppSolucao2 {
+public class ConcorrenciaAppSolucao3 {
     private Random rand;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ConcorrenciaAppSolucao2 app = new ConcorrenciaAppSolucao2();
+        ConcorrenciaAppSolucao3 app = new ConcorrenciaAppSolucao3();
     }
 
-    private ConcorrenciaAppSolucao2(){
+    private ConcorrenciaAppSolucao3(){
         rand = new Random();
 
         /* 
@@ -49,8 +49,8 @@ public class ConcorrenciaAppSolucao2 {
         pois realmente não precisamos dela. Ela foi usada nos exemplos anteriores
         apenas para mostrar possíveis inconsistências nos resultados quando
         variáveis comuns são acessadas/alteradas por várias Threads. */
-        System.out.println("Total de letras armazenadas: " + letras.size());
-        letras.forEach(letra -> System.out.print(" " + letra));
+        System.out.println(letras);
+        System.out.println("\nTotal de letras armazenadas: " + letras.size());
     }
 
     /**

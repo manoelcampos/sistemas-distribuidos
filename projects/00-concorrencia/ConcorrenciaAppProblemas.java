@@ -87,9 +87,10 @@ public class ConcorrenciaAppProblemas implements Runnable {
 
         //Só depois que todas as Threads do grupo terminarem, podemos exibir os resultados
         System.out.println("\n");
-        System.out.println("Total de letras geradas pelas Threads: " + totalLetras);
+        System.out.println(letras);
+        System.out.println("\nTotal de letras geradas pelas Threads: " + totalLetras);
         System.out.println("Total de letras armazenadas:           " + letras.size());
-        letras.forEach(letra -> System.out.print(" " + letra));
+
         if(totalLetras != letras.size()){
             System.err.println("\n\nERRO: O total contabilizado de letras não corresponde ao total de letras armazenadas.");
             System.err.println("Tal problema pode ocorrer eventualmente pois as Threads criadas estão acessando.");

@@ -85,9 +85,9 @@ public class ConcorrenciaAppSolucao1 implements Runnable {
 
         //Só depois que todas as Threads do grupo terminarem, podemos exibir os resultados
         System.out.println("\n");
-        System.out.println("Total de letras geradas pelas Threads: " + totalLetras);
+        System.out.println(letras);
+        System.out.println("\nTotal de letras geradas pelas Threads: " + totalLetras);
         System.out.println("Total de letras armazenadas:           " + letras.size());
-        letras.forEach(letra -> System.out.print(" " + letra));
         if(totalLetras != letras.size()){
             System.err.println("\n\nERRO: O total contabilizado de letras não corresponde ao total de letras armazenados.");
             System.err.println("Tal problema pode ocorrer eventualmente pois as Threads criadas estão acessando.");
@@ -105,6 +105,20 @@ public class ConcorrenciaAppSolucao1 implements Runnable {
         }
     }
 
+    /**
+     * Cria um método sincronizado (veja o uso da palavra reservada synchronized)
+     * que contém apenas a parte do código anterior que alterar variáveis
+     * compartilhadas:
+     * neste caso, os atributos totalLetras e letras.
+     * Sendo sincronizado, apenas o código deste método não poderá ser 
+     * executado simultaneamente por diversas threads.
+     * Como vimos, o acesso ou alteração simultânea de uma mesma
+     * variável por diferentes threads por gerar resultados inesperados.
+     * Desta forma, a sincronização cria um lock (bloqueio).
+     * Ela funciona como um guarda de trânsito que vai controlar
+     * o fluxo. Neste caso, ele vai controlar quem executa 
+     * este método.
+     */
     private synchronized void registraLetraSorteada(char c) {
         totalLetras++;
         letras.add(c);
