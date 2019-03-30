@@ -23,6 +23,8 @@ import java.util.Random;
  *
  * A solução ideal é então evitar acessar variáveis comuns em diferentes
  * Threads, apesar de nem sempre ser possível.
+ * Mas quando isso não é possível, temos que recorrer à sincronização.
+ * 
  * @author Manoel Campos da Silva Filho
  */
 public class ConcorrenciaAppSolucao1 implements Runnable {
@@ -98,7 +100,7 @@ public class ConcorrenciaAppSolucao1 implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < 1000; i++) {
-            char c = (char) (rand.nextInt(256));
+            char c = (char) rand.nextInt(256);
             if(Character.isAlphabetic(c)){
                 registraLetraSorteada(c);
             }

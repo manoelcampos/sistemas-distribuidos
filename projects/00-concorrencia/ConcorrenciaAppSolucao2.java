@@ -26,6 +26,17 @@ import java.util.Random;
  * Mas como já sabem, usar sincronização reduz o desempenho
  * e logo a escalabilidade do sistema.
  * 
+ * Neste caso, pudemos deixar de usar sincronização explicitamente
+ * (assim não temos que diretamente nos preocupar com isso)
+ * pois a variável compartilhada é do tipo List.
+ * Neste caso, existem implementações de List
+ * que já fornecem sincronização.
+ * Mas se estivessemos compartilhando qualquer outro tipo de objeto
+ * entre as Threads, pode ser que não tenhamos classes sincronizadas
+ * que possamos recorrer. Assim, se não temos como evitar
+ * compartilhar tais objetos, temos que explicitamente sincronizar o acesso
+ * a eles.
+ * 
  * @author Manoel Campos da Silva Filho
  */
 public class ConcorrenciaAppSolucao2 implements Runnable {
@@ -87,7 +98,7 @@ public class ConcorrenciaAppSolucao2 implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < 1000; i++) {
-            char c = (char) (rand.nextInt(256));
+            char c = (char) rand.nextInt(256);
             if(Character.isAlphabetic(c)){
                 letras.add(c);
             }

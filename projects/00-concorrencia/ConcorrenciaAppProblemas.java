@@ -101,7 +101,7 @@ public class ConcorrenciaAppProblemas implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < 1000; i++) {
-            char c = (char) (rand.nextInt(256));
+            char c = (char) rand.nextInt(256);
             if(Character.isAlphabetic(c)){
                 totalLetras++;
                 letras.add(c);

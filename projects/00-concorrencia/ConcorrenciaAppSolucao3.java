@@ -17,9 +17,19 @@ import java.util.stream.IntStream;
  * Neste caso, não definimos o total de Threads a serem criadas,
  * mas a JVM.
  * 
+ * Usando Streams, podemos executar código em paralelo,
+ * em diferentes Threads, mas por padrão não definimos
+ * quantas Threads serão criadas e nem temos controle
+ * sobre tais Threads.
+ * Se precisarmos realmente definir como estas Threads
+ * serão criadas, controlar a execução delas
+ * (como pausar ou criar novas dinamicamente),
+ * teremos que recorrer às soluções anteriores.
+ * 
  * @author Manoel Campos da Silva Filho
  */
 public class ConcorrenciaAppSolucao3 {
+    private static final int TOTAL_EXECUCOES = 10;
     private Random rand;
 
     public static void main(String[] args) {
@@ -39,11 +49,11 @@ public class ConcorrenciaAppSolucao3 {
         cada Thread vai executá-lo 2 vezes, dividindo igualmente o trabalho.
         */
         List<Character> letras = 
-            IntStream.range(0, 10) //solicita a execução de algum processo 10 vezes
-                .parallel() //executa tais processos (o método run) em paralelo (usando múltiplas CPUs)
-                .mapToObj(i -> run()) //executa o método run que irá retorna um objeto como retorno
+            IntStream.range(0, TOTAL_EXECUCOES) //solicita a execução de algum processo 10 vezes
+                .parallel() //executa tais processos (o método contaLetras()) em paralelo (usando múltiplas CPUs)
+                .mapToObj(i -> contaLetras()) //executa o método contaLetras() que irá retorna um objeto como retorno
                 .flatMap(lista -> lista.stream()) //O run() retorna uma lista e quero juntar todas as listas em uma só
-                .collect(Collectors.toList()); //armazena o resultado de todas as execuções do run() em uma única lista
+                .collect(Collectors.toList()); //armazena o resultado de todas as execuções do contaLetras() em uma única lista
 
         /*Imprime as letras geradas. Veja que não declaramos mais o atributo totalLetras
         pois realmente não precisamos dela. Ela foi usada nos exemplos anteriores
@@ -56,18 +66,21 @@ public class ConcorrenciaAppSolucao3 {
     /**
      * Gera caracteres aleatórios e retorna a lista de letras
      * que foi gerada ao final da execução do método.
+     * Este era o método run() dos exemplos anteriores.
+     * Mas como não estamos usando Threads explicitamente,
+     * não precisamos fazer nossa classe implementar Runnable,
+     * logo não precisamos que o método seja chamado de run() 
+     * ou tenha a mesma assinatura dele.
      * @return
      */
-    public List<Character> run() {
+    public List<Character> contaLetras() {
         /* No lugar de usar atributos compartilhados,
          * a Thread que executar este método run() vai usar
          * variáveis locais, resolvendo o problema de concorrência. */
         final List<Character> letras = new ArrayList<>();
-        int totalLetras = 0;
         for (int i = 0; i < 1000; i++) {
-            char c = (char) (rand.nextInt(256));
+            char c = (char) rand.nextInt(256);
             if(Character.isAlphabetic(c)){
-                totalLetras++;
                 letras.add(c);
             }
         }
