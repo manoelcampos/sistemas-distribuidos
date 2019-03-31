@@ -14,7 +14,7 @@ import java.util.Random;
  * 
  * Para esta solução, não vamos utilizar sincronização explicitamente.
  * Como letras é uma lista compartilhada por todas as Threads,
- * no lugar de instanciar um ArrayList, vamos instanciar um Vector.
+ * no lugar de instanciar um ArrayList, vamos instanciar um {@link Vector}.
  * A maioria das classes de coleções (como as que implementam List)
  * não são "Thread Safe", ou seja, não são seguras para serem 
  * compartilhadas entre diferentes Threads.
@@ -29,8 +29,12 @@ import java.util.Random;
  * Neste caso, pudemos deixar de usar sincronização explicitamente
  * (assim não temos que diretamente nos preocupar com isso)
  * pois a variável compartilhada é do tipo List.
- * Neste caso, existem implementações de List
- * que já fornecem sincronização.
+ * Porém, a classe {@link Vector} e outras coleções sincronizadas são consideradas 
+ * obsoletas pois utilizam sincronização para todos os seus métodos.
+ * Mesmo que, por exemplo, você não precise que o método get() seja
+ * sincronizado, ele será. Isto pode trazer muita perde de desempenho
+ * em geral.
+ * 
  * Mas se estivessemos compartilhando qualquer outro tipo de objeto
  * entre as Threads, pode ser que não tenhamos classes sincronizadas
  * que possamos recorrer. Assim, se não temos como evitar
