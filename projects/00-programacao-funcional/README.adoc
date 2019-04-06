@@ -1,0 +1,15 @@
+= Programação Funcional, Expressões Lambda e Streams no Java 8
+
+Este é um projeto base com dados para aprendizado de programação funcional,
+Expressões Lambda e Streams no Java 8.
+Tais temas não estão obrigatoriamente relacionados ao desenvolvimento de sistemas
+distribuídos, mas são recursos extraordinários de diversas linguagens de programação
+moderns que facilitam em muito a vida do programador.
+
+O recurso de Streams do Java 8 (não confundir com InputStream e OutputStream usados
+nos projetos de chat) permitem processamento de dados de forma sequencial e paralelo.
+Neste último caso, processamento paralelo (utilizando múltiplas CPUs de uma mesma máquina)
+tem tudo a ver com sistemas distribuídos.
+
+Desta forma, tais recursos são de fundamental importância para complementar a formação 
+do estudante em programação.
