@@ -43,12 +43,10 @@ em https://aws.amazon.com/education/awseducate/.
 = WebSockets
 
 - https://socket.io
-- WebRTC
-    * https://webrtc.org
-    * https://ortc.org
-    * http://peerjs.com
 
 = Peer-to-Peer (P2P)
+
+P2P. Skype | Spotify - Large Scale, Low Latency, P2P Music-on-Demand Streaming https://www.csc.kth.se/~gkreitz/spotify-p2p10/
 
 = Messaging
 
@@ -81,12 +79,9 @@ em https://aws.amazon.com/education/awseducate/.
 
 = Web Services
 
-- https://chrome.google.com/webstore/detail/restlet-client-rest-api-t/aejoelaoggembcahagimdiliamlcdmfm[Restlet Client Chrome Extension]
-- https://www.soapui.org[SoapUI]
-
 == SOAP
 
-- http://www.webservicex.net
+- https://www.soapui.org[SoapUI]
 - jax-ws: https://javaee.github.io/metro-jax-ws/
 - jax-b vs xml dom vs sax
     * https://dzone.com/articles/jaxb-sax-dom-performance
@@ -96,8 +91,7 @@ em https://aws.amazon.com/education/awseducate/.
 - json-b: uma forma mais automática de pegar objetos java e converter para JSON e vice-versa 
         (sem precisar percorrer cada atributo do objeto individualmente)
     * http://json-b.net
-    * https://github.com/javaee/jsonb-spec
-    * https://javaee.github.io/jaxb-v2/ 
+    * https://github.com/eclipse-ee4j/yasson (new implementation after moving to Jakarta EE)
     * https://dzone.com/articles/jsonb-java-api-for-json-binding
 - json-p: construir JSON manualmente via Java (adicionando cada chave individualmente. 
           A home page abaixo mostra um exemplo claro)
@@ -146,3 +140,10 @@ http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
 
 - http://artofscalability.com
 
+
+
+= Server-Side Rendering (SSR) vs Client-Side Rendering (CSR)
+
+https://medium.com/walmartlabs/the-benefits-of-server-side-rendering-over-client-side-rendering-5d07ff2cefe8
+https://medium.freecodecamp.org/what-exactly-is-client-side-rendering-and-hows-it-different-from-server-side-rendering-bd5c786b340d
+https://www.toptal.com/front-end/client-side-vs-server-side-pre-rendering

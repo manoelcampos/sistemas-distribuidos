@@ -16,12 +16,7 @@
 14. a
 15. a
 16. a
-17. P2P. Skype | Spotify - Large Scale, Low Latency, P2P Music-on-Demand Streaming https://www.csc.kth.se/~gkreitz/spotify-p2p10/
+17. a
 18. a
 19. Projeto
 20. Recuperação
-
-Server-Side Rendering (SSR) vs Client-Side Rendering (CSR)
-https://medium.com/walmartlabs/the-benefits-of-server-side-rendering-over-client-side-rendering-5d07ff2cefe8
-https://medium.freecodecamp.org/what-exactly-is-client-side-rendering-and-hows-it-different-from-server-side-rendering-bd5c786b340d
-https://www.toptal.com/front-end/client-side-vs-server-side-pre-rendering
