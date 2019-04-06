@@ -115,8 +115,8 @@ em https://aws.amazon.com/education/awseducate/.
 
 === Swagger, SwaggerHub, SwaggerUI
 
-http://blog.caelum.com.br/modelando-apis-rest-com-swagger/
-http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
+- http://blog.caelum.com.br/modelando-apis-rest-com-swagger/
+- http://blog.caelum.com.br/documentando-uma-api-jax-rs-com-swagger/
 
 = SOA
 
