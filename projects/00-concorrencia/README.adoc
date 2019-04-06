@@ -4,7 +4,7 @@ Na seção https://manoelcampos.gitbooks.io/sistemas-distribuidos/book/chapter01
 foram discutidos os problemas que podem ocorrer quando temos vários usuários acessando o sistema
 ou quando temos várias Threads acessando ou alterando as mesmas variáveis simultaneamente.
 
-NOTE: O conceito e funcionamento de Threads é link:../01-socket-chat/1.1-blocking-socket/blocking-chat.pptx[apresentado aqui].
+NOTE: O conceito e funcionamento de Threads é link:../01-socket-chat/chat-sockets-threads.pptx[apresentado aqui].
 
 Nesta pasta são disponibilizadas algumas aplicações Java.
 A primeira demonstra que o compartilhamento de variáveis entre Threads pode gerar resultados inconsistentes e erros imprevisíveis e aleatórios. As aplicações seguintes demonstram diferentes maneiras de resolver estes problemas

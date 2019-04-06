@@ -1,0 +1,8 @@
+= Sockets
+
+Projetos apresentando conceitos básicos como Sockets, InputStream, OutputStream e Threads
+no desenvolvimento de aplicações de chat. Estes conceitos são link:chat-sockets-threads.pptx[apresentados aqui].
+
+A primeira versão é a mais básica e as outras vão mostrando diferentes maneiras
+de implementar a mesma aplicação, principalmente utilizando
+APIs mais novas da linguagem Java.
