@@ -1,0 +1,12 @@
+<!-- Exemplo de formato de mensagem do protocolo XMPP original -->
+<message to="34123456789@s.whatsapp.net" type="text" id="message-1417651059-2"  t="1417651059">
+   <body>Hello</body>
+</message>
+
+<!-- 
+  Exemplo de formato de mensagem do FunXMPP: versão do XMPP criada pelo WhatsApp.
+  https://github.com/mgp25/Chat-API/wiki/FunXMPP-Protocol
+-->
+<x59     xa5="01234567890@x91"           xa7="xa2"   x44="message-1417651059-2" xa1="1417651059">
+    <x12>Hello</x12>
+</x59>

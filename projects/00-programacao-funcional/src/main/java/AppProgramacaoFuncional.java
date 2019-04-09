@@ -41,7 +41,7 @@ public class AppProgramacaoFuncional {
     private void printStudents(){
         System.out.println("Lista de todos os " + TOTAL_STUDENTS + " gerados aleatoriamente.");
         students.forEach(student -> System.out.println(student));
-        System.ou.println();
+        System.out.println();
     }
 
     /**

@@ -1,0 +1,7 @@
+= Protocolo XMPP
+
+Apresenta o protocolo XMPP, sua arquitetura e o que ele traz de benefícios em relação 
+às tecnologias vistas até então.
+
+Veja a apresentação link:xmpp.pptx[xmpp.pptx] para ter uma visão geral do protocolo
+e os projetos disponibilizados.
