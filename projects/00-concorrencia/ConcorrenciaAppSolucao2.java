@@ -6,40 +6,45 @@ import java.util.Random;
  * Aplicação de exemplo que mostra uma outra forma de como resolver os problemas
  * de concorrência apresentados na aplicação anterior.
  *
- * O atributo totalLetras foi removido, pois podemos saber
- * quantas letras foram geradas a partir do método size() da
- * lista letras. O atributo foi usado apenas para mostrar
- * como podemos ter resultados diferentes entre o totalLetras
- * e o letras.size(), deixando claro os problemas de concorrência.
+ * <p>
+ * O atributo totalLetras foi removido, pois podemos saber quantas letras foram
+ * geradas a partir do método size() da lista letras. O atributo foi usado
+ * apenas para mostrar como podemos ter resultados diferentes entre o
+ * totalLetras e o letras.size(), deixando claro os problemas de concorrência.
+ * </p>
  * 
- * Para esta solução, não vamos utilizar sincronização explicitamente.
- * Como letras é uma lista compartilhada por todas as Threads,
- * no lugar de instanciar um ArrayList, vamos instanciar um {@link Vector}.
- * A maioria das classes de coleções (como as que implementam List)
- * não são "Thread Safe", ou seja, não são seguras para serem 
- * compartilhadas entre diferentes Threads.
- * Isto leva aos problemas que vimos na primeira versão desta aplicação.
- * Já a classe Vector (que é um tipo de List) é "Thread Safe".
- * Isto nos permite compartilhá-la entre Threads sem riscos.
- * Neste caso, internamente a classe usa sincronização.
- * Assim, não temos que nós mesmos nos preocuparmos com isso.
- * Mas como já sabem, usar sincronização reduz o desempenho
- * e logo a escalabilidade do sistema.
+ * <p>
+ * Para esta solução, não vamos utilizar sincronização explicitamente. Como
+ * letras é uma lista compartilhada por todas as Threads, no lugar de instanciar
+ * um ArrayList, vamos instanciar um {@link Vector}. A maioria das classes de
+ * coleções (como as que implementam List) não são "Thread Safe", ou seja, não
+ * são seguras para serem compartilhadas entre diferentes Threads. Isto leva aos
+ * problemas que vimos na primeira versão desta aplicação. Já a classe Vector
+ * (que é um tipo de List) é "Thread Safe". Isto nos permite compartilhá-la
+ * entre Threads sem riscos. Neste caso, internamente a classe usa
+ * sincronização. Assim, não temos que nós mesmos nos preocuparmos com isso. Mas
+ * como já sabem, usar sincronização reduz o desempenho e logo a escalabilidade
+ * do sistema.
+ * </p>
  * 
- * Neste caso, pudemos deixar de usar sincronização explicitamente
- * (assim não temos que diretamente nos preocupar com isso)
- * pois a variável compartilhada é do tipo List.
- * Porém, a classe {@link Vector} e outras coleções sincronizadas são consideradas 
- * obsoletas pois utilizam sincronização para todos os seus métodos.
- * Mesmo que, por exemplo, você não precise que o método get() seja
- * sincronizado, ele será. Isto pode trazer muita perde de desempenho
- * em geral.
+ * <p>
+ * Neste caso, pudemos deixar de usar sincronização explicitamente (assim não
+ * temos que diretamente nos preocupar com isso) pois a variável compartilhada é
+ * do tipo List. Porém, a classe {@link Vector} e outras coleções sincronizadas
+ * são consideradas obsoletas pois utilizam sincronização para todos os seus
+ * métodos. Mesmo que, por exemplo, você não precise que o método get() seja
+ * sincronizado, ele será. Isto pode trazer muita perde de desempenho em geral.
+ * Além disto, internamente tais classes são mais complexas,
+ * pois contém tanto o código para gerenciamento dos dados da coleção
+ * quanto o código para sincronização de acesso a tais dados.
+ * </p>
  * 
- * Mas se estivessemos compartilhando qualquer outro tipo de objeto
- * entre as Threads, pode ser que não tenhamos classes sincronizadas
- * que possamos recorrer. Assim, se não temos como evitar
- * compartilhar tais objetos, temos que explicitamente sincronizar o acesso
- * a eles.
+ * <p>
+ * Mas se estivessemos compartilhando qualquer outro tipo de objeto entre as
+ * Threads, pode ser que não tenhamos classes sincronizadas que possamos
+ * recorrer. Assim, se não temos como evitar compartilhar tais objetos, temos
+ * que explicitamente sincronizar o acesso a eles.
+ * </p>
  * 
  * @author Manoel Campos da Silva Filho
  */
