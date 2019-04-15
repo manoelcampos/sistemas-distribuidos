@@ -27,7 +27,7 @@ import java.util.Random;
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ConcorrenciaAppProblemas implements Runnable {
+public class ConcorrenciaAppProblemaA implements Runnable {
     /**
      * Total de {@link Thread}s a serem criadas.
      */
@@ -45,10 +45,10 @@ public class ConcorrenciaAppProblemas implements Runnable {
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ConcorrenciaAppProblemas app = new ConcorrenciaAppProblemas();
+        ConcorrenciaAppProblemaA app = new ConcorrenciaAppProblemaA();
     }
 
-    private ConcorrenciaAppProblemas(){
+    private ConcorrenciaAppProblemaA(){
         rand = new Random();
         letras = new ArrayList<>();
         /*Cria um grupo de Threads para nos permitir contar quantas threads tem no grupo e

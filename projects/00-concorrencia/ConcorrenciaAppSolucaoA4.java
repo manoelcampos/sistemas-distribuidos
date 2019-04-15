@@ -28,16 +28,16 @@ import java.util.stream.IntStream;
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ConcorrenciaAppSolucao3 {
+public class ConcorrenciaAppSolucaoA3 {
     private static final int TOTAL_EXECUCOES = 10;
     private Random rand;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ConcorrenciaAppSolucao3 app = new ConcorrenciaAppSolucao3();
+        ConcorrenciaAppSolucaoA3 app = new ConcorrenciaAppSolucaoA3();
     }
 
-    private ConcorrenciaAppSolucao3(){
+    private ConcorrenciaAppSolucaoA3(){
         rand = new Random();
 
         /* 
