@@ -21,8 +21,8 @@ public class NonBlockingChatServer {
     public static final int PORT = 4000;
     public static final String ADDRESS = "127.0.0.1";
 
-    private final Selector selector;
     private final ServerSocketChannel serverChannel;
+    private final Selector selector;
 
     private final ByteBuffer buffer;
 

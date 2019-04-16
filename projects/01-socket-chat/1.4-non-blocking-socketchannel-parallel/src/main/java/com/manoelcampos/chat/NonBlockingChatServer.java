@@ -34,6 +34,7 @@ public class NonBlockingChatServer {
     public static void main(String[] args) {
         //Define o número máximo de threads a serem criadas usando Stream do Java 8 (opcional)
         System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "10");
+        
         System.out.printf("CPUs: %d | Max Threads usadas por Streams do Java 8: %s\n\n",
                 Runtime.getRuntime().availableProcessors(),
                 System.getProperty("java.util.concurrent.ForkJoinPool.common.parallelism"));

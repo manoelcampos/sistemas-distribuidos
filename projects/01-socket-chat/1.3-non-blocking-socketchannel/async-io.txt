@@ -1,0 +1,8 @@
+https://en.wikipedia.org/wiki/Asynchronous_I/O
+https://docs.microsoft.com/en-us/windows/desktop/fileio/synchronous-and-asynchronous-i-o
+http://www.infoq.com/presentations/Nodejs-Asynchronous-IO-for-Fun-and-Profit
+https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_73/rzab6/asynchi0.htm
+https://docs.oracle.com/cd/E19253-01/816-4854/character-11/index.html
+https://docs.oracle.com/cd/E19455-01/806-5257/gen-29/index.html
+https://www3.physnet.uni-hamburg.de/physnet/Tru64-Unix/HTML/APS33DTE/DOCU_008.HTM
+https://nodejs.org/de/docs/guides/blocking-vs-non-blocking/
