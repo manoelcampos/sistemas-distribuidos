@@ -19,10 +19,10 @@
             $(function(){
                 /*Instancia um WebSocket, conectando automaticamente no servidor,
                 na porta indicada no index.js.*/
-                var socket = io()
+                let socket = io();
 
                 //Nome do usuário
-                var nickname = ''
+                let nickname = '';
 
                 /**
                  * Define uma função a ser chamada sempre que o form for submetido.
@@ -35,15 +35,15 @@
                     /*Envia mensagem digitada para o servidor.
                     O primeiro parâmetro é o tipo da mensagem
                     que será tratada pelo servidor. */
-                    socket.emit('chat msg', $('#msg').val())
-                    if(nickname == ''){
-                        nickname = $('#msg').val()
+                    socket.emit('chat msg', $('#msg').val());
+                    if(nickname === ''){
+                        nickname = $('#msg').val();
                     }
 
                     //Limpa o campo de texto
-                    $('#msg').val('')
-                    return false
-                })
+                    $('#msg').val('');
+                    return false;
+                });
 
                 /**
                  * Função que será chamada sempre que o servidor
@@ -54,8 +54,8 @@
                  * para todos os clientes.
                  */
                 socket.on('chat msg', function(msg){
-                    $('#messages').append($('<li>').text(msg))
-                })
+                    $('#messages').append($('<li>').text(msg));
+                });
 
                 /**
                  * Função que será chamada sempre que o servidor
@@ -65,13 +65,13 @@
                  * todos os outros receberão uma mensagem de status indicando isto.
                  */
                 socket.on('status', function(msg){
-                    $('#status').html(msg)
-                    console.log(msg)
-                })
+                    $('#status').html(msg);
+                    console.log(msg);
+                });
 
                 /**
                  * Função que será chamada sempre que o usuário
-                 * digitar uma tecla. 
+                 * digitar uma tecla.
                  * Ela então envia uma mensagem de status ao servidor,
                  * indicando que o usuário está digitando.
                  * O servidor receberá tal mensagem e fará broadcast dela,
@@ -79,11 +79,12 @@
                  * para que eles saibam que um usuário está digitando.
                  */
                 $('#msg').keypress(function(evt){
-                    if(nickname == ''){
-                        return
+                    if(nickname === ''){
+                        return;
                     }
-                    socket.emit('status', nickname + ' está escrevendo...')
-                })
+
+                    socket.emit('status', nickname + ' está escrevendo...');
+                });
 
                 /**
                  * Função que será chamada quando o usuário soltar uma tecla,
@@ -92,8 +93,8 @@
                  * que tal cliente parou de digitar e nenhum status será exibido.
                  */
                 $('#msg').keyup(function(evt){
-                    socket.emit('status', '')
-                })
+                    socket.emit('status', '');
+                });
             })
         </script>
     </body>

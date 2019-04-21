@@ -23,27 +23,27 @@ Importa a biblioteca express e automaticamente cria o objeto express que
 vai permitir programarmos nosso servidor para responder à solicitações
 de acesso às páginas HTML (neste exemplo caso apenas à index.html)
 da nossa aplicação web.*/
-var express = require('express')()
+let express = require('express')();
 
 /*Cria um servidor HTTP que vai ficar escutando numa porta a ser
 definida logo abaixo.
 Esta biblioteca não precisa ser adicionada como dependência no package.json,
 pois ela é fornecida por padrão com o nodejs.
  */
-var http = require('http').Server(express)
+let http = require('http').Server(express);
 
 /*
 Importa a biblioteca socket.io e automaticamente cria um objeto da classe
 Server que representará nosso servidor de WebSocket.
-Como o WebSocket trafega dados sobre o protocolo TCP,
+Como o WebSocket trafega dados sobre o protocolo HTTP,
 nosso servidor http então é indicado abaixo como sendo o canal
 a ser utilizado para trafegar os dados do WebSocket.
  */
-var serverSocket = require('socket.io')(http)
+let serverSocket = require('socket.io')(http);
 
 /*Porta na qual o servidor vai ficar aguardando requisições HTTP.
 Usar a porta 80 pode exigir permissões de root no Linux.*/
-var porta = 8000
+let porta = 8000;
 
 /*
  * Faz o servidor ficar escutando a porta indicada acima, aguardando requisições.
@@ -57,11 +57,8 @@ var porta = 8000
  */
 http.listen(porta, function(){
     //Se a porta for 80, não precisa exibir na URL pois é padrão
-    if(porta == 80)
-        portaStr = ''
-    else portaStr = ':' + porta
-
-    console.log('Servidor iniciado. Abra o navegador em http://localhost' + portaStr)
+    let portaStr = porta === 80 ? '' :  ':' + porta;
+    console.log('Servidor iniciado. Abra o navegador em http://localhost' + portaStr);
 });
 
 /*
@@ -94,7 +91,7 @@ http.listen(porta, function(){
  * Veja detelhes em https://expressjs.com/en/4x/api.html#app.get.method
  */
 express.get('/', function (requisicao, resposta) {
-    resposta.sendFile(__dirname + '/index.html')
+    resposta.sendFile(__dirname + '/index.html');
 });
 
 /*
@@ -120,7 +117,7 @@ express.get('/', function (requisicao, resposta) {
  * pode se comunicar com o cliente.
  */
 serverSocket.on('connect', function(socket){
-    console.log('\nCliente conectado: ' + socket.id)
+    console.log('\nCliente conectado: ' + socket.id);
 
     /*
     A chamada socket.on('disconnect') abaixo indica que queremos que uma função anônima seja chamada quando o cliente
@@ -129,7 +126,7 @@ serverSocket.on('connect', function(socket){
     Neste caso, uma função anônima será chamada e apenas exibirá uma mensagem no terminal.
     */
     socket.on('disconnect', function(){
-        console.log('Cliente desconectado: ' + socket.id)
+        console.log('Cliente desconectado: ' + socket.id);
     });
         
     /*
@@ -150,13 +147,13 @@ serverSocket.on('connect', function(socket){
     A função anônima passada receberá a mensagem (msg) enviada ao servidor.
     */
     socket.on('chat msg', function(msg){
-        console.log('Mensagem: ' + msg)
-        /*Usando socket.broadcast, encaminhamos a mensagem recebida para todos os clientes conectados,
+        console.log('Mensagem: ' + msg);
+        /*Usando serverSocket.emit(), encaminhamos a mensagem recebida para todos os clientes conectados,
         incluindo o que enviou a mensagem. 
         Assim, a mensagem aparecerá na lista do emissor também.
         */
-        serverSocket.emit('chat msg', msg)
-    })    
+        serverSocket.emit('chat msg', msg);
+    });
 
     /*
     A chamada socket.on('status') abaixo indica que queremos que uma função anônima seja chamada quando 
@@ -170,10 +167,10 @@ serverSocket.on('connect', function(socket){
     A função anônima passada receberá a mensagem (msg) enviada ao servidor.
      */
     socket.on('status', function(msg){
-        console.log(msg)
-        /*A chamada socket.broadcast reencaminha a mensagem de status recebida
+        console.log(msg);
+        /*A chamada socket.broadcast.emit() reencaminha a mensagem de status recebida
          para todos os clientes conectados, exceto o emissor da mensagem.*/
-        socket.broadcast.emit('status', msg)
+        socket.broadcast.emit('status', msg);
     })
-})
+});
 
