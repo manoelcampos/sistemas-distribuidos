@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat usando WebSocket</title>
+</head>
+<body>
+    <h3>
+    Aplicação de Chat que interopera com o servidor <a href="http://socket.io">socket.io</a>. Veja as instruções no <a href="https://github.com/manoelcampos/sistemas-distribuidos/blob/master/projects/02-websocket-chat-nodejs/README.adoc">README.adoc</a> de como instalar e iniciar a aplicação servidora.
+    Somente depois de iniciada, é que esta página funcionará.
+    </h3>
+
+    <h3>Note que esta página é totalmente independente do código do servidor.
+    Uma vez que o servidor esteja rodando, podendo executar esta página até
+    mesmo dando dois cliques nela que conseguiremos nos comunicar com o servidor.
+    Isto mostra como é possível ter uma aplicação servidora independente,
+    feita por um desenvolvedor, enquanto o cliente pode ser feito por outro
+    desenvolvedor.
+    </h3>
+
+    <h3>Apesar da biblioteca socket.io facilitar o desenvolvimento de aplicações
+    usando WebSocket, o uso dela no servidor dificulta o desenvolvimento de aplicações clientes que não utilizem
+    a biblioteca. Isto pode ser percebido ao analisar o código para envio e tratamento de mensagens
+    recebidas nesta página.
+
+    Desta forma, para facilitar a interoperabilidade entre aplicações WebSocket desenvolvidas
+    em diferentes linguagens e por diferentes programadores,
+    o uso da biblioteca socket.io não é aconselhável.
+    </h3>
+
+    <form onsubmit="return enviarMsg();">
+        <ul id="messages"></ul>
+
+        Digite uma mensagem <input lenght="50" id="msg"> <button type="submit">Enviar</button>
+        
+        <p><div id="status"></div></p>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+        /* 
+        Conecta em um servidor de WebSocket (que usa a biblioteca socket.io) rodando localmente na porta 8000.
+
+        O parâmetro EIO na URL indica a versão a biblioteca  engine.io usada internamente pelo socket.io.
+        - https://socket.io/docs/internals/
+        - https://socket.io/docs/internals/#engine-io
+        */
+        let socket = new WebSocket("ws://localhost:8000/socket.io/?EIO=3&transport=websocket");
+
+        socket.onerror = function(){
+            $("#status").html("Erro ao tentar comunicação com o servidor. Verifique se o servidor está em execução!");
+        };
+
+        /**
+         * Define uma função anônima para o evento onmessage do WebSocket.
+         * Tal função é sempre chamada quando uma mensagem é recebida.
+         * @param evt Informações sobre a mensagem recebida. 
+         *        evt.data armazena o contéudo completo da mensagem.
+         *        Como nosso servidor usa a biblioteca socket.io,
+         *        a mensagem terá um formato como 42["chat msg","texto-da-mensagem"].
+         *        Como esta aplicação cliente não está usando a biblioteca socket.io,
+         *        mas sim o recurso de WebSocket nativo dos navegadores atuais,
+         *        fazer a comunicação com um servidor que usa socket.io
+         *        requer um trabalho adicional para interpretar as mensagens recebidas.
+        */
+        socket.onmessage = function (evt) {
+            /*O atributo data do parâmetro evt contém o conteúdo completo da mensagem
+            enviada pelo servidor socket.io.
+            Usando a biblioteca socket.io, a mensagem vem no formato 42["chat msg","texto-da-mensagem"],
+            onde "chat msg" é o tipo da mensagem especificado no código do servidor,
+            e 42 são números de controle definidos pela biblioteca socket.io.
+            O texto da mensagem em si vem no final.
+            Apesar de tal conteúdo parecer json, pelo fato de ter este número antes dos colchetes,
+            tal conteúdo não é um código JSON válido.
+            Por isso, para extrair o texto da mensagem, precisamos usar expressões regulares.
+            Toda esta complicação é devida ao fato de o servidor usar a biblioteca socket.io
+            e esta página html (cliente) usar o recurso de WebSocket do HTML5 (nativo nos browsers atuais).
+            A variável regex abaixo indica a expressão regular que estamos usando para
+            extrair apenas o texto da mensagem (sem as aspas).
+            Tal código da regex está indicando que queremos procurar dentro do conteúdo da mensagem (evt.data),
+            algo que enteja entre aspas, que tenha uma vírgula antes e um fecha colchetes no final.
+            Isto identifica a parte ,"texto-da-mensagem"] no formato da mensagem do socket.io.
+            Os parânetese na regex indica que queremos extrair apenas o que estiver entre as aspas
+            do conteúdo que estiver no formado indicado pela regex.
+            O resultado desta regex será então um vetor, onde o primeiro elemento contém
+            todo o conteúdo que corresponde com a regex indicada
+            e o segundo elemento contém apenas o conteúdo entre as aspas (o texto da mensagem).
+            */
+            const regexTextoMsg = /,"(.*?)"]/;
+            const textoMsg = regexTextoMsg.exec(evt.data)[1];
+
+            /*Como o servidor envia dois tipos de mensagem (chat msg e status), precisamos
+            identificar qual o tipo de mensagem para exibí-la apropriadamente.
+            Mensagens de status (como "o usuário está digitando") são exibidas em uma div
+            enquanto as mensagens normais (do tipo chat msg) são exibidas em uma lista.
+            A variável regexTipoMsg contém uma expressão regular para conseguir extrair
+            o tipo de dentro da mensagem recebida.
+            */
+            const regexTipoMsg = /\["(.+?)"/
+            if(evt.data.match(regexTipoMsg)[1] === "chat msg"){
+                $("#messages").append($("<li>").text(textoMsg));
+            }
+            else if (evt.data.match(regexTipoMsg)[1] === "status") {
+                $("#status").html(textoMsg);
+            }
+        };
+
+        /**
+         * Envia a mensagem digitada no campo msg ao servidor de chat.
+         * @return false para impedir que o form NÃO seja submetido ao servidor.
+         *         Com isto, evitamos que a página seja recarregada.
+        */
+        function enviarMsg(){
+            let textoMsg = $("#msg").val();
+            console.log(msg);
+
+            //Envia uma mensagem no formato esperado pelo servidor socket.io,
+            //ou seja 42["tipo-da-mensagem","texto-da-mensagem"]
+            socket.send("42" + JSON.stringify(["chat msg", textoMsg]));  
+            $("#msg").val("");
+
+            return false;
+        }
+    </script>
+</body>
+</html>

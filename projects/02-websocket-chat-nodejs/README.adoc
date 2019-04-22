@@ -4,19 +4,17 @@ Web chat utilizando http://nodejs.org:[Node.js] no lado da app servidor. Com Nod
 
 A biblioteca socket.io apenas facilita o uso do recurso de WebSocket.
 WebSocket é um protocolo https://pt.wikipedia.org/wiki/Duplex#Full-duplex[full-duplex] leve para transmissão de dados em aplicações web.
-Se embutida em um servidor HTTP, quando uma conexão é realizada à página web que dá acesso
-à interface de usuário da aplicação, todo o extenso cabeçalho
-e corpo de uma mensagem HTTP é trafegado pela rede. Depois que a conexão é realizada,
+Se tal biblioteca for usanda em uma aplicação web em Node.js, quando é feita uma conexão WebSocket ao servidor, todo o extenso cabeçalho e corpo de uma mensagem HTTP é trafegado pela rede. Depois que a conexão é realizada,
 ela fica estabelecida com o servidor e, a partir daí, somente os dados enviados pela aplicação
-(normalmente digitados pelo usuário) e uma pequeno cabeçalho (usualmente de apenas https://tools.ietf.org/html/rfc6455#section-5.2[32 bits]) serão enviados ao servidor.
+(normalmente digitados pelo usuário) e um pequeno cabeçalho (usualmente de apenas https://tools.ietf.org/html/rfc6455#section-5.2[32 bits]) serão enviados ao servidor.
 
 Apesar de ser possível abrir uma conexão HTTP e mantê-la aberta para requisições
 subsequentes, cada requisição trafega o cabeçalho e corpo das mensagens HTTP, aumentando
 o tráfego de rede e tempo para recebimento de respostas.
 No Firefox, podemos monitorar o tráfego HTTP e ver a quantidade de dados trafegados
-por meio do menu Ferramentas >> Web Developer >> Network.
+por meio do menu Ferramentas >> Web Developer >> Network (F12).
 
-No Chrome devemos acessar o botão `...`, depois `More Tools >> Developer Tools >> Network`.
+No Chrome devemos acessar o botão `...`, depois `More Tools >> Developer Tools >> Network` (F12).
 Na mesma aba, na parte inferior, podemos ver os frames WebSocket enviados
 e como tais frames são pequenos.
 
@@ -26,7 +24,7 @@ Com WebSockets, diferente de uma aplicação web tradicional usando HTTP,
 o servidor pode enviar dados para um cliente conectado, sem que o cliente primeiro requisite tais dados.
 Isto faz todo o sentido nas aplicações descritas acima, onde um usuário conectado pode receber dados de outro usuário, mesmo sem ter solicitado tais dados (um usuário pode estar conectado e receber uma mensagem de outro, sem ele ser obrigado à enviar uma requisição ao sevidor para solicitar o recebimento de tais dados).
 
-Projeto baseado no exemplo disponível no https://socket.io/get-started/chat/[site do socket.io].
+Este projeto baseado no exemplo disponível no https://socket.io/get-started/chat/[site do socket.io].
 
 == Estrutura do Projeto
 
@@ -36,20 +34,22 @@ Projeto baseado no exemplo disponível no https://socket.io/get-started/chat/[si
                                servidor por meio do navegador. Tal página representa a parte cliente
                                do chat. Por meio dela os usuários podem interagir entre si, utilizando
                                o servidor como intermediário.
-- link:Makefile[Makefile]: arquivo que pode ser executado com o comando `make` no Linux/macOS para instalar as ferramentas necessárias. Ver seção de instalação abaixo.
+- link:Makefile[Makefile]: arquivo que pode ser executado com o comando `make` no Linux/macOS para instalar as ferramentas necessárias. Ver seção de instalação abaixo. É interessante abrir tal arquivo para descobrir quais comandos estão sendo executados ao realizar o processo de instalação (como descrito a seguir).
                     
 == Instalação 
 
-É necessário instalar o http://nodejs.org:[Node.js] para rodar o servidor e o http://npmjs.com:[npm] para gerenciar pacotes utilizados pela aplicação (como por exemplo, para baixar tais pacotes diretamente pelo terminal).
+O projeto usa o http://nodejs.org:[Node.js] para rodar o servidor e o http://npmjs.com:[npm] para gerenciar pacotes utilizados pela aplicação (como por exemplo, para baixar tais pacotes diretamente pelo terminal). 
 
-Adicionalmente, é usado o https://nodemon.io:[nodemon] para permitir monitorar alterações no código do servidor e reiniciar a aplicação automaticamente. Isto facilita muito o desenvolvimento pois não temos que parar o servidor cada vez que fizermos uma alteração no código.
+Opcionalmente, pode-se usar o https://nodemon.io:[nodemon] para permitir monitorar alterações no código do servidor e reiniciá-lo automaticamente. Isto facilita muito o desenvolvimento pois não temos que parar o servidor manualmente cada vez que fizermos uma alteração no código.
 
-A seguir é mostrado como instalar tais ferramentas no Linux e macOS.
+A seguir é mostrado como instalar tais ferramentas automaticamente no Linux e macOS.
 
 === Linux
 
 Para instalar as ferramentas acima em Linux baseados em Debian (como Ubuntu e derivados), 
 basta abrir um terminal no diretório raiz do projeto e executar `make linux`.
+No entanto, se ao executar o comando ocorrer erro indicando que o programa make não foi encontrado,
+execute um `sudo apt-get install make`.
 
 === macOS
 
@@ -74,4 +74,13 @@ Após iniciar o servidor, ele vai mostrar no terminal o endereço que a aplicaç
 O endereço padrão é http://localhost:8000.
 Cada aba ou janela do navegador aberta em tal endereço representará um usuário do chat.
 
+== Aplicação Cliente sem o uso da biblioteca socket.io
 
+A biblioteca socket.io facilita bastante a criação de aplicações clientes e servidoras que usem o protocolo WebSocket.
+No entanto, ao usar tal biblioteca, a interoperabilidade de tais aplicações é prejudicada.
+Logo, fazer uma aplicação cliente que não usa socket.io se comunicar com um servidor socket.io é mais complicado.
+Isto pode ser percebido ao analisar o código da página link:websocket.html[websocket.html].
+Esta é uma aplicação cliente que pode ser aberta simplesmente dando dois cliques no arquivo.
+Ela necessita que o servidor implementado aqui esteja em execução.
+Tal aplicação cliente usa os recursos de WebSockets nativos dos navegadores modernos,
+sem nenhuma biblioteca externa. 
