@@ -23,14 +23,14 @@ Importa a biblioteca express e automaticamente cria o objeto express que
 vai permitir programarmos nosso servidor para responder à solicitações
 de acesso às páginas HTML (neste exemplo caso apenas à index.html)
 da nossa aplicação web.*/
-let express = require('express')();
+const express = require('express')();
 
 /*Cria um servidor HTTP que vai ficar escutando numa porta a ser
 definida logo abaixo.
 Esta biblioteca não precisa ser adicionada como dependência no package.json,
 pois ela é fornecida por padrão com o nodejs.
  */
-let http = require('http').Server(express);
+const http = require('http').Server(express);
 
 /*
 Importa a biblioteca socket.io e automaticamente cria um objeto da classe
@@ -39,11 +39,20 @@ Como o WebSocket trafega dados sobre o protocolo HTTP,
 nosso servidor http então é indicado abaixo como sendo o canal
 a ser utilizado para trafegar os dados do WebSocket.
  */
-let serverSocket = require('socket.io')(http);
+const serverSocket = require('socket.io')(http);
 
 /*Porta na qual o servidor vai ficar aguardando requisições HTTP.
-Usar a porta 80 pode exigir permissões de root no Linux.*/
-let porta = 8000;
+Usar a porta 80 pode exigir permissões de root no Linux.
+Se a aplicação estiver rodando em um servidor de nuvem gratuito como o heroku.com,
+não podemos escolher a porta.
+Esta é escolhida por nós e armazenada em uma variável de ambiente.
+Assim, verificamos se tal variável existe e obtemos seu valor para
+definir a porta. Se não exibir, é porque estamos executando
+a aplicação localmente ou em um servidor que não 
+define a porta a ser usada (ou que define de outra maneira).
+No caso do nome do host é o mesmo processo.*/
+const porta = process.env.PORT || 8000
+const host = process.env.HOST || "http://localhost"
 
 /*
  * Faz o servidor ficar escutando a porta indicada acima, aguardando requisições.
@@ -57,8 +66,8 @@ let porta = 8000;
  */
 http.listen(porta, function(){
     //Se a porta for 80, não precisa exibir na URL pois é padrão
-    let portaStr = porta === 80 ? '' :  ':' + porta;
-    console.log('Servidor iniciado. Abra o navegador em http://localhost' + portaStr);
+    const portaStr = porta === 80 ? '' :  ':' + porta;
+    console.log('Servidor iniciado. Abra o navegador em ' + host + portaStr);
 });
 
 /*
