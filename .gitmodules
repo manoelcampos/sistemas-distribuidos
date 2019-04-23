@@ -1,0 +1,3 @@
+[submodule "projects/02-websocket-chat-nodejs"]
+	path = projects/02-websocket-chat-nodejs
+	url = git@github.com:manoelcampos/sd-websocket-chat-nodejs.git
