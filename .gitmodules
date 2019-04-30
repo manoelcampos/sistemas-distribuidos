@@ -3,4 +3,4 @@
 	url = git@github.com:manoelcampos/sd-websocket-chat-nodejs.git
 [submodule "projects/03-xmpp"]
 	path = projects/03-xmpp
-	url = /Users/manoelcampos/Desktop/03-xmpp
+	url = git@github.com:manoelcampos/sd-xmpp-chat-client.git
