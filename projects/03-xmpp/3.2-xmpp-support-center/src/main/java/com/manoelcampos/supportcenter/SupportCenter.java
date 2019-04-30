@@ -81,7 +81,7 @@ public class SupportCenter extends AbstractXmppClient {
     }
 
     @Override
-    protected void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat) {
+    public void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat) {
         super.newIncomingMessage(fromJabberId, message, chat);
 
         /*Verifica se o cliente que perguntou-se se ele estava aguardando atendimento

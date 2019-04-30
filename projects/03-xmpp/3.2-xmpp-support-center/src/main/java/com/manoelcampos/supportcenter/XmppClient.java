@@ -39,7 +39,7 @@ public class XmppClient extends AbstractXmppClient {
     }
 
     @Override
-    protected void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat) {
+    public void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat) {
         super.newIncomingMessage(fromJabberId, message, chat);
 
         this.toJaberId = fromJabberId.toString();

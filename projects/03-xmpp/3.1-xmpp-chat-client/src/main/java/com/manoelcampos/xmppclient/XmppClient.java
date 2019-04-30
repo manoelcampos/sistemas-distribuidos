@@ -33,7 +33,7 @@ import java.util.Set;
  * <p>Adicionalmente, a classe implementa a interface {@link IncomingChatMessageListener}
  * para permitir receber mensagens de outros usuários.
  * Veja mais detalhes sobre o uso de tal interface na configuração
- * do atributo {@link #chatManager}, dentro do método {@link #connect()}</p>
+ * do atributo {@link #chatManager}, dentro do método {@link #connect()}.</p>
  *
  * @author Manoel Campos da Silva Filho
  */

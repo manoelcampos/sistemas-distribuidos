@@ -4,6 +4,7 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat2.Chat;
 import org.jivesoftware.smack.chat2.ChatManager;
+import org.jivesoftware.smack.chat2.IncomingChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.roster.AbstractRosterListener;
@@ -12,7 +13,6 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jxmpp.jid.EntityBareJid;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -31,7 +31,7 @@ import java.util.Scanner;
  * @author Manoel Campos da Silva Filho
  * @see <a href="https://github.com/igniterealtime/Smack/blob/master/documentation/roster.md">Documentação do Roster (Serviço de Contatos do XMPP)</a>
  */
-public abstract class AbstractXmppClient extends AbstractRosterListener implements Closeable {
+public abstract class AbstractXmppClient extends AbstractRosterListener implements AutoCloseable, IncomingChatMessageListener {
     private final Scanner scanner;
 
     /**
@@ -302,17 +302,8 @@ public abstract class AbstractXmppClient extends AbstractRosterListener implemen
             chatManager = ChatManager.getInstanceFor(connection);
 
             /* Indica ao objeto chatManager que sempre que um mensagem chegar pro usuário logado,
-             * o método newIncomingMessage deve ser chamado para receber tal mensagem.
-             * Observe que estamos usando :: no lugar de ponto para indicar que estamos
-             * passando um método por parâmetro para outro método.
-             * Estamos dizendo ao addIncomingListener que o método newIncomingMessage
-             * deve ser chamado quando uma nova mensagem for recebida.
-             * Nós não estamos chamando o método newIncomingMessage aqui.
-             * Tal método será chamado pela classe ChatManager toda vez que
-             * uma mensagem for recebida.
-             * Esta sintaxa :: é um recurso de programação funcional do Java 8
-             * que está fora do escopo da explicação aqui.*/
-            chatManager.addIncomingListener(this::newIncomingMessage);
+             * o método newIncomingMessage do objeto atual deve ser chamado para receber tal mensagem.*/
+            chatManager.addIncomingListener(this);
 
             connection.connect();
             System.out.println("Conectado com sucesso no servidor XMPP");
@@ -359,7 +350,8 @@ public abstract class AbstractXmppClient extends AbstractRosterListener implemen
      * @param message mensagem recebida
      * @param chat objeto que permite a comunicação com o usuário emissor da mensagem
      */
-    protected void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat){
+    @Override
+    public void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat){
         System.out.println("\n" + fromJabberId + " diz: " + message.getBody());
     }
 
