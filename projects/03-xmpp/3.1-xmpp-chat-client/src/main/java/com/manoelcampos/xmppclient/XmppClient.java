@@ -4,6 +4,7 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat2.Chat;
 import org.jivesoftware.smack.chat2.ChatManager;
+import org.jivesoftware.smack.chat2.IncomingChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
@@ -13,7 +14,6 @@ import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Set;
@@ -25,9 +25,19 @@ import java.util.Set;
  * <p>Para a aplicação funcionar, é precisar ter uma conta em algum servidor XMPP.
  * Veja o arquivo README.adoc para mais detalhes.</p>
  *
+ * <p>A classe implementa a interface {@link AutoCloseable} para que o seu método {@link #close()}
+ * seja chamado quando usamos o chamado "try with resources", um bloco
+ * try que permite automaticamente fechar objetos como conexões de rede
+ * quando o try finaliza.</p>
+ *
+ * <p>Adicionalmente, a classe implementa a interface {@link IncomingChatMessageListener}
+ * para permitir receber mensagens de outros usuários.
+ * Veja mais detalhes sobre o uso de tal interface na configuração
+ * do atributo {@link #chatManager}, dentro do método {@link #connect()}</p>
+ *
  * @author Manoel Campos da Silva Filho
  */
-public class XmppClient implements Closeable {
+public class XmppClient implements AutoCloseable, IncomingChatMessageListener {
     private final Scanner scanner;
 
     /**
@@ -198,17 +208,8 @@ public class XmppClient implements Closeable {
             chatManager = ChatManager.getInstanceFor(connection);
 
             /* Indica ao objeto chatManager que sempre que um mensagem chegar pro usuário logado,
-             * o método newIncomingMessage deve ser chamado para receber tal mensagem.
-             * Observe que estamos usando :: no lugar de ponto para indicar que estamos
-             * passando um método por parâmetro para outro método.
-             * Estamos dizendo ao addIncomingListener que o método newIncomingMessage
-             * deve ser chamado quando uma nova mensagem for recebida.
-             * Nós não estamos chamando o método newIncomingMessage aqui.
-             * Tal método será chamado pela classe ChatManager toda vez que
-             * uma mensagem for recebida.
-             * Esta sintaxa :: é um recurso de programação funcional do Java 8
-             * que está fora do escopo da explicação aqui.*/
-            chatManager.addIncomingListener(this::newIncomingMessage);
+             * o método newIncomingMessage do objeto atual deve ser chamado para receber tal mensagem.*/
+            chatManager.addIncomingListener(this);
 
             connection.connect();
             System.out.println("Conectado com sucesso no servidor XMPP");
@@ -218,6 +219,21 @@ public class XmppClient implements Closeable {
         }
 
         return login();
+    }
+
+    /**
+     * Método que será chamado automaticamente sempre que uma mensagem for recebida
+     * @param fromJabberId usuário que enviou a mensagem
+     * @param message mensagem recebida
+     * @param chat objeto que permite a comunicação com o usuário emissor da mensagem
+     */
+    @Override
+    public void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat) {
+        if(message == null){
+            return;
+        }
+
+        System.out.println("Mensagem recebida de " + fromJabberId + ": " + message.getBody());
     }
 
     /**
@@ -315,20 +331,6 @@ public class XmppClient implements Closeable {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    /**
-     * Métod que será chamado automaticamente sempre que uma mensagem for recebida
-     * @param fromJabberId usuário que enviou a mensagem
-     * @param message mensagem recebida
-     * @param chat objeto que permite a comunicação com o usuário emissor da mensagem
-     */
-    private void newIncomingMessage(EntityBareJid fromJabberId, Message message, Chat chat) {
-        if(message == null){
-            return;
-        }
-
-        System.out.println("Mensagem recebida de " + fromJabberId + ": " + message.getBody());
     }
 
     /**
