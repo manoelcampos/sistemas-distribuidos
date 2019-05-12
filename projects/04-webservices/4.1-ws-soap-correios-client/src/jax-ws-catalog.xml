@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://www.webservicex.net/globalweather.asmx?WSDL" uri="wsdl/www.webservicex.net/globalweather.asmx.wsdl"/>
-    <system systemId="http://fxtop.com/dev/service.wsdl" uri="wsdl/fxtop.com/dev/service.wsdl"/>
-    <system systemId="https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl" uri="wsdl/apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente.wsdl"/>
-</catalog>
