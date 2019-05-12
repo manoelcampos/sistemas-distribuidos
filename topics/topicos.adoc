@@ -93,10 +93,12 @@ em https://aws.amazon.com/education/awseducate/.
     * http://json-b.net
     * https://github.com/eclipse-ee4j/yasson (new implementation after moving to Jakarta EE)
     * https://dzone.com/articles/jsonb-java-api-for-json-binding
+    * Exemplo: https://javaee.github.io/tutorial/jsonb002.html
 - json-p: construir JSON manualmente via Java (adicionando cada chave individualmente. 
           A home page abaixo mostra um exemplo claro)
     * https://javaee.github.io/jsonp/
 - json-b vs json-p: www.quora.com/What-is-the-difference-between-Java-API-for-JSON-processing-JSON-P-and-Java-API-for-JSON-Binding-JSON-B-Dont-they-have-an-overlapping-job
+
 
 - jax-rs:
        Implementado e disponível no GlassFish
