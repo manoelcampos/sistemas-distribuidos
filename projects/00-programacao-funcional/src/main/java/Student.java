@@ -19,7 +19,9 @@ public class Student{
      * Cria um estudante.
      * Este construtor possui uma quantidade mais do que recomendável de parâmetros (3).
      * O mesmo é usado apenas para facilitar a geração de dados aleatórios,
-     * mas é uma péssima prática a ser aplicada em um projeto real.
+     * mas é uma péssima prática em projetos reais.
+     * No entanto, observe que o construtor não é público (é package),
+     * não podendo ser usado fora do pacote.
      *
      * @param id matrícula do estudante
      * @param name nome do estudante
