@@ -13,5 +13,5 @@ Um sistema com alto grau de tolerância a falhas será altamente disponível e t
 Com os recursos da computação em nuvem, serviços de monitoramente podem detectar a falha de uma máquina virtual (por exemplo),
 e automaticamente iniciar um nova VM, garantindo assim que o nível de tolerância não seja reduzido e que o balanceamento de carga não seja prejudicado com uma redução do número de máquinas.
 
-== Abertura
+// == Abertura
 

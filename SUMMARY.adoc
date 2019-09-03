@@ -5,7 +5,7 @@
 .. link:book/chapter01a-resource-sharing.adoc[Compartilhamento de Recursos]
 .. link:book/chapter01b-scalability.adoc[Escalabilidade]
 .. link:book/chapter01c-transparency.adoc[Transparência]
-.. link:book/chapter01d-availability.adoc[Disponibilidade e Abertura]
+.. link:book/chapter01d-availability.adoc[Disponibilidade]
 .. link:book/chapter01e-conclusion.adoc[Conclusão]
 . link:book/chapter02.adoc[Capítulo 2]
 . link:http://manoelcampos.com/sd-web-services/4.4-ws-rest-cadastro/[Web Services REST em Java]
