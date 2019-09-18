@@ -102,3 +102,4 @@ Para instalar o mesmo em Linux (Debian, Ubuntu e derivados) ou macOS, apenas exe
 - http://www.lognormal.com/blog/2012/09/27/linux-tcpip-tuning/
 - http://www.skybert.net/unix/maximum-number-of-tcp-connections/
 - https://mrotaru.wordpress.com/2013/10/10/scaling-to-12-million-concurrent-connections-how-migratorydata-did-it/
+- http://www.macfreek.nl/memory/Kernel_Configuration[TCP/IP Kernel Configuration]
