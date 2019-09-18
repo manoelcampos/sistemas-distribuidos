@@ -7,3 +7,6 @@
 [submodule "projects/04-webservices"]
 	path = projects/04-webservices
 	url = https://github.com/manoelcampos/sd-webservices.git
+[submodule "projects/00-programacao-funcional"]
+	path = projects/00-programacao-funcional
+	url = https://github.com/manoelcampos/programacao-funcional-java
