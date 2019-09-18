@@ -1,6 +1,6 @@
-[submodule "projects/02-websocket-chat-nodejs"]
-	path = projects/02-websocket-chat-nodejs
-	url = https://github.com/manoelcampos/sd-websocket-chat-nodejs.git
+[submodule "projects/02-websockets"]
+	path = projects/02-websockets
+	url = https://github.com/manoelcampos/web-sockets.git
 [submodule "projects/03-xmpp"]
 	path = projects/03-xmpp
 	url = https://github.com/manoelcampos/sd-xmpp-chat-client.git
