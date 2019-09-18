@@ -1,9 +1,9 @@
+[submodule "projects/02-websockets"]
+	path = projects/02-websockets
+	url = https://github.com/manoelcampos/sd-websockets.git
 [submodule "projects/03-xmpp"]
 	path = projects/03-xmpp
 	url = https://github.com/manoelcampos/sd-xmpp-chat-client.git
 [submodule "projects/04-webservices"]
 	path = projects/04-webservices
-	url = https://github.com/manoelcampos/sd-web-services.git
-[submodule "projects/02-websockets"]
-	path = projects/02-websockets
-	url = https://github.com/manoelcampos/websockets
+	url = https://github.com/manoelcampos/sd-webservices.git
