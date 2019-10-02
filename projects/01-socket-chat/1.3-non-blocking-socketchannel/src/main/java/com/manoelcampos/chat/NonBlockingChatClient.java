@@ -72,11 +72,11 @@ public class NonBlockingChatClient implements Runnable {
 
             /* Cria um novo thread para ficar aguardando mensagens enviadas pelo servidor,
             *  paralelamente ao envio de mensagens.
-            *  Como o construtor da classe Thread solicita um objeto Runnable
-            *  e nossa classe NonBlockingChatClient implementa a interface Runnable,
-            *  passamos this como parâmetro para o construtor para indicar
+            *  O construtor da classe Thread solicita um objeto Runnable
+            *  e nossa classe NonBlockingChatClient implementa a interface Runnable.
+            *  Neste caso, passamos "this" como parâmetro para o construtor para indicar
             *  que o nosso objeto atual da classe NonBlockingChatClient é o objeto
-            *  que possui um método run() que será executado pelo Thread
+            *  que possui um método run(). Tal método será então executado pelo Thread
             *  (possivelmente em um novo núcleo de CPU).*/
             new Thread(this).start();
             sendMessageLoop();
@@ -105,7 +105,9 @@ public class NonBlockingChatClient implements Runnable {
      */
     private void processRead() throws IOException {
         buffer.clear();
+        //O método read lê os dados e guarda dentro do buffer.
         int bytesRead = clientChannel.read(buffer);
+
         /*Altera o buffer do modo de gravação (cuja posição
          atual indica a última posição preenchida) para o modo de leitura
          (resetando a posição inicial para 0 para permitir ler os dados desde o início do buffer).*/
@@ -113,7 +115,8 @@ public class NonBlockingChatClient implements Runnable {
         if (bytesRead > 0) {
             byte data[] = new byte[bytesRead];
             buffer.get(data);
-            System.out.println("Mensagem recebida do servidor: " + new String(data));
+            System.out.println(
+                    "Mensagem recebida do servidor: " + new String(data));
         }
     }
 

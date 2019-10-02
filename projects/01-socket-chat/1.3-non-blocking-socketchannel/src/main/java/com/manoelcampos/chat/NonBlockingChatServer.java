@@ -21,9 +21,24 @@ public class NonBlockingChatServer {
     public static final int PORT = 4000;
     public static final String ADDRESS = "127.0.0.1";
 
+    /**
+     * Canal (socket) do servidor, por onde os clientes realizam conexão.
+     */
     private final ServerSocketChannel serverChannel;
+
+    /**
+     * Objeto responsável por monitorar requisições em canais (sockets) do servidor
+     * e de cada cliente conectado.
+     */
     private final Selector selector;
 
+    /**
+     * Espaço de memória permanente (buffer) que é utilizado para receber
+     * as mensagens enviadas pelos clientes.
+     * Como estamos atendendo apenas um cliente por vez nesta versão da aplicação,
+     * não há problema neste atributo ser compartilhado entre todos os clientes
+     * que tem mensagens a serem recebidas.
+     */
     private final ByteBuffer buffer;
 
     /**
@@ -46,7 +61,9 @@ public class NonBlockingChatServer {
      * @throws IOException
      */
     public NonBlockingChatServer() throws IOException {
-        buffer = ByteBuffer.allocateDirect(1024);
+        //Cria um buffer de um tamanho definido (em total de bytes)
+        buffer = ByteBuffer.allocate(1024);
+
         selector = Selector.open();
         serverChannel = ServerSocketChannel.open();
         serverChannel.configureBlocking(false);
@@ -97,8 +114,9 @@ public class NonBlockingChatServer {
      * Processa os diferentes tipos de eventos que foram registrados
      * para serem monitorados pelo {@link #selector} dentro do construtor da classe.
      *
-     * @param selectionKeys conjunto onde cada element ({@link SelectionKey}) representa
-     *                      o registro de monitoramente de um canal (como o canal do servidor e os canais de cada cliente)
+     * @param selectionKeys conjunto onde cada elemento ({@link SelectionKey}) que representa
+     *                      o registro de monitoramente de um canal
+     *                      (como o canal do servidor e os canais de cada cliente)
      *                      pelo {@link #selector}.
      * @throws IOException
      */
@@ -122,7 +140,7 @@ public class NonBlockingChatServer {
             }
 
             if (selectionKey.isAcceptable()) {
-                processConnectionAccept(selector);
+                processConnectionAccept();
             } else if (selectionKey.isReadable()) {
                 processRead(selectionKey);
             }
@@ -135,11 +153,9 @@ public class NonBlockingChatServer {
      * vindas e fica monitorando quando dados enviados pelo cliente
      * estiverem prontos para serem lidos.
      *
-     * @param selector objeto que permitirá monitorar eventos do canal do cliente
-     *                 conectado (como quando dados enviados pelo cliente estiverem prontos para serem lidos pelo servidor)
      * @throws IOException
      */
-    private void processConnectionAccept(Selector selector) throws IOException {
+    private void processConnectionAccept() throws IOException {
         SocketChannel clientChannel = serverChannel.accept();
         System.out.println("Cliente " + clientChannel.getRemoteAddress() + " conectado.");
 
@@ -171,8 +187,10 @@ public class NonBlockingChatServer {
         SocketChannel clientChannel = (SocketChannel) selectionKey.channel();
         buffer.clear();
 
+        //Armazena o total de bytes da mensagem recebida do cliente
         int bytesRead;
         try {
+            //Recebe (lê) uma mensagem do cliente e armazena dentro do buffer
             bytesRead = clientChannel.read(buffer);
         } catch (IOException e) {
             System.err.println(
@@ -191,8 +209,20 @@ public class NonBlockingChatServer {
          atual indica a última posição preenchida) para o modo de leitura
          (resetando a posição inicial para 0 para permitir ler os dados desde o início do buffer).*/
         buffer.flip();
+
+        //Vetor que armazenará os dados lidos do buffer
         byte[] data = new byte[bytesRead];
+
+        /*O buffer é como um pacote fechado. Os dados lidos são armazenados dentro dele,
+        mas para acessar tais dados, é preciso abrir o pacote.
+        O método get faz isso, extraindo os dados de dentro do buffer
+        e armazenando no array data*/
         buffer.get(data);
+
+        /*Como data é um vetor de bytes, mas nossa mensagem é uma String,
+        * precisamos converter tal vetor para String.
+        * Neste caso, basta chamar o construtor da classe String passando
+        * tal vetor por parâmetro.*/
         System.out.println(
             "Mensagem recebida do cliente " +
             clientChannel.getRemoteAddress() + ": " + new String(data) +

@@ -53,7 +53,7 @@ public class NonBlockingChatServer {
      * @throws IOException
      */
     public NonBlockingChatServer() throws IOException {
-        buffer = ByteBuffer.allocateDirect(1024);
+        buffer = ByteBuffer.allocate(1024);
         selector = Selector.open();
         serverChannel = ServerSocketChannel.open();
         serverChannel.configureBlocking(false);
