@@ -1,42 +1,59 @@
-import java.util.Collections;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
- * Aplicação de exemplo que mostra uma outra forma de como resolver os problemas
- * de concorrência apresentados na aplicação anterior, uma vez
- * que coleções como {@link java.util.Vector} são consideradas obsoletas,
- * como explicado na versão anterior.
+ * Aplicação de exemplo de problemas de concorrência. Quando se tem diversas
+ * {@link Thread}s acessando ou modificando variáveis em comum, podemos ter
+ * resultados inesperados.
  *
  * <p>
- * Quando coleções da Java Framework Collections (JFC), como List e Map,
- * precisam realmente ser sincronizadas, a solução ideal é usar métodos como
- * Collections.synchronizedList() e Collections.synchronizedMap(). Tais métodos
- * recebem um objeto de coleção e retornam uma versão sincronizada de tais
- * objetos. Deste modo, a linguagem Java permitiu separar a implementação das
- * coleções do código responsável por sincronização, deixando a implementação
- * internamente mais simples.
+ * Neste exemplo, temos o método {@link #run()} que está sendo executado
+ * múltiplas vezes em paralelo (executado por diversas Threads, possivelmente em
+ * diferentes núcleos de CPU, caso haja).
+ * </p>
+ *
+ * <p>
+ * Como teremos então o método executando múltiplas vezes em simultâneo (em um
+ * computador com CPU multi-core), cada execução de tal método estará acessando
+ * e modificando as mesmas variáveis (atributos da classe).
+ * </p>
+ *
+ * <p>
+ * O objetivo deste projeto é gerar aleatoriamente caracteres em diferentes
+ * threads e no final imprimir o total de letras que foram geradas. Cada thread
+ * vai gerar a mesma quantidade de caracteres aleatórios e sempre que uma letra
+ * for gerada, o {@link #totalLetras} é incrementado. Como mais de uma thread
+ * pode tentar acessar ou alterar tal atributo ao mesmo tempo, problemas
+ * inesperados podem ocorrer, tendo resultados indesejados.
  * </p>
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ConcorrenciaAppSolucaoA3 implements Runnable {
+public class ProblemaConcorrencia1 implements Runnable {
     /**
      * Total de {@link Thread}s a serem criadas.
      */
     public static final int TOTAL_THREADS = 10;
+
+    /**
+     * Armazena o total de letras que foram geradas aleatoriamente
+     * pelas {@link Thread}s.
+     * Cada Thread gera um conjunto aleatório de caracteres
+     * e quando uma letra é gerada, a {@link Thread} incrementa este atributo.
+     */
+    private int totalLetras;
     private Random rand;
     private List<Character> letras;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ConcorrenciaAppSolucaoA3 app = new ConcorrenciaAppSolucaoA3();
+        ProblemaConcorrencia1 app = new ProblemaConcorrencia1();
     }
 
-    private ConcorrenciaAppSolucaoA3(){
+    private ProblemaConcorrencia1(){
         rand = new Random();
-        letras = Collections.synchronizedList(new ArrayList<>());
+        letras = new ArrayList<>();
         /*Cria um grupo de Threads para nos permitir contar quantas threads tem no grupo e
         * assim saber quando elas terminaram, para podermos exibir os resultados.*/
         ThreadGroup group = new ThreadGroup("contagem");
@@ -47,6 +64,7 @@ public class ConcorrenciaAppSolucaoA3 implements Runnable {
 
         int totalThreadsAtivas = group.activeCount();
         System.out.print("Total de Threads em execução: " + totalThreadsAtivas);
+
         /**
          * Enquanto existir alguma Thread no grupo ainda em execução,
          * fica no loop aguardando totas as Threads finalizarem.
@@ -74,7 +92,14 @@ public class ConcorrenciaAppSolucaoA3 implements Runnable {
         //Só depois que todas as Threads do grupo terminarem, podemos exibir os resultados
         System.out.println("\n");
         System.out.println(letras);
-        System.out.println("\nTotal de letras armazenadas:           " + letras.size());
+        System.out.println("\nTotal de letras geradas pelas Threads: " + totalLetras);
+        System.out.println("Total de letras armazenadas:           " + letras.size());
+
+        if(totalLetras != letras.size()){
+            System.err.println("\n\nERRO: O total contabilizado de letras não corresponde ao total de letras armazenadas.");
+            System.err.println("Tal problema pode ocorrer eventualmente pois as Threads criadas estão acessando.");
+            System.err.println("e modificando as mesmas variáveis (atributos da classe neste caso).");
+        }
     }
 
     @Override
@@ -82,8 +107,10 @@ public class ConcorrenciaAppSolucaoA3 implements Runnable {
         for (int i = 0; i < 1000; i++) {
             char c = (char) rand.nextInt(256);
             if(Character.isAlphabetic(c)){
+                totalLetras++;
                 letras.add(c);
             }
         }
     }
+
 }

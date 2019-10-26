@@ -4,30 +4,28 @@ import java.util.Random;
 
 /**
  * Aplicação de exemplo que mostra como resolver os problemas
- * de concorrência apresentados na aplicação anterior.
+ * de concorrência apresentados na aplicação {@link ProblemaConcorrencia1}.
  *
- * Para resolver o problema de resultados inconsistentes devido
- * a alterações simulatâneas nas mesmas variáveis, realizadas
- * por diferentes Threads, separei o código
- * que faz acesso a tais variáveis comuns (os atributos que estão
- * sendo acessados e modificados) em um método separado,
- * chamado {@link #registraLetraSorteada(char)}.
+ * <p>A solução consiste em separar o código
+ * que faz acesso à variáveis comuns (os atributos que estão sendo acessados e modificados)
+ * em um método específico, chamado {@link #registraLetraSorteada(char)}.</p>
  *
- * Tal método foi marcado com a palavra reservada synchronized.
+ * <p>Tal método foi marcado com a palavra reservada synchronized.
  * Isto faz com que, quando uma Thread estiver acessando o método
  * {@link #registraLetraSorteada(char)}, outras Threads que tentem simultaneamente
- * acessar o mesmo método, terão que aguardar o método finalizar.
+ * acessar o mesmo método, terão que aguardar o método finalizar.</p>
  *
- * Obviamente, quando é necessário sincronizar a execução de Threads,
+ * <p>Obviamente, quando é necessário sincronizar a execução de Threads,
  * isto vai reduzir o desempenho do sistema, impactando na escalabilidade.
  *
  * A solução ideal é então evitar acessar variáveis comuns em diferentes
  * Threads, apesar de nem sempre ser possível.
  * Mas quando isso não é possível, temos que recorrer à sincronização.
+ * </p>
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ConcorrenciaAppSolucaoA1 implements Runnable {
+public class ProblemaConcorrencia1SolucaoA implements Runnable {
     /**
      * Total de {@link Thread}s a serem criadas.
      */
@@ -40,15 +38,23 @@ public class ConcorrenciaAppSolucaoA1 implements Runnable {
      * e quando uma letra é gerada, a {@link Thread} incrementa este atributo.
      */
     private int totalLetras;
+
+    /**
+     * Gerador de números aleatórios. De acordo com o JavaDoc da classe, ela é
+     * threadsafe, ou seja, é segura de ser utilizada concorrentemente pode causar
+     * contenção e logo, perda de performance. Uma alternativa é utilizar a classe
+     * {@link java.util.concurrent.ThreadLocalRandom}.
+     */
     private Random rand;
+    
     private List<Character> letras;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ConcorrenciaAppSolucaoA1 app = new ConcorrenciaAppSolucaoA1();
+        ProblemaConcorrencia1SolucaoA app = new ProblemaConcorrencia1SolucaoA();
     }
 
-    private ConcorrenciaAppSolucaoA1(){
+    private ProblemaConcorrencia1SolucaoA(){
         rand = new Random();
         letras = new ArrayList<>();
         /*Cria um grupo de Threads para nos permitir contar quantas threads tem no grupo e

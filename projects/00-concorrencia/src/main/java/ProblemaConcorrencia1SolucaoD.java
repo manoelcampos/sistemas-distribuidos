@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -6,44 +5,55 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Aplicação de exemplo que mostra como evitar
- * o problema de concorrência e resultados inconsistentes.
- * Neste caso, evitamos de acessar variáveis comuns
- * em diferentes Threads.
- * Aqui é usado o recursos de Streams do Java 8 para
- * realizar a mesma tarefa anterior, de forma muito mais simples
- * e sem ter os problemas apresentados anteriormente.
- *
- * Neste caso, não definimos o total de Threads a serem criadas,
- * mas a JVM.
+ * Aplicação de exemplo que mostra como evitar o problema de concorrência e
+ * resultados inconsistentes apresentados na aplicação {@link ProblemaConcorrencia1}.
+ * Neste caso, evitamos acessar variáveis comuns em
+ * diferentes Threads.
  * 
- * Usando Streams, podemos executar código em paralelo,
- * em diferentes Threads, mas por padrão não definimos
- * quantas Threads serão criadas e nem temos controle
- * sobre tais Threads.
- * Se precisarmos realmente definir como estas Threads
- * serão criadas, controlar a execução delas
- * (como pausar ou criar novas dinamicamente),
- * teremos que recorrer às soluções anteriores.
+ * <p>
+ * Aqui é usado o recursos de Streams do Java 8 para realizar a mesma tarefa
+ * anterior, de forma muito mais simples e sem ter os problemas apresentados
+ * anteriormente. Neste caso, não definimos o total de Threads a serem criadas,
+ * mas a JVM. Um tutorial sobre Streams está disponível <a href=
+ * "https://www.oracle.com/technetwork/pt/articles/java/streams-api-java-8-3410098-ptb.html">aqui</a>.
+ * </p>
+ * 
+ * <p>
+ * Usando Streams, podemos executar código em paralelo, em diferentes Threads,
+ * sem termos que manualmente criar tais Threads.
+ * Por padrão não definimos quantas Threads serão criadas e nem temos
+ * controle sobre tais Threads. Se precisarmos realmente deste controle 
+ * (como pausar ou criar novas dinamicamente), 
+ * temos que criar as Threads diretamente ou usar um 
+ * <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html">ThreadPool</a>
+ * que facilita o trabalho de gerenciar múltiplas threads.
+ * </p>
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ConcorrenciaAppSolucaoA3 {
+public class ProblemaConcorrencia1SolucaoD {
     private static final int TOTAL_EXECUCOES = 10;
+
+    /**
+     * Gerador de números aleatórios. De acordo com o JavaDoc da classe, ela é
+     * threadsafe, ou seja, é segura de ser utilizada concorrentemente pode causar
+     * contenção e logo, perda de performance. Uma alternativa é utilizar a classe
+     * {@link java.util.concurrent.ThreadLocalRandom}.
+     */
     private Random rand;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ConcorrenciaAppSolucaoA3 app = new ConcorrenciaAppSolucaoA3();
+        ProblemaConcorrencia1SolucaoD app = new ProblemaConcorrencia1SolucaoD();
     }
 
-    private ConcorrenciaAppSolucaoA3(){
+    private ProblemaConcorrencia1SolucaoD(){
         rand = new Random();
 
         /* 
         Executa o método run() 10 vezes em paralelo.
-        No entanto, neste caso, não necessariamente serão criadas
-        10 Threads. A API de Streams vai criar uma Thread a menos do total de CPUs existentes.
+        No entanto, neste caso, não necessariamente serão criadas 10 Threads.
+        A API de Streams vai criar uma Thread a menos do total de CPUs existentes.
         Se tivermos 6 CPUs, serão criadas 5 Threads.
         Neste caso, como solicitamos que o método run() seja executado 10 vezes,
         cada Thread vai executá-lo 2 vezes, dividindo igualmente o trabalho.
