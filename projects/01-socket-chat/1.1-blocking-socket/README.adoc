@@ -1,4 +1,4 @@
-= Chat cliente/servidor utilizando Sockets em Java 8
+= Chat cliente/servidor utilizando Sockets em Java 8 (link:https://kinolien.github.io/gitzip/?download=/manoelcampos/sistemas-distribuidos/tree/master/projects/01-socket-chat/1.1-blocking-socket[zip])
 
 Este é um projeto Java que mostra a forma mais básica
 de criar uma aplicação de chat cliente/servidor utilizando as

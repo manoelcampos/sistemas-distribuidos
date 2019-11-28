@@ -1,4 +1,4 @@
-= Exemplos de problemas de concorrência
+= Exemplos de problemas de concorrência (link:https://kinolien.github.io/gitzip/?download=/manoelcampos/sistemas-distribuidos/tree/master/projects/00-concorrencia[zip])
 
 Na seção https://manoelcampos.gitbooks.io/sistemas-distribuidos/book/chapter01c-transparency.html[Transparência de Concorrência"]
 foram discutidos os problemas que podem ocorrer quando temos vários usuários acessando o sistema
