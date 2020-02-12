@@ -6,6 +6,4 @@ ou quando temos várias Threads acessando ou alterando as mesmas variáveis simu
 
 NOTE: O conceito e funcionamento de Threads é link:../01-socket-chat/chat-sockets-threads.pptx[apresentado aqui].
 
-Nesta pasta são disponibilizadas algumas aplicações Java.
-A primeira demonstra que o compartilhamento de variáveis entre Threads pode gerar resultados inconsistentes e erros imprevisíveis e aleatórios. As aplicações seguintes demonstram diferentes maneiras de resolver estes problemas
-e quando usar cada uma.
+Nesta pasta são disponibilizadas algumas aplicações Java para problemas de concorrência.
