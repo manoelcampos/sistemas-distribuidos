@@ -32,6 +32,17 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-orm</artifactId>
         </dependency>
+
+        <dependency>
+            <!-- Simplifica o trabalho com JPA, reduzindo drasticamente
+             a quantidade de código para acesso ao banco de dados.
+             Elimina praticamente toda a necessidade de criar objetos DAOs.
+             Mais informações em https://quarkus.io/guides/hibernate-orm-panache
+            -->
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm-panache</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-h2</artifactId>
