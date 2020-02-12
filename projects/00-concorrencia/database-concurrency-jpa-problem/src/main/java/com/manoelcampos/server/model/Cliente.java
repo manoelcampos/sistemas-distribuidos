@@ -3,9 +3,6 @@ package com.manoelcampos.server.model;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -52,10 +49,10 @@ public class Cliente extends PanacheEntity implements Serializable {
             existente.sexo = cliente.sexo;
             existente.endereco = cliente.endereco;
             existente.telefone = cliente.telefone;
+            existente.persist();
+            return true;
         }
 
-        existente.persist();
-
-        return existente != null;
+        return false;
     }
 }

@@ -2,6 +2,7 @@ package com.manoelcampos.server.rest;
 
 import com.manoelcampos.server.model.Cliente;
 
+import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -33,11 +34,15 @@ public class ClienteResource {
     
     @PUT
     public void update(Cliente cliente) {
-        if(!Cliente.update(cliente)){
-            //Se o objeto não for encontrado no BD, retorna código HTTP 404: página não encontrada.
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        try{
+            if(Cliente.update(cliente))
+                return;
+        }catch(Exception e){
+            throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
         }
-    }
+
+        //Se o objeto não for encontrado no BD, retorna código HTTP 404: página não encontrada.
+        throw new WebApplicationException(Response.Status.NOT_FOUND);    }
 
     @DELETE
     @Path("{id}")
