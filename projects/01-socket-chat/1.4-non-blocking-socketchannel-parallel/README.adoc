@@ -22,8 +22,8 @@ criada pela JVM quando a aplicação é executada, totalizando 4 Threads neste e
 
 O projeto é composto por duas aplicações console:
 
-- link:src/main/java/com/manoelcampos/chat/ChatClient.java[Cliente]
-- link:src/main/java/com/manoelcampos/chat/ChatServer.java[Servidor]
+- link:src/main/java/com/manoelcampos/chat/NonBlockingChatClient.java[Cliente]
+- link:src/main/java/com/manoelcampos/chat/NonBlockingChatServer.java[Servidor]
 
 == Servidor
 
