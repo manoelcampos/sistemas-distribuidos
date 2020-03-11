@@ -12,8 +12,8 @@ A forma de implementação desta versão difere da link:../1.2-blocking-socketch
 
 O projeto é composto por duas aplicações console:
 
-- link:src/main/java/com/manoelcampos/chat/ChatClient.java[Cliente]
-- link:src/main/java/com/manoelcampos/chat/ChatServer.java[Servidor]
+- link:src/main/java/com/manoelcampos/chat/NonBlockingChatClient.java[Cliente]
+- link:src/main/java/com/manoelcampos/chat/NonBlockingChatServer.java[Servidor]
 
 A apresentação link:non-blocking-chat.pptx[non-blocking-chat.pptx] mostra alguns detalhes do funcionamento deste projeto.
 
