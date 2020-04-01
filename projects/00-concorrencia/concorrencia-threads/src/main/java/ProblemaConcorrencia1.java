@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Aplicação de exemplo de problemas de concorrência. Quando se tem diversas
@@ -54,51 +57,29 @@ public class ProblemaConcorrencia1 implements Runnable {
     private ProblemaConcorrencia1(){
         rand = new Random();
         letras = new ArrayList<>();
-        /*Cria um grupo de Threads para nos permitir contar quantas threads tem no grupo e
-        * assim saber quando elas terminaram, para podermos exibir os resultados.*/
-        ThreadGroup group = new ThreadGroup("contagem");
-        for (int i = 0; i < TOTAL_THREADS; i++) {
-            //Cria e inicia uma nova Thread para executar o método run() no objeto atual (this)
-            new Thread(group, this).start();
-        }
-
-        int totalThreadsAtivas = group.activeCount();
-        System.out.print("Total de Threads em execução: " + totalThreadsAtivas);
-
-        /**
-         * Enquanto existir alguma Thread no grupo ainda em execução,
-         * fica no loop aguardando totas as Threads finalizarem.
-         * Quando as Threads finalizarem, os resultados serão exibidos.
-         * Possivelmente você receberá uma mensagem de erro indicando que
-         * os resultados são inconsistentes.
-         *
-         * Experimente alterar o valor da condição no loop de 0 para 2, por exemplo.
-         * Isto vai fazer com que a aplicação tente exibir os resultados antes
-         * mesmo de todas as Threads finalizarem.
-         * Como as Threads ainda em execução poderão ainda inserir dados
-         * na lista de palavras e as últimas linhas do main() vão
-         * tentar acessar a lista para exibir as letras geradas aleatoriamente,
-         * possivelmente será gerada uma exceção {@link java.util.ConcurrentModificationException}
-         * indicando que uma Thread tentou modificar a lista enquanto outra estava acessando
-         * a mesma.
-        */
-        while (totalThreadsAtivas > 0){
-            if(group.activeCount() != totalThreadsAtivas){
-                System.out.print(" " + group.activeCount());
-                totalThreadsAtivas = group.activeCount();
+        ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
+        try {
+            for (int i = 0; i < TOTAL_THREADS; i++) {
+                executor.execute(this);
             }
-        }
 
-        //Só depois que todas as Threads do grupo terminarem, podemos exibir os resultados
-        System.out.println("\n");
-        System.out.println(letras);
-        System.out.println("\nTotal de letras geradas pelas Threads: " + totalLetras);
-        System.out.println("Total de letras armazenadas:           " + letras.size());
+            executor.awaitTermination(5, TimeUnit.SECONDS);
 
-        if(totalLetras != letras.size()){
-            System.err.println("\n\nERRO: O total contabilizado de letras não corresponde ao total de letras armazenadas.");
-            System.err.println("Tal problema pode ocorrer eventualmente pois as Threads criadas estão acessando.");
-            System.err.println("e modificando as mesmas variáveis (atributos da classe neste caso).");
+            //Só depois que todas as Threads do grupo terminarem, podemos exibir os resultados
+            System.out.println("\n");
+            System.out.println(letras);
+            System.out.println("\nTotal de letras geradas pelas Threads: " + totalLetras);
+            System.out.println("Total de letras armazenadas:           " + letras.size());
+
+            if(totalLetras != letras.size()){
+                System.err.println("\n\nERRO: O total contabilizado de letras não corresponde ao total de letras armazenadas.");
+                System.err.println("Tal problema pode ocorrer eventualmente pois as Threads criadas estão acessando.");
+                System.err.println("e modificando as mesmas variáveis (atributos da classe neste caso).");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            executor.shutdown();
         }
     }
 

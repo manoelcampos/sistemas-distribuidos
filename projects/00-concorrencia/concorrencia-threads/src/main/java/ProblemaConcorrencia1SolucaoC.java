@@ -1,7 +1,7 @@
-import java.util.Collections;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Aplicação de exemplo que mostra uma outra forma de resolver os problemas de
@@ -12,8 +12,8 @@ import java.util.Random;
  * <p>
  * Quando coleções da Java Collections Framework (JCF), como List e Map,
  * precisam realmente ser sincronizadas, a solução ideal é usar métodos como
- * Collections.synchronizedList() e Collections.synchronizedMap(). Tais métodos
- * recebem um objeto de coleção e retornam uma versão sincronizada de tais
+ * {@link Collections#synchronizedList(List)} e {@link Collections#synchronizedMap(Map)}.
+ * Tais métodos recebem um objeto de coleção e retornam uma versão sincronizada de tais
  * objetos. Deste modo, a linguagem Java permitiu separar a implementação das
  * coleções do código responsável por sincronização, deixando a implementação
  * internamente mais simples.
@@ -24,7 +24,9 @@ import java.util.Random;
  * No entanto, o acesso (operações get()) aos elementos da lista não são.
  * Neste caso, se você tiver threads alterando a coleção e outras 
  * lendo os dados da mesma, é preciso sincronizar manualmente
- * a leitura para evitar possíveis resultados inesperados.</p>
+ * a leitura para evitar possíveis resultados inesperados,
+ * usar uma coleção totalmente sincronizada como {@link Vector}
+ * ou evitar o compartilhamento de dados entre diferentes Threads.</p>
  * 
  * @author Manoel Campos da Silva Filho
  */
@@ -55,44 +57,21 @@ public class ProblemaConcorrencia1SolucaoC implements Runnable {
         //Cria uma lista sincronizada para os métodos de adição e remoção.
         letras = Collections.synchronizedList(new ArrayList<>());
 
-        /*Cria um grupo de Threads para nos permitir contar quantas threads tem no grupo e
-        * assim saber quando elas terminaram, para podermos exibir os resultados.*/
-        ThreadGroup group = new ThreadGroup("contagem");
-        for (int i = 0; i < TOTAL_THREADS; i++) {
-            //Cria e inicia uma nova Thread para executar o método run() no objeto atual (this)
-            new Thread(group, this).start();
-        }
-
-        int totalThreadsAtivas = group.activeCount();
-        System.out.print("Total de Threads em execução: " + totalThreadsAtivas);
-        /**
-         * Enquanto existir alguma Thread no grupo ainda em execução,
-         * fica no loop aguardando totas as Threads finalizarem.
-         * Quando as Threads finalizarem, os resultados serão exibidos.
-         * Possivelmente você receberá uma mensagem de erro indicando que
-         * os resultados são inconsistentes.
-         *
-         * Experimente alterar o valor da condição no loop de 0 para 2, por exemplo.
-         * Isto vai fazer com que a aplicação tente exibir os resultados antes
-         * mesmo de todas as Threads finalizarem.
-         * Como as Threads ainda em execução poderão ainda inserir dados
-         * na lista de palavras e as últimas linhas do main() vão
-         * tentar acessar a lista para exibir as letras geradas aleatoriamente,
-         * possivelmente será gerada uma exceção {@link java.util.ConcurrentModificationException}
-         * indicando que uma Thread tentou modificar a lista enquanto outra estava acessando
-         * a mesma.
-        */
-        while (totalThreadsAtivas > 0){
-            if(group.activeCount() != totalThreadsAtivas){
-                System.out.print(" " + group.activeCount());
-                totalThreadsAtivas = group.activeCount();
+        ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
+        try {
+            for (int i = 0; i < TOTAL_THREADS; i++) {
+                executor.execute(this);
             }
-        }
 
-        //Só depois que todas as Threads do grupo terminarem, podemos exibir os resultados
-        System.out.println("\n");
-        System.out.println(letras);
-        System.out.println("\nTotal de letras armazenadas:           " + letras.size());
+            executor.awaitTermination(5, TimeUnit.SECONDS);
+            System.out.println("\n");
+            System.out.println(letras);
+            System.out.println("\nTotal de letras armazenadas:           " + letras.size());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally{
+            executor.shutdown();
+        }
     }
 
     @Override
