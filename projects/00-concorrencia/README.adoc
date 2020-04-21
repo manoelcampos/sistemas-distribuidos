@@ -7,3 +7,9 @@ ou quando temos várias Threads acessando ou alterando as mesmas variáveis simu
 NOTE: O conceito e funcionamento de Threads é link:../01-socket-chat/chat-sockets-threads.pptx[apresentado aqui].
 
 Nesta pasta são disponibilizadas algumas aplicações Java para problemas de concorrência.
+
+== Referências
+
+- https://books.google.com.br/books?id=EK43StEVfJIC&printsec=frontcover[Java Concurrency Programming in Practice. Goetz, Brian et. al. Addison-Wesley Professional. 1st edition (2006).]
+- http://tutorials.jenkov.com/java-concurrency/volatile.html
+- https://www.baeldung.com/java-atomic-variables

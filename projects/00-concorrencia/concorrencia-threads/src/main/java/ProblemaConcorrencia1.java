@@ -69,7 +69,7 @@ public class ProblemaConcorrencia1 implements Runnable {
             System.out.println("\n");
             System.out.println(letras);
             System.out.println("\nTotal de letras geradas pelas Threads: " + totalLetras);
-            System.out.println("Total de letras armazenadas:           " + letras.size());
+            System.out.println("Total de letras armazenadas:           "   + letras.size());
 
             if(totalLetras != letras.size()){
                 System.err.println("\n\nERRO: O total contabilizado de letras não corresponde ao total de letras armazenadas.");
