@@ -1,3 +1,18 @@
+:source-highlighter: highlightjs
+:icons: font
+:numbered:
+:listing-caption: Listagem
+:figure-caption: Figura
+
+ifdef::env-github[]
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
 = Projetos Desenvolvidos
 
 Esta pasta fornece uma lista de projetos desenvolvidos no curso.
