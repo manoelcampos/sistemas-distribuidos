@@ -20,3 +20,6 @@ nbproject/private/
 /aulas/
 projects/varios/random-words
 provas
+
+#MacOS Files
+.DS_Store
