@@ -23,3 +23,6 @@ provas
 
 #MacOS Files
 .DS_Store
+
+#Backup Moodle
+*.mbz
