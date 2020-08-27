@@ -1,9 +1,14 @@
+:numbered:
+
 = Projeto Final: Sistemas Distribuídos
 
-O objetivo deste projeto é desenvolver 4 sistemas distribuídos que interoperam por meio de
-web services REST utilizando a especificação JAX-RS.
+O objetivo deste projeto é desenvolver um sistema distribuído formado por 4 outros sistemas. 
+Estes interoperam por meio de web services REST utilizando a especificação JAX-RS.
 Nenhum destes sistemas precisa ter front-end, apenas o back-end com acesso a banco de dados e 
 disponibilização dos endpoints REST (as URLs por meio das quais podemos acessar os serviços).
+
+Você deve escolher um dos sistemas abaixo para desenvolver utilizando JavaEE
+com JPA, DataSource, DAOs genéricos, CDI e JAX-RS, conforme indicado http://manoelcampos.com/sd-webservices/4.4-ws-rest-cadastro/[neste tutorial].
 
 Todos os sistemas que possuem tabelas de cidades e estados devem utilizar os códigos 
 do IBGE para permitir que eles funcionem em conjunto. Se em um sistema uma cidade tiver
@@ -12,7 +17,7 @@ estes sistemas.
 
 Uma lista de cidades e estados com os códigos do IBGE pode ser obtida no script link:cidades-brasil-ibge.sql[cidades-brasil-ibge.sql]. Tal script é pra MySQL. Se for utilizar outro banco, adapte o script.
 
-= 1. Sistema de Busca de Voos
+== Sistema de Busca de Voos
 
 O sistema deve possuir tabelas para cadastro da companhia aérea, avião,
 cidades, estados, pilotos e voos com o respectivo preço.
@@ -34,7 +39,7 @@ Devem ser disponibilizados os seguintes endpoints REST:
 5. alterar reserva do voo
 6. excluir reserva do voo
 
-= 2. Sistema de Busca de Hotéis
+== Sistema de Busca de Hotéis
 
 O sistema deve possuir tabelas para cadastro de cidades, estados, bairros e hotéis. 
 Deve existir uma tabela para cadastrar os quartos de um hotel, indicando o número do quarto,
@@ -52,7 +57,7 @@ Devem ser disponibilizados os seguintes endpoints REST:
 5. alterar reserva de quarto
 6. excluir reserva de quarto
 
-= 3. Sistema de Busca de Veículos de Aluguel
+== Sistema de Busca de Veículos de Aluguel
 
 O sistema deve possuir tabelas para cadastro de cidades, estados, locadoras de veículos
 e veículos existentes.
@@ -66,12 +71,12 @@ Devem ser disponibilizados os seguintes endpoints REST:
 
 1. consultar veículo por cidade, modelo e faixa de preço
 2. consultar veículo por cidade, faixa de preço, ar condicional e tipo de câmbio 
-2. consultar veículo por cidade, faixa de preço, ar condicional, tipo de câmbio e combustível
+3. consultar veículo por cidade, faixa de preço, ar condicional, tipo de câmbio e combustível
 4. cadastrar reserva de veículo
 5. alterar reserva de veículo
 6. excluir reserva de veículo
 
-= 4. Sistema de Agência de Viagem
+== Sistema de Agência de Viagem
 
 O sistema deve permitir ao usuário fazer a busca de pacotes de viagem que incluam passagem aérea, hotel e/ou carro para alugar.
 Ele deve apenas interoperar (integrar) com os outros sistemas.
