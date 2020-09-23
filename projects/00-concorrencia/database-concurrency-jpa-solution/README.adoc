@@ -6,6 +6,8 @@ foram discutidos os problemas que podem ocorrer quando temos, por exemplo, vári
 O link:../database-concurrency-jpa-problem[projeto anterior] mostra os problemas que podem ocorrer quando dois usuários alteram um mesmo cadastro ao mesmo tempo.
 O projeto atual mostra como resolver tais problemas pela utilização de Locks Otimistas por meio do framework JPA.
 
+image::../database-concurrency-app.png[]
+
 == Compilando e Executando o Projeto
 
 O projeto requer o JDK 8 ou 11 instalado. 

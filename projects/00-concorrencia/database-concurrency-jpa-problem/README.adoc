@@ -5,6 +5,8 @@ foram discutidos os problemas que podem ocorrer quando temos, por exemplo, vári
 
 Este projeto mostra tais problemas quando vários usuários tentar alterar um mesmo cadastro ao mesmo tempo. 
 
+image::../database-concurrency-app.png[]
+
 == Compilando e Executando o Projeto
 
 O projeto requer o JDK 8 ou 11 instalado. 
@@ -14,14 +16,14 @@ na pasta raiz e executando o comando abaixo:
 
 [source,bash]
 ----
-./mvnw clean package
+mvn clean package
 ----
 
 Após compilar, para executar basta digitar:
 
 [source,bash]
 ----
-./mvnw compile quarkus:dev
+mvn compile quarkus:dev
 ----
 
 Após isto, basta abrir duas abas do navegador em http://localhost:8080.
