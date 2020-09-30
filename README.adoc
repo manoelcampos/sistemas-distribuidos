@@ -36,3 +36,6 @@ Apresentar o histórico de sistemas distribuídos, necessidades para criação d
 
 Programação Orientada a Objetos em Java.
 
+== Apresentação
+
+Uma apresentação com os fundamentos de Sistemas Distribuídos está https://docs.google.com/presentation/d/e/2PACX-1vR3bw0y79LDfgZ9kddbxDOkl6ISHbCiWlhGHHfttW_aWfNN5ujiGUNGYWICd0OF_Duu4hiYlD77iOhJ/pub?start=false&loop=false&delayms=3000[disponível aqui].
