@@ -8,6 +8,10 @@ NOTE: O conceito e funcionamento de Threads é link:../01-socket-chat/chat-socke
 
 Nesta pasta são disponibilizadas algumas aplicações Java para problemas de concorrência.
 
+== Slides
+
+Uma apresentação sobre os fundamentos de programação funcional está https://docs.google.com/presentation/d/e/2PACX-1vTJE9Dt23OdsfZda7mBuinRpy8BldyKlxfVbXalwZb2L4BFqVkkpb8SWBdIeWBhdfbl3RLOTv8J60Nd/pub?start=false&loop=false&delayms=60000[disponível aqui].
+
 == Referências
 
 - https://books.google.com.br/books?id=EK43StEVfJIC&printsec=frontcover[Java Concurrency Programming in Practice. Goetz, Brian et. al. Addison-Wesley Professional. 1st edition (2006).]
