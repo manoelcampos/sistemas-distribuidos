@@ -77,7 +77,7 @@ As etapas são apresentadas a seguir:
 
 O http://hadoop.apache.org[Apache Hadoop] é o framework mais popular para a construção de algoritmos seguindo o modelo MapReduce. Com o fantástico recurso de https://www.oracle.com/technetwork/pt/articles/java/streams-api-java-8-3410098-ptb.html[Streams do Java 8], por exemplo, tal modelo pode ser utilizada para construção de aplicações paralelas que fazem uso de vários núcleos de um processador em uma mesma máquina.
 
-Um exemplo de contagem utilizando tal recurso do Java 8 pode ser encontrado em link:../projects/MapReduceApp.java[MapReduceApp.java]. A única linha necessária para contar o total de pessoas por sexo, em paralelo, está dentro do método `long contaPessoas(char sexo)`.
+Um exemplo de contagem utilizando tal recurso do Java 8 pode ser encontrado em link:../projects/varios/MapReduceApp.java[MapReduceApp.java]. A única linha necessária para contar o total de pessoas por sexo, em paralelo, está dentro do método `long contaPessoas(char sexo)`.
 
 === Problemas de Escalabilidade Geográfica
 
