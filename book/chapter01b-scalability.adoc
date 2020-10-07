@@ -81,7 +81,7 @@ Um exemplo de contagem utilizando tal recurso do Java 8 pode ser encontrado em l
 
 === Problemas de Escalabilidade Geográfica
 
-Antes da popularização da internet, os sistemas de uma empresa eram acessados apenas dentro da rede local (LAN). Os problemas de atraso, congestionamento e quebra de conexão eram muito menores. Usuários acessavam a aplicação por meio de uma interface desktop (instalada localmente em cada computador) ou web (por meio de um navegador). 
+Antes da popularização da internet, os sistemas de uma empresa eram acessados apenas dentro da rede local (LAN). Os problemas de atraso, congestionamento e quebra de conexão eram muito menores. Usuários acessavam a aplicação por meio de uma interface desktop (instalada localmente em cada computador). 
 
 Tais aplicações faziam *requisições síncronas* a um servidor dentro da rede local, onde a requisição era enviada ao servidor e a aplicação ficava bloqueada, aguardando até obter uma resposta <<SDPP>> <<SDCP>>. De fato, quando uma requisição síncrona é enviada, o https://pt.wikipedia.org/wiki/Thread_(ciência_da_computação)[_thread_] que a executou é que fica bloqueado aguardando a resposta. Em aplicações mono-thread (que não foram projetadas para executar tarefas em paralelo), toda a aplicação fica então inoperante enquanto uma resposta não for obtida ou não ocorrer um _timeout_ (tempo expirado).
 
@@ -112,7 +112,7 @@ No entanto, nem sempre é viável utilizar chamadas síncronas, como é o caso d
 
 video::eVI8XsiaHlc[youtube, width=640, height=300]
 
-O usuário preenche apenas parte dos dados e clica em "Enviar". Um código JavaScript executado pelo navegador informa que nem todos os dados foram preenchidos. Desta forma, a requisição não é enviada e assim temos uma resposta instantânea, uma vez que não houve troca de mensagens pela rede. Quando o usuário digita todos os dados e clica em "Enviar" novamente, o código JavaScript verifica que os dados estão corretos e só então envia a requisição para o servidor. O servidor recebe a requisição e normalmente verifica os dados mais uma vez (por questões de segurança, uma vez que o usuário pode desabilitar o JavaScript no navegador). Estando os dados corretos, o servidor responde informando que o cadastro foi realizado com sucesso. Com isto, enviamos apenas uma mensagem de ida e volta pela rede. No entanto, como podem ver no vídeo, enquanto a resposta não é obtida, a página é recarregada e normalmente fica totalmente branca até o navegador receber a resposta.
+O usuário preenche apenas parte dos dados e clica em "Enviar". Um código JavaScript executado pelo navegador informa que nem todos os dados foram preenchidos. Desta forma, a requisição não é enviada e assim temos uma resposta instantânea, uma vez que não houve troca de mensagens pela rede. Quando o usuário digita todos os dados e clica em "Enviar" novamente, o código JavaScript verifica que os dados estão corretos e só então envia a requisição para o servidor. O servidor recebe a requisição e normalmente verifica os dados mais uma vez (por questões de segurança, uma vez que o usuário pode desabilitar o JavaScript no navegador). Estando os dados corretos, o servidor responde informando que o cadastro foi realizado com sucesso. Com isto, enviamos apenas uma mensagem de ida e volta pela rede. 
 
 Com o uso de tecnologias como AJAX, podemos fazer a validação no lado do cliente (navegador), enviar a requisição e permitir que o usuário continue navegando enquanto a resposta não é enviada pelo servidor. O vídeo abaixo demonstra esse processo.
 
