@@ -1,7 +1,21 @@
 :imagesdir: ../images
+:allow-uri-read:
+:source-highlighter: highlightjs
+:icons: font
 :numbered:
+:listing-caption: Listagem
+:figure-caption: Figura
 
 == Disponibilidade
+
+ifdef::env-github[]
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
 
 Disponibilidade é uma medida que indica o percentual de tempo que espera-se que o sistema esteja em funcionamento <<SDCP>>.
 Tal medida é calculada como `tempo de atividade/(tempo de atividade + tempo de inatividade)` (Ver http://cloudsimplus.org/docs/MScDissertation-RaysaOliveira.pdf[Tabela 2.1 aqui]).

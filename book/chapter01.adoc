@@ -1,7 +1,29 @@
 :imagesdir: ../images
+:allow-uri-read:
+:source-highlighter: highlightjs
+:icons: font
 :numbered:
+:listing-caption: Listagem
+:figure-caption: Figura
+
+ifdef::env-github[]
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
 
 == Introdução
+
+ifdef::env-github[]
+IMPORTANT: Acesse o curso online https://manoelcampos.com/sistemas-distribuidos/[neste link].
+O acesso ao curso diretamente pelo GitHub não permite a exibição de vídeos nem a navegação facilitada entre capítulos.
+
+O código fonte de projetos utilizando diferentes tecnologias de sistemas distribuídos, para
+as mais diversas finalidades, está disponível na pasta link:projects[projects].
+endif::[]
 
 Nas últimas décadas, a computação tem evoluído muito rapidamente. Tal evolução seguida da popularização da informática tem feito a demanda por recursos computacionais crescer de forma acelerada. Até a década de 80, os chamados _mainframes_ (computadores utilizados como *servidores*) eram grandes, caros e dificilmente eram conectados em rede <<SDPP>>. Antes da era das redes de computadores e da Internet, os _mainframes_ funcionavam de forma isolada, sem possibilitar que múltiplos usuários remotamente pudessem utilizar sua capacidade computacional. 
 

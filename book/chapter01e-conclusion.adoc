@@ -1,7 +1,22 @@
 :imagesdir: ../images
+:allow-uri-read:
+:source-highlighter: highlightjs
+:icons: font
 :numbered:
+:listing-caption: Listagem
+:figure-caption: Figura
 
 == Conclusão do Capítulo
+
+ifdef::env-github[]
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
 O amplo acesso à internet e dispositivos móveis como notebooks, smartphones, tablets e uma http://manoelcampos.com/invasao-equipamentos-smart/slides.html[infinidade de equipamentos inteligentes] tem tornado as exigências por recursos computacionais cada vez maiores.
 
 [bibliography]

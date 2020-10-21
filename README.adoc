@@ -1,12 +1,8 @@
-= Sistemas Distribuídos
-:source-highlighter: highlightjs
-:imagesdir: images
-:icons: font
 :allow-uri-read:
-:safe: unsafe
+:source-highlighter: highlightjs
+:icons: font
 :numbered:
 :listing-caption: Listagem
-:experimental:
 :figure-caption: Figura
 
 ifdef::env-github[]
@@ -18,24 +14,21 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-http://about.me/manoelcampos[Prof. Me. Manoel Campos da Silva Filho]
-
 ifdef::env-github[]
-IMPORTANT: Acesse o curso online https://manoelcampos.gitbooks.io/sistemas-distribuidos/[neste link].
+IMPORTANT: Acesse o curso online https://manoelcampos.com/sistemas-distribuidos/[neste link].
 O acesso ao curso diretamente pelo GitHub não permite a exibição de vídeos nem a navegação facilitada entre capítulos.
 
 O código fonte de projetos utilizando diferentes tecnologias de sistemas distribuídos, para
 as mais diversas finalidades, está disponível na pasta link:projects[projects].
 endif::[]
 
-== Objetivos
+= Introdução aos Sistemas Distribuídos
 
-Apresentar o histórico de sistemas distribuídos, necessidades para criação de sistemas distribuídos, suas características, tipos, desafios e tendências. Apresentar tecnologias atuais e implementar sistemas utilizando tais tecnologias.
-
-== Pré-requisitos
-
-Programação Orientada a Objetos em Java.
-
-== Apresentação
-
-Uma apresentação com os fundamentos de Sistemas Distribuídos está https://docs.google.com/presentation/d/e/2PACX-1vR3bw0y79LDfgZ9kddbxDOkl6ISHbCiWlhGHHfttW_aWfNN5ujiGUNGYWICd0OF_Duu4hiYlD77iOhJ/pub?start=false&loop=false&delayms=3000[disponível aqui].
+. link:book/chapter01.adoc[Capítulo 1]
+.. link:book/chapter01a-resource-sharing.adoc[Compartilhamento de Recursos]
+.. link:book/chapter01b-scalability.adoc[Escalabilidade]
+.. link:book/chapter01c-transparency.adoc[Transparência]
+.. link:book/chapter01d-availability.adoc[Disponibilidade]
+.. link:book/chapter01e-conclusion.adoc[Conclusão]
+. link:book/chapter02.adoc[Capítulo 2]
+. link:book/GLOSSARY.adoc[Glossário]

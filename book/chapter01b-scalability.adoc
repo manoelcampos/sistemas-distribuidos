@@ -1,7 +1,29 @@
 :imagesdir: ../images
+:allow-uri-read:
+:source-highlighter: highlightjs
+:icons: font
 :numbered:
+:listing-caption: Listagem
+:figure-caption: Figura
+
+ifdef::env-github[]
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
 
 == Escalabilidade
+
+ifdef::env-github[]
+IMPORTANT: Acesse o curso online https://manoelcampos.com/sistemas-distribuidos/[neste link].
+O acesso ao curso diretamente pelo GitHub não permite a exibição de vídeos nem a navegação facilitada entre capítulos.
+
+O código fonte de projetos utilizando diferentes tecnologias de sistemas distribuídos, para
+as mais diversas finalidades, está disponível na pasta link:projects[projects].
+endif::[]
 
 [quote, Coulouris et. al. 2008]
 Escalabilidade é a capacidade de um sistema de se permanecer eficiente quando há um aumento significativo no número de recursos e de usuários.
