@@ -1,3 +1,5 @@
+:numbered:
+
 = Ebook Sistemas Distribuídos
 
 Acesso o ebook http://manoelcampos.gitbooks.io/sistemas-distribuidos[online aqui].
