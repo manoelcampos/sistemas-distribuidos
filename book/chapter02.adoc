@@ -1,4 +1,5 @@
 :imagesdir: ../images
+:numbered:
 
 == Arquitetura de Sistemas Distribuídos
 
