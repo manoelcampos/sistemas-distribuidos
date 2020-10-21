@@ -5,6 +5,7 @@
 :numbered:
 :listing-caption: Listagem
 :figure-caption: Figura
+ifdef::env-github[:toc:]
 ifndef::env-github[:toc: left]
 :toc-title: Sumário
 :toclevels: 3

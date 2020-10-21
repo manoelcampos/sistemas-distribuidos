@@ -5,9 +5,6 @@
 :numbered:
 :listing-caption: Listagem
 :figure-caption: Figura
-ifndef::env-github[:toc: left]
-:toc-title: Sumário
-:toclevels: 3
 
 ifdef::env-github[:outfilesuffix: .adoc]
 
