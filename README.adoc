@@ -24,11 +24,13 @@ endif::[]
 
 = Introdução aos Sistemas Distribuídos
 
-. link:book/chapter01.adoc[Capítulo 1]
-.. link:book/chapter01a-resource-sharing.adoc[Compartilhamento de Recursos]
-.. link:book/chapter01b-scalability.adoc[Escalabilidade]
-.. link:book/chapter01c-transparency.adoc[Transparência]
-.. link:book/chapter01d-availability.adoc[Disponibilidade]
-.. link:book/chapter01e-conclusion.adoc[Conclusão]
-. link:book/chapter02.adoc[Capítulo 2]
-. link:book/GLOSSARY.adoc[Glossário]
+// <<comandos#,Um resumo dos comandos AsciiDoc está disponível aqui.>>
+
+. <<book/chapter01.adoc#,Capítulo 1>>
+.. <<book/chapter01a-resource-sharing#,Compartilhamento de Recursos>>
+.. <<book/chapter01b-scalability#,Escalabilidade>>
+.. <<book/chapter01c-transparency#,Transparência>>
+.. <<book/chapter01d-availability#,Disponibilidade>>
+.. <<book/chapter01e-conclusion#,Conclusão>>
+. <<book/chapter02#,Capítulo 2>>
+. <<book/GLOSSARY#,Glossário>>

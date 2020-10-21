@@ -6,6 +6,9 @@
 :listing-caption: Listagem
 :figure-caption: Figura
 
+ifdef::env-github[:outfilesuffix: .adoc]
+
+
 == Conclusão do Capítulo
 
 ifdef::env-github[]
