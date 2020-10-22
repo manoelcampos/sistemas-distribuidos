@@ -58,7 +58,7 @@ Conveções de nomes de arquivos também devem ser ocultados de usuários e apli
 
 Visa ocultar dos usuários e aplicações a localização de um recurso <<SDPP>>, ou seja, o conhecimento de sua localização física ou na rede (endereço IP) <<SDCP>>. A localização física inclui localização geográfica e o servidor onde o recurso está disponível.
 
-Uma das formas de se conseguir transparência de localização é atribuindo nomes lógicos aos recursos <<SDPP>>, que funcionam como apelidos (_alias_). Os endereços https://pt.wikipedia.org/wiki/URL[URL] (_Uniform Resource Locator_) são a forma mais conhecida para se obter transparência de localização. Um endereço como http://ifto.edu.br/index.html *não* indica: qual servidor hospeda o arquivo index.html, se tal arquivo sempre esteve neste servidor <<SDPP>>, ou até mesmo se o arquivo está hospedado em vários servidores e o servidor mais próximo do usuário ou menos sobrecarregado atendeu à solicitação de acesso ao arquivo. 
+Uma das formas de se conseguir transparência de localização é atribuindo nomes lógicos aos recursos <<SDPP>>, que funcionam como apelidos (_alias_). Os endereços https://pt.wikipedia.org/wiki/URL[URL] (_Uniform Resource Locator_) são a forma mais conhecida para se obter transparência de localização. Um endereço como http://google.com/index.html *não* indica: qual servidor hospeda o arquivo index.html, se tal arquivo sempre esteve neste servidor <<SDPP>>, ou até mesmo se o arquivo está hospedado em vários servidores e o servidor mais próximo do usuário ou menos sobrecarregado atendeu à solicitação de acesso ao arquivo. 
 
 == Transparência de Migração/Mobilidade e Relocação
 
