@@ -4,7 +4,7 @@ Na seção https://manoelcampos.gitbooks.io/sistemas-distribuidos/book/chapter01
 foram discutidos os problemas que podem ocorrer quando temos vários usuários acessando o sistema
 ou quando temos várias Threads acessando ou alterando as mesmas variáveis simultaneamente.
 
-NOTE: O conceito e funcionamento de Threads é link:../01-socket-chat/chat-sockets-threads.pptx[apresentado aqui].
+NOTE: O conceito e funcionamento de Threads é link:../01-socket-chat/1-threads.pptx[apresentado aqui].
 
 Nesta pasta são disponibilizadas algumas aplicações Java para problemas de concorrência.
 
