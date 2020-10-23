@@ -58,7 +58,7 @@ public class Cliente extends PanacheEntity implements Serializable {
      * para isto. Sempre que um usuário fizer uma alteração em um registro
      * de um cliente, tal campo é automaticamente incrementado.
      * Mais detalhes do funcionamento estão disponíveis em
-     * https://manoelcampos.gitbooks.io/sistemas-distribuidos/book/chapter01c-transparency.html
+     * https://manoelcampos.com/sistemas-distribuidos/book/chapter01c-transparency.html
      */
     @Version
     public long versao;
