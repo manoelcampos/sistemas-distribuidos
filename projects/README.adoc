@@ -3,6 +3,7 @@
 :numbered:
 :listing-caption: Listagem
 :figure-caption: Figura
+:icons: font
 
 ifdef::env-github[]
 :outfilesuffix: .adoc
