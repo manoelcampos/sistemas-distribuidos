@@ -15,23 +15,12 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-ifdef::env-github[]
-IMPORTANT: Acesse o curso online https://manoelcampos.com/sistemas-distribuidos/book/[neste link].
-O acesso ao curso diretamente pelo GitHub não permite a exibição de vídeos nem a navegação facilitada entre capítulos.
-
-O código fonte de projetos utilizando diferentes tecnologias de sistemas distribuídos, para
-as mais diversas finalidades, está disponível na pasta link:projects[../projects].
-endif::[]
-
 = Introdução aos Sistemas Distribuídos
 
-// <<comandos#,Um resumo dos comandos AsciiDoc está disponível aqui.>>
-
-. <<chapter01.adoc#,Capítulo 1>>
-.. <<chapter01a-resource-sharing#,Compartilhamento de Recursos>>
-.. <<chapter01b-scalability#,Escalabilidade>>
-.. <<chapter01c-transparency#,Transparência>>
-.. <<chapter01d-availability#,Disponibilidade>>
-.. <<chapter01e-conclusion#,Conclusão>>
-. <<chapter02#,Capítulo 2>>
-. <<GLOSSARY#,Glossário>>
+ifdef::env-github[]
+[IMPORTANT]
+====
+Acesse o curso online https://manoelcampos.com/sistemas-distribuidos/[neste link].
+O acesso ao curso diretamente pelo GitHub não permite a exibição de vídeos nem a navegação facilitada entre capítulos.
+====
+endif::[]
