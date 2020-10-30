@@ -15,7 +15,7 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-= Introdução aos Sistemas Distribuídos
+= E-Book Introdução aos Sistemas Distribuídos
 
 ifdef::env-github[]
 [IMPORTANT]
