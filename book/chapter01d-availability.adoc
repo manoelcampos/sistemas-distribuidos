@@ -30,3 +30,4 @@ e automaticamente iniciar um nova VM, garantindo assim que o nível de tolerânc
 
 // == Abertura
 
+ifndef::env-github[image:back.png[alt=Voltar, link=../]]

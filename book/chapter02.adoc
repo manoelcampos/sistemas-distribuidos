@@ -33,3 +33,5 @@ endif::[]
 - Centralizada
     - cliente/servidor
     - multicamadas: interface de usuário, regras de negócio e acesso à dados
+
+ifndef::env-github[image:back.png[alt=Voltar, link=../]]

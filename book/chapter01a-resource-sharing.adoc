@@ -44,3 +44,4 @@ Em <<SDPP>> é comentado que os sistemas oferecem pouca proteção de privacidad
 Atualmente a maioria dos sites da internet usa HTTPS no lugar de HTTP para garantir que os dados trafegados são criptografados.
 Navegadores como o https://exame.abril.com.br/tecnologia/google-vai-avisar-quando-site-for-inseguro/[Chrome inclusive tem mudado a abordagem de mostrar quando um site é inseguro (se não usa HTTPS) no lugar de mostrar quando é seguro]. Isto parte da premissa que um site com HTTPS não significa que ele é de fato seguro. Por outro lado, um site que usa apenas HTTP é naturalmente inseguro por não criptografar os dados trafegados. Inclusive, no blog oficial da Google, é informado que a empresa https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html[tem priorizado sites HTTPS em resultados de busca desde 2014].
 
+ifndef::env-github[image:back.png[alt=Voltar, link=../]]

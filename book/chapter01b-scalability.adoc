@@ -157,3 +157,5 @@ Observe que depois que os dados são enviados, uma outra página é exibida para
 // https://martinfowler.com/bliki/TwoHardThings.html
 
 == Problemas de Escalabilidade Administrativa
+
+ifndef::env-github[image:back.png[alt=Voltar, link=../]]
