@@ -1,7 +1,24 @@
+:icons: font
+
+ifdef::env-github[]
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
 = Sockets
 
-Projetos apresentando conceitos básicos como Sockets, InputStream, OutputStream e Threads
-no desenvolvimento de aplicações de chat. Estes conceitos são link:chat-sockets-threads.pptx[apresentados aqui].
+Projetos apresentando conceitos básicos como `Sockets`, `InputStream` e `OutputStream`, além do uso de `Threads`
+no desenvolvimento de aplicações de chat. 
+
+[NOTE]
+====
+- link:chat-sockets.pptx[Slides - conceitos de Sockets, InputStream e OutputStream].
+- link:../00-concorrencia/threads.pptx[Slides - Threads: caminhos/trilhas de execução].
+====
 
 A primeira versão é a mais básica e as outras vão mostrando diferentes maneiras
 de implementar a mesma aplicação, principalmente utilizando
