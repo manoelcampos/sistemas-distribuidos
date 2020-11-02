@@ -16,8 +16,9 @@ no desenvolvimento de aplicações de chat.
 
 [NOTE]
 ====
-- link:chat-sockets.pptx[Slides - conceitos de Sockets, InputStream e OutputStream].
-- link:../00-concorrencia/threads.pptx[Slides - Threads: caminhos/trilhas de execução].
+- https://youtu.be/1X9KPcmOGzc[Vídeo]: 🧵Entendendo o que são THREADS e porque TODO DEV precisa conhecer tal recurso (link:../00-concorrencia/threads.pptx[Slides]).
+- https://youtu.be/ymisPxZJxJ0[Vídeo]: Criando THREADS em JAVA e TURBINANDO o TEMPO de RESPOSTA das suas APLICAÇÕES 🚀🧵☕️
+- https://youtu.be/MtAfYUW7fJ4[Vídeo #1]: Criando aplicação CLIENTE/SERVIDOR de CHAT em JAVA usando SOCKETS e THREADS ☕️ 🔌🧵 (link:chat-sockets.pptx[Slides])
 ====
 
 A primeira versão é a mais básica e as outras vão mostrando diferentes maneiras
