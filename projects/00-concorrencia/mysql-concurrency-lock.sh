@@ -5,7 +5,7 @@ clear
 # Senha do usuário root do MySQL: inclua a senha do seu SBGD aqui
 SENHA_ROOT="rootroot"
 
-mysql -V || echo "ERRO: SERVIDOR MYSQL NÃO INSTALADO OU COMANDO mysql NÃO ENCONTRADO NO PATH DO SEU SISTEMA." >&2 && exit -1;
+mysql --version || (echo "ERRO: SERVIDOR MYSQL NÃO INSTALADO OU COMANDO mysql NÃO ENCONTRADO NO PATH DO SEU SISTEMA." >&2 && exit -1);
 
 echo "Mostra como é possível usar o comando 'select ... for update' do MySQL para criar um lock"
 echo "e assim impedir que outro usuário (em outra transação) consiga fazer alterações"
