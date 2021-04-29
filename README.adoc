@@ -19,14 +19,15 @@ endif::[]
 ifdef::env-github[]
 [IMPORTANT]
 ====
-A INTERFACE DO GITHUB NÃO EXIBE VÍDEOS NEM FACILITA A NAVEGAÇÃO ENTRE CAPÍTULOS.
-ACESSO O E-BOOK MULTIMÍDIA A PARTIR DO LINK ABAIXO.
+- A interface do GitHub **NÃO** exibe **vídeos** 🖥 nem facilita a navegação entre capítulos. Acesse o e-book a partir do link abaixo.
+- Se você não pretende fazer alterações neste repositório e contribuir de volta para o projeto, não faça fork. Se fizer, sempre que o projeto for atualizado, você vai ficar com uma cópia absoleta. Se você que apenas baixar para navegar ou fazer alterações localmente, faça um clone no botão `Code` acima.
+- Se você quer apenas salvar o projeto para consulta posterior, use o botão `Star` ⭐️ acima. Isto ainda ajuda a divulgar o material.
 ====
 
 Este repositório disponibiliza:
 
-- https://manoelcampos.com/sistemas-distribuidos/[E-Book multimídia com conceitos e exemplos atuais de sistemas distribuídos].
-- link:projects/[Projetos utilizando diferentes tecnologias e protocolos de sistemas distribuídos, desenvolvidos em Java e Node.js].
+1. https://manoelcampos.com/sistemas-distribuidos/[E-Book multimídia com conceitos e exemplos atuais de sistemas distribuídos].
+2. link:projects/[Projetos utilizando diferentes tecnologias e protocolos de sistemas distribuídos, desenvolvidos em Java e Node.js].
 endif::[]
 
 //----------------------------------------------------------------------------------------------------------
