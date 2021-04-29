@@ -19,13 +19,13 @@ endif::[]
 ifdef::env-github[]
 [IMPORTANT]
 ====
-ACESSO O CURSO ONLINE https://manoelcampos.com/sistemas-distribuidos/[NESTE LINK].
 A INTERFACE DO GITHUB NÃO EXIBE VÍDEOS NEM FACILITA A NAVEGAÇÃO ENTRE CAPÍTULOS.
+ACESSO O E-BOOK MULTIMÍDIA A PARTIR DO LINK ABAIXO.
 ====
 
 Este repositório disponibiliza:
 
-- link:book/[E-Book multimídia com conceitos e exemplos atuais de sistemas distribuídos].
+- https://manoelcampos.com/sistemas-distribuidos/[E-Book multimídia com conceitos e exemplos atuais de sistemas distribuídos].
 - link:projects/[Projetos utilizando diferentes tecnologias e protocolos de sistemas distribuídos, desenvolvidos em Java e Node.js].
 endif::[]
 
