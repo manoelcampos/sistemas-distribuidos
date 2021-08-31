@@ -21,8 +21,7 @@ echo ""
 
 # Cria um arquivo SQL na pasta /tmp, contendo os comandos a serem executados no banco
 echo "
-drop database if exists concorrencia;
-create database concorrencia;
+create database if not exists concorrencia;
 use concorrencia;
 
 # Cria a tabela se ela não existir e insere um registro nela.
