@@ -20,12 +20,13 @@ echo ""
 echo ""
 
 # Cria um arquivo SQL na pasta /tmp, contendo os comandos a serem executados no banco
-echo "create database if not exists concorrencia;
+echo "
+drop database if exists concorrencia;
+create database concorrencia;
 use concorrencia;
 
 # Cria a tabela se ela não existir e insere um registro nela.
-create table if not exists cidade as select 1 as id, 'Palmas                                            ' as nome;
-
+create table if not exists cidade as select 1 as id, CONVERT('Palmas', CHAR(512)) as nome;
 select '# Tentando selecionar dados (pode demorar por conta de lock em outra operação concorrente)' as '';
 
 # Locks só funcionam dentro de transações
