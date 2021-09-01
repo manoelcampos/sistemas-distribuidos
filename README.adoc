@@ -15,6 +15,7 @@ ifdef::env-github[]
 endif::[]
 
 = Introdução aos Sistemas Distribuídos
+Prof. Manoel Campos da Silva Filho <https://about.me/manoelcampos>
 
 ifdef::env-github[]
 [IMPORTANT]
