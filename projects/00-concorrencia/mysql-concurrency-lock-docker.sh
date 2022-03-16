@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Este script faz o mesmo que o mysql-concurrency-lock.sh,
+# mas automaticamente cria um container com um servidor MySQL instalado e configurado.
+# Assim, você não precisa se preocupar em instalar o MySQL,
+# mas precisa ter o Docker instalado e executando.
+
 clear
 
 # Finaliza o script se algum erro ocorrer
