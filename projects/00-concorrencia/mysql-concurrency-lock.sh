@@ -3,7 +3,7 @@
 clear
 
 # Senha do usuário root do MySQL: inclua a senha do seu SBGD aqui
-SENHA_ROOT="rootroot"
+SENHA_ROOT='rootroot'
 
 mysql --version || (echo "ERRO: SERVIDOR MYSQL NÃO INSTALADO OU COMANDO mysql NÃO ENCONTRADO NO PATH DO SEU SISTEMA." >&2 && exit -1);
 
