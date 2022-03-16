@@ -61,4 +61,4 @@ select * from cidade;
 " > /tmp/script.sql
 
 # Executa os comandos do arquivo SQL criado acima
-mysql -u root -p$SENHA_ROOT < /tmp/script.sql
+mysql -h localhost -u root -p$SENHA_ROOT < /tmp/script.sql
