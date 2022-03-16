@@ -2,6 +2,9 @@
 
 clear
 
+# Se você está usando o WSL, provavelmente precisa trocar 127.0.0.1 pelo IP da sua interface de rede no Windows.
+IP_SERVIDOR_MYSQL="127.0.0.1"
+
 # Senha do usuário root do MySQL: inclua a senha do seu SBGD aqui
 SENHA_ROOT='rootroot'
 
@@ -60,5 +63,5 @@ commit;
 select * from cidade;
 " > /tmp/script.sql
 
-# Executa os comandos do arquivo SQL criado acima
-mysql -h localhost -u root -p$SENHA_ROOT < /tmp/script.sql
+# Executa os comandos do arquivo SQL criado acima.
+mysql -h "$IP_SERVIDOR_MYSQL" -u root -p$SENHA_ROOT < /tmp/script.sql
