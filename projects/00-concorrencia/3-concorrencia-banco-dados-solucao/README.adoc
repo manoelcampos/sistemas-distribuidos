@@ -1,4 +1,4 @@
-= Exemplos de problemas de concorrência (link:https://kinolien.github.io/gitzip/?download=/manoelcampos/sistemas-distribuidos/tree/master/projects/00-concorrencia/database-concurrency-jpa-solution[zip])
+= Exemplos de problemas de concorrência (link:https://kinolien.github.io/gitzip/?download=/manoelcampos/sistemas-distribuidos/tree/master/projects/00-concorrencia/3-concorrencia-banco-dados-solucao[zip])
 
 Na seção https://manoelcampos.com/sistemas-distribuidos/book/chapter01c-transparency.html[Transparência de Concorrência"]
 foram discutidos os problemas que podem ocorrer quando temos, por exemplo, vários usuários acessando o sistema.
