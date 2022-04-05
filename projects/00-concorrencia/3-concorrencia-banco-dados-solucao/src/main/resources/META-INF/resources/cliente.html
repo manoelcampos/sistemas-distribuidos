@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro de Cliente</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <p>
+        <div id="msg"></div>
+    </p>
+
+    <form method="post" id="formulario">
+        <input id="id" type="hidden"/>
+        <!-- Campo "versao" exibido apenas para efeitos didáticos,
+        para mostrar que quando um usuário altera o cadastro de um cliente,
+        a versão de tal cadastro é automaticamente incrementada pelo servidor.
+        Tal campo é usado para identificar quando dois usuários alteraram o mesmo
+        cadastro ao mesmo tempo, e assim tentar evitar sobreposição de dados.-->
+        <p><label for="versao">Versão</label> <input id="versao" type="text" disabled="disabled"/></p>
+
+        <p><label for="nome">Nome</label> <input id="nome" maxlength="60" size=50px"/></p>
+        <p>
+            <label for="cpf">CPF</label> <input id="cpf" maxlength="11"/>
+            <label for="sexo">Sexo</label> <input id="sexo" maxlength="1" size="5px"/>
+        </p>
+        <p><label for="endereco">Endereço</label> <input id="endereco" maxlength="200" size=50px"/></p>
+        <p><label for="telefone">Telefone</label> <input id="telefone" maxlength="10" size="30px"/></p>
+
+        <button type="submit">Alterar</button>
+    </form>
+
+    <script>
+        const carregaCliente = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            const response = await fetch(`http://localhost:8080/api/cliente/${id}`);
+            const cliente = await response.json();
+            console.log(cliente);
+
+            $("#id").val(cliente.id);
+            $("#versao").val(cliente.versao);
+            $("#nome").val(cliente.nome);
+            $("#cpf").val(cliente.cpf);
+            $("#sexo").val(cliente.sexo);
+            $("#endereco").val(cliente.endereco);
+            $("#telefone").val(cliente.telefone);
+        };
+
+        const alterarCliente = async () => {
+            const cliente = {
+                id: $("#id").val(),
+                versao: $("#versao").val(),
+                nome: $("#nome").val(),
+                cpf: $("#cpf").val(),
+                sexo: $("#sexo").val(),
+                endereco: $("#endereco").val(),
+                telefone: $("#telefone").val()
+            };
+            console.log(cliente);
+
+            const headers = {
+                method: "PUT",
+                headers: {'Content-Type': 'application/json;charset=utf-8'},
+                body: JSON.stringify(cliente)
+            };
+
+            try{
+                const response = await fetch("http://localhost:8080/api/cliente", headers);
+                const msg = await response.text();
+                if (response.ok)
+                    window.location = "http://localhost:8080/";
+                else throw Error(msg);
+            }catch(error){
+                $("#msg").html(`<strong>${error}</strong>`);
+                console.log(error);
+            }
+        };
+
+        const inicializar = () => {
+            carregaCliente();
+
+            $("#formulario").submit(() => {
+                alterarCliente();
+                return false;
+
+            });
+        };
+
+        //Quando o documento carregar completamente, chama a função inicializar
+        $(inicializar);
+    </script>
+</body>
+</html>

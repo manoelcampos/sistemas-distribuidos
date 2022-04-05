@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <title>Lista de Clientes</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    </head>
+    <body>
+        <table id="tabela">
+            <tr><th>Versão</th><th>Nome</th><th>CPF</th><th>Sexo</th><th>Endereçco</th><th>Telefone</th><th>Ações</th></tr>
+        </table>
+
+        <script>
+            const carregaClientes = async () => {
+                const response = await fetch("http://localhost:8080/api/cliente");
+                const clientes = await response.json();
+                const tabela = $("#tabela");
+                for (const c of clientes) {
+                    const ln = `<tr><td>${c.versao}</td><td>${c.nome}</td><td>${c.cpf}</td><td>${c.sexo}</td><td>${c.endereco}</td><td><a href='cliente.html?id=${c.id}'>Editar</a></td></tr>`
+                    tabela.append(ln);
+                }
+            };
+
+            $(carregaClientes);
+        </script>
+    </body>
+</html>
+
+
