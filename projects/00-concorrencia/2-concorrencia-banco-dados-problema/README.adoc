@@ -11,18 +11,12 @@ image::../database-concurrency-app.png[]
 
 O projeto requer o JDK 8 ou 11 instalado. 
 
-A forma mais simples de compilar e executar este projeto é abrindo um terminal
-na pasta raiz e executando o comando abaixo:
+A forma mais simples de compilar e executar este projeto é abrindo um terminal na pasta raiz.
+Em seguida execute os comandos abaixo, para baixar os pacotes utilizados e executar o projeto em modo de desenvolvimento:
 
 [source,bash]
 ----
 mvn clean package
-----
-
-Após compilar, para executar basta digitar:
-
-[source,bash]
-----
 mvn compile quarkus:dev
 ----
 
