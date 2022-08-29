@@ -63,6 +63,7 @@ public class ProblemaConcorrencia1SolucaoC implements Runnable {
                 executor.execute(this);
             }
 
+            executor.shutdown();
             executor.awaitTermination(5, TimeUnit.SECONDS);
 
             System.out.println("\n");
@@ -70,8 +71,6 @@ public class ProblemaConcorrencia1SolucaoC implements Runnable {
             System.out.println("\nTotal de letras armazenadas:           " + letras.size());
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally{
-            executor.shutdown();
         }
     }
 

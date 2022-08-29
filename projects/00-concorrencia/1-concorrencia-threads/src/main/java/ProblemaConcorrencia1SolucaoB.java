@@ -81,6 +81,7 @@ public class ProblemaConcorrencia1SolucaoB implements Runnable {
                 executor.execute(this);
             }
 
+            executor.shutdown();
             executor.awaitTermination(5, TimeUnit.SECONDS);
 
             //Só depois que todas as Threads do grupo terminarem, podemos exibir os resultados
@@ -89,8 +90,6 @@ public class ProblemaConcorrencia1SolucaoB implements Runnable {
             System.out.println("\nTotal de letras armazenadas:           " + letras.size());
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally{
-            executor.shutdown();
         }
     }
 
