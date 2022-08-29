@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Aplicação de exemplo que mostra outra forma de resolver os problemas
  * de concorrência apresentados na aplicação {@link ProblemaConcorrencia1}.
+ * <b>AVISO:</b> A solução usa a classe obsoleta {@link Vector}, apenas
+ * para demonstrar porque não é aconselhável utilizá-la.
  *
  * <p>
  * Inicialmente, o atributo totalLetras foi removido, pois podemos saber quantas letras foram
@@ -74,7 +76,7 @@ public class ProblemaConcorrencia1SolucaoB implements Runnable {
 
     private ProblemaConcorrencia1SolucaoB(){
         this.rand = new Random();
-        this.letras = new Vector<>();
+        this.letras = new Vector<>();  //Lembrando que tal classe se tornou obsoleta
         final ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
         try {
             for (int i = 0; i < TOTAL_THREADS; i++) {
