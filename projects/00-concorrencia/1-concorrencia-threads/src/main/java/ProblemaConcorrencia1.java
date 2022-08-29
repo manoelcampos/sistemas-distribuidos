@@ -60,7 +60,7 @@ public class ProblemaConcorrencia1 implements Runnable {
     private ProblemaConcorrencia1(){
         rand = new Random();
         letras = new ArrayList<>();
-        ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
+        final ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
         try {
             for (int i = 0; i < TOTAL_THREADS; i++) {
                 executor.execute(this);
