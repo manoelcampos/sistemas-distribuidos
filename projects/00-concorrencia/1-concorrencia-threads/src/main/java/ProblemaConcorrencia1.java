@@ -66,6 +66,7 @@ public class ProblemaConcorrencia1 implements Runnable {
                 executor.execute(this);
             }
 
+            executor.shutdown();
             executor.awaitTermination(5, TimeUnit.SECONDS);
 
             //Só depois que todas as Threads do grupo terminarem, podemos exibir os resultados
@@ -81,8 +82,6 @@ public class ProblemaConcorrencia1 implements Runnable {
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally {
-            executor.shutdown();
         }
     }
 
