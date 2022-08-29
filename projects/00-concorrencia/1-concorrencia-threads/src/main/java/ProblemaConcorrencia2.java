@@ -53,7 +53,7 @@ public class ProblemaConcorrencia2 {
 
         for (int i = 1; i <= TOTAL; i++) {
             numeros.add(i);
-            final GeradorNumero gerador = new GeradorNumero();
+            final var gerador = new GeradorNumero();
             geradores.add(gerador);
             new Thread(gerador).start();
         }

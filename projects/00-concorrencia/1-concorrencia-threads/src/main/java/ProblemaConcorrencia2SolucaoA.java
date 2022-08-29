@@ -23,8 +23,7 @@ public class ProblemaConcorrencia2SolucaoA {
     private final List<Integer> numeros = new ArrayList<>(TOTAL);
 
     public static void main(String[] args) {
-        ProblemaConcorrencia2SolucaoA app = new ProblemaConcorrencia2SolucaoA();
-        app.start();
+        new ProblemaConcorrencia2SolucaoA().start();
     }
 
     public void start() {
@@ -37,7 +36,7 @@ public class ProblemaConcorrencia2SolucaoA {
             * por parâmetro para o objeto que possui o código
             * que será executado pelas Threads.
             * Neste caso, o objeto GeradorNumero. */
-            final GeradorNumero gerador = new GeradorNumero(i);
+            final var gerador = new GeradorNumero(i);
             geradores.add(gerador);
             new Thread(gerador).start();
         }
