@@ -49,12 +49,12 @@ public class ProblemaConcorrencia1 implements Runnable {
      * e quando uma letra é gerada, a {@link Thread} incrementa este atributo.
      */
     private int totalLetras;
-    private Random rand;
-    private List<Character> letras;
+    private final Random rand;
+    private final List<Character> letras;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ProblemaConcorrencia1 app = new ProblemaConcorrencia1();
+        new ProblemaConcorrencia1();
     }
 
     private ProblemaConcorrencia1(){
