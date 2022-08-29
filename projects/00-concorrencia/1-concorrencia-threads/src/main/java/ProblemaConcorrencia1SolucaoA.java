@@ -48,13 +48,13 @@ public class ProblemaConcorrencia1SolucaoA implements Runnable {
      * contenção e logo, perda de performance. Uma alternativa é utilizar a classe
      * {@link java.util.concurrent.ThreadLocalRandom}.
      */
-    private Random rand;
+    private final Random rand;
     
-    private List<Character> letras;
+    private final List<Character> letras;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ProblemaConcorrencia1SolucaoA app = new ProblemaConcorrencia1SolucaoA();
+        new ProblemaConcorrencia1SolucaoA();
     }
 
     private ProblemaConcorrencia1SolucaoA(){
