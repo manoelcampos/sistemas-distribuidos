@@ -4,8 +4,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Aplicação de exemplo que mostra uma outra forma de resolver os problemas de
- * concorrência apresentados na aplicação {@link ProblemaConcorrencia1}, uma vez que coleções como
+ * Aplicação de exemplo que mostra outra forma de resolver os problemas de
+ * concorrência apresentados na aplicação {@link ProblemaConcorrencia1}, visto que coleções como
  * {@link java.util.Vector} são consideradas <b>OBSOLETAS</b>, como explicado na
  * versão anterior.
  *
@@ -23,10 +23,13 @@ import java.util.concurrent.TimeUnit;
  * em coleções como List e Map serão sincronizadas.
  * No entanto, o acesso (operações get()) aos elementos da lista não são.
  * Neste caso, se você tiver threads alterando a coleção e outras 
- * lendo os dados da mesma, é preciso sincronizar manualmente
- * a leitura para evitar possíveis resultados inesperados,
- * usar uma coleção totalmente sincronizada como {@link Vector}
- * ou evitar o compartilhamento de dados entre diferentes Threads.</p>
+ * lendo os dados da mesma, é preciso:
+ *
+ * <ul>
+ *     <li>sincronizar manualmente a leitura (para evitar possíveis resultados inesperados);</li>
+ *     <li>ou evitar o compartilhamento de dados entre diferentes Threads.</li>
+ * </ul>
+ * </p>
  * 
  * @author Manoel Campos da Silva Filho
  */
@@ -37,9 +40,9 @@ public class ProblemaConcorrencia1SolucaoC implements Runnable {
     public static final int TOTAL_THREADS = 10;
 
     /**
-     * Gerador de números aleatórios. De acordo com o JavaDoc da classe, ela é
+     * Gerador de números aleatórios. Segundo o JavaDoc da classe, ela é
      * threadsafe, ou seja, é segura de ser utilizada concorrentemente pode causar
-     * contenção e logo, perda de performance. Uma alternativa é utilizar a classe
+     * contenção e logo, perda de desempenho. Uma alternativa é utilizar a classe
      * {@link java.util.concurrent.ThreadLocalRandom}.
      */
     private final Random rand;

@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
  * diferentes Threads.
  * 
  * <p>
- * Aqui é usado o recursos de Streams do Java 8 para realizar a mesma tarefa
+ * Aqui é usado o recursos de Streams do Java 8+ para realizar a mesma tarefa
  * anterior, de forma muito mais simples e sem ter os problemas apresentados
  * anteriormente. Neste caso, não definimos o total de Threads a serem criadas,
  * mas a JVM. Um tutorial sobre Streams está disponível <a href=
@@ -35,9 +35,9 @@ public class ProblemaConcorrencia1SolucaoD {
     private static final int TOTAL_EXECUCOES = 10;
 
     /**
-     * Gerador de números aleatórios. De acordo com o JavaDoc da classe, ela é
+     * Gerador de números aleatórios. Segundo o JavaDoc da classe, ela é
      * threadsafe, ou seja, é segura de ser utilizada concorrentemente pode causar
-     * contenção e logo, perda de performance. Uma alternativa é utilizar a classe
+     * contenção e logo, perda de desempenho. Uma alternativa é utilizar a classe
      * {@link java.util.concurrent.ThreadLocalRandom}.
      */
     private final Random rand;
