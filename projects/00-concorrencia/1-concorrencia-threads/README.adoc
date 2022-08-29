@@ -11,3 +11,7 @@ várias CPUs para tentar obter um resultado final mais rapidamente.
 Ao fazer isso, problemas inesperados podem ocorrer.
 No projeto, cada classe representa uma forma diferente de resolver
 o problema. Veja a documentação das classes para detalhes.
+
+== Requisitos
+
+- JDK 11 ou superior
