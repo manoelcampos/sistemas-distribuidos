@@ -6,7 +6,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Aplicação de exemplo de problemas de concorrência. Quando se tem diversas
+ * Aplicação para gerar aleatoriamente caracteres em diferentes
+ * threads e no final imprimir o total de letras geradas,
+ * mostrando problemas de concorrência que podem ocorrer.Quando temos diversas
  * {@link Thread}s acessando ou modificando variáveis em comum, podemos ter
  * resultados inesperados.
  *
@@ -17,18 +19,19 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * <p>
- * Como teremos então o método executando múltiplas vezes em simultâneo (em um
+ * Como teremos o método executando múltiplas vezes em simultâneo (em um
  * computador com CPU multi-core), cada execução de tal método estará acessando
  * e modificando as mesmas variáveis (atributos da classe).
  * </p>
  *
  * <p>
- * O objetivo deste projeto é gerar aleatoriamente caracteres em diferentes
- * threads e no final imprimir o total de letras que foram geradas. Cada thread
- * vai gerar a mesma quantidade de caracteres aleatórios e sempre que uma letra
- * for gerada, o {@link #totalLetras} é incrementado. Como mais de uma thread
+ * Ao usar várias threads para gerar caracteres aleatórios,
+ * cada thread vai gerar a mesma quantidade de caracteres.
+ * Sempre que uma letra for gerada, o {@link #totalLetras} é incrementado. Como mais de uma thread
  * pode tentar acessar ou alterar tal atributo ao mesmo tempo, problemas
  * inesperados podem ocorrer, tendo resultados indesejados.
+ *
+ * <b>AVISO:</b>Execute a aplicação múltiplas vezes para tentar reproduzir tais problemas.
  * </p>
  * 
  * @author Manoel Campos da Silva Filho
@@ -40,7 +43,7 @@ public class ProblemaConcorrencia1 implements Runnable {
     public static final int TOTAL_THREADS = 10;
 
     /**
-     * Armazena o total de letras que foram geradas aleatoriamente
+     * Armazena o total de letras geradas aleatoriamente
      * pelas {@link Thread}s.
      * Cada Thread gera um conjunto aleatório de caracteres
      * e quando uma letra é gerada, a {@link Thread} incrementa este atributo.
