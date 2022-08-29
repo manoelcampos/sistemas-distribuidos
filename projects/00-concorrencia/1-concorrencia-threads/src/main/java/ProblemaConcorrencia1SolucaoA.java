@@ -58,8 +58,8 @@ public class ProblemaConcorrencia1SolucaoA implements Runnable {
     }
 
     private ProblemaConcorrencia1SolucaoA(){
-        rand = new Random();
-        letras = new ArrayList<>();
+        this.rand = new Random();
+        this.letras = new ArrayList<>();
         ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
         try {
             for (int i = 0; i < TOTAL_THREADS; i++) {
@@ -81,8 +81,6 @@ public class ProblemaConcorrencia1SolucaoA implements Runnable {
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally{
-            executor.shutdown();
         }
     }
 

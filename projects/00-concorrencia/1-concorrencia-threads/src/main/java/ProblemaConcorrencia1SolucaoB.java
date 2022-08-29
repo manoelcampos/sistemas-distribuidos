@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Aplicação de exemplo que mostra uma outra forma de como resolver os problemas
+ * Aplicação de exemplo que mostra outra forma de resolver os problemas
  * de concorrência apresentados na aplicação {@link ProblemaConcorrencia1}.
  *
  * <p>
@@ -63,19 +63,19 @@ public class ProblemaConcorrencia1SolucaoB implements Runnable {
      * contenção e logo, perda de performance. Uma alternativa é utilizar a classe
      * {@link java.util.concurrent.ThreadLocalRandom}.
      */
-    private Random rand;
+    private final Random rand;
 
-    private List<Character> letras;
+    private final List<Character> letras;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ProblemaConcorrencia1SolucaoB app = new ProblemaConcorrencia1SolucaoB();
+        new ProblemaConcorrencia1SolucaoB();
     }
 
     private ProblemaConcorrencia1SolucaoB(){
-        rand = new Random();
-        letras = new Vector<>();
-        ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
+        this.rand = new Random();
+        this.letras = new Vector<>();
+        final ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
         try {
             for (int i = 0; i < TOTAL_THREADS; i++) {
                 executor.execute(this);

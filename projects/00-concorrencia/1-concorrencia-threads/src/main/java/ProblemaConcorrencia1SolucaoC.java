@@ -42,28 +42,29 @@ public class ProblemaConcorrencia1SolucaoC implements Runnable {
      * contenção e logo, perda de performance. Uma alternativa é utilizar a classe
      * {@link java.util.concurrent.ThreadLocalRandom}.
      */
-    private Random rand;
+    private final Random rand;
 
-    private List<Character> letras;
+    private final List<Character> letras;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ProblemaConcorrencia1SolucaoC app = new ProblemaConcorrencia1SolucaoC();
+        new ProblemaConcorrencia1SolucaoC();
     }
 
     private ProblemaConcorrencia1SolucaoC(){
-        rand = new Random();
+        this.rand = new Random();
 
         //Cria uma lista sincronizada para os métodos de adição e remoção.
-        letras = Collections.synchronizedList(new ArrayList<>());
+        this.letras = Collections.synchronizedList(new ArrayList<>());
 
-        ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
+        final ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);
         try {
             for (int i = 0; i < TOTAL_THREADS; i++) {
                 executor.execute(this);
             }
 
             executor.awaitTermination(5, TimeUnit.SECONDS);
+
             System.out.println("\n");
             System.out.println(letras);
             System.out.println("\nTotal de letras armazenadas:           " + letras.size());

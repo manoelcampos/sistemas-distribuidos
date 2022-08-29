@@ -45,8 +45,7 @@ public class ProblemaConcorrencia2 {
     private final List<Integer> numeros = new ArrayList<>(TOTAL);
 
     public static void main(String[] args) {
-        ProblemaConcorrencia2 app = new ProblemaConcorrencia2();
-        app.start();
+        new ProblemaConcorrencia2().start();
     }
 
     public void start() {
@@ -61,7 +60,7 @@ public class ProblemaConcorrencia2 {
 
         System.out.println("Números repetidos");
         //Cria um mapa onde a chave (Integer) é um número gerado e o valor (Long) é o total de repetições para o número
-        Map<Integer, Long> grupos = geradores.stream().collect(groupingBy(GeradorNumero::getNum, counting()));
+        final Map<Integer, Long> grupos = geradores.stream().collect(groupingBy(GeradorNumero::getNum, counting()));
 
         long totalRepetidos = 0;
         for (Map.Entry<Integer, Long> entry : grupos.entrySet()) {
@@ -90,7 +89,7 @@ public class ProblemaConcorrencia2 {
 
     /**
      * Classe cujo método {@link #run()} será executado por diferentes Threads.
-     * A cada execução, a o método obtém o último valor da lista de {@link #numeros},
+     * A cada execução, o método obtém o último valor da lista de {@link #numeros},
      * na intenção de produzir números únicos a partir do último valor em tal lista.
      */
     class GeradorNumero implements Runnable {
@@ -99,7 +98,7 @@ public class ProblemaConcorrencia2 {
         @Override
         public void run() {
             /*Multipla por 2 apenas para simular qualquer operação com o número obtido.
-            Logo, o código depois de obter o número poderia ser qualquer coisa.*/
+            Logo, o código após obter o número poderia ser qualquer coisa.*/
             this.num = numeros.get(numeros.size()-1) * 2;
         }
 
@@ -107,6 +106,5 @@ public class ProblemaConcorrencia2 {
             return num;
         }
     }
-
 }
 

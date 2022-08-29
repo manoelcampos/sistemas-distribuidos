@@ -40,15 +40,15 @@ public class ProblemaConcorrencia1SolucaoD {
      * contenção e logo, perda de performance. Uma alternativa é utilizar a classe
      * {@link java.util.concurrent.ThreadLocalRandom}.
      */
-    private Random rand;
+    private final Random rand;
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        ProblemaConcorrencia1SolucaoD app = new ProblemaConcorrencia1SolucaoD();
+        new ProblemaConcorrencia1SolucaoD();
     }
 
     private ProblemaConcorrencia1SolucaoD(){
-        rand = new Random();
+        this.rand = new Random();
 
         /* 
         Executa o método run() 10 vezes em paralelo.
@@ -58,14 +58,14 @@ public class ProblemaConcorrencia1SolucaoD {
         Neste caso, como solicitamos que o método run() seja executado 10 vezes,
         cada Thread vai executá-lo 2 vezes, dividindo igualmente o trabalho.
         */
-        List<Character> letras = 
+        final List<Character> letras =
             IntStream.range(0, TOTAL_EXECUCOES) //solicita a execução de algum processo 10 vezes
                 .parallel() //executa tais processos (o método contaLetras()) em paralelo (usando múltiplas CPUs)
-                .mapToObj(i -> contaLetras()) //executa o método contaLetras() que irá retorna um objeto como retorno
+                .mapToObj(i -> contaLetras()) //executa o método contaLetras() que retornará um objeto como retorno
                 .flatMap(lista -> lista.stream()) //O run() retorna uma lista e quero juntar todas as listas em uma só
                 .collect(Collectors.toList()); //armazena o resultado de todas as execuções do contaLetras() em uma única lista
 
-        /*Imprime as letras geradas. Veja que não declaramos mais o atributo totalLetras
+        /*Imprime as letras geradas. Veja que não declaramos mais o atributo totalLetras,
         pois realmente não precisamos dela. Ela foi usada nos exemplos anteriores
         apenas para mostrar possíveis inconsistências nos resultados quando
         variáveis comuns são acessadas/alteradas por várias Threads. */
@@ -75,7 +75,7 @@ public class ProblemaConcorrencia1SolucaoD {
 
     /**
      * Gera caracteres aleatórios e retorna a lista de letras
-     * que foi gerada ao final da execução do método.
+     * gerada ao final da execução do método.
      * Este era o método run() dos exemplos anteriores.
      * Mas como não estamos usando Threads explicitamente,
      * não precisamos fazer nossa classe implementar Runnable,
@@ -97,6 +97,4 @@ public class ProblemaConcorrencia1SolucaoD {
 
         return letras;
     }
-
-
 }
