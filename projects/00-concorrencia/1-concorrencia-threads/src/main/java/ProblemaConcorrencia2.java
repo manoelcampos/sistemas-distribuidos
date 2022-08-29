@@ -8,8 +8,8 @@ import static java.util.stream.Collectors.groupingBy;
 /**
  * Aplicação de exemplo que mostra que, mesmo que diferentes Threads não alterem
  * uma determinada variável (neste caso a lista {@link #numeros}), o acesso
- * concorrente aos elementos de tal lista pode trazer efeitos colaterais, uma
- * vez que a lista está sendo alterada fora das Threads (novos elementos são
+ * concorrente aos elementos de tal lista pode trazer efeitos colaterais, visto que
+ * a lista está sendo alterada fora das Threads (novos elementos são
  * adicionados).
  * 
  * <p>
@@ -27,7 +27,7 @@ import static java.util.stream.Collectors.groupingBy;
  * Isto ocorre porque, quando chamamos o método start() para iniciar cada
  * Thread, pode-se imaginar que a Thread será iniciada imediatamente, antes de
  * outra Thread iniciar. Desta forma, cada Thread pegaria o último número da
- * lista, que é único. No entanto, o sistema operacional é que vai decidir
+ * lista, que é único. No entanto, o sistema operacional é quem decide
  * quando a Thread vai ser iniciada. O loop pode rodar duas vezes e solicitar a
  * criação de 2 Threads, que podem não ser criadas automaticamente. Se tivermos 2
  * núcleos de CPU disponíveis em um momento posterior, as duas Threads serão
