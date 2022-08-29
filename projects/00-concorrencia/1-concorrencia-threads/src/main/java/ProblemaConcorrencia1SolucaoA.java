@@ -35,7 +35,7 @@ public class ProblemaConcorrencia1SolucaoA implements Runnable {
     public static final int TOTAL_THREADS = 10;
 
     /**
-     * Armazena o total de letras que foram geradas aleatoriamente
+     * Armazena o total de letras geradas aleatoriamente
      * pelas {@link Thread}s.
      * Cada Thread gera um conjunto aleatório de caracteres
      * e quando uma letra é gerada, a {@link Thread} incrementa este atributo.
@@ -66,6 +66,7 @@ public class ProblemaConcorrencia1SolucaoA implements Runnable {
                 executor.execute(this);
             }
 
+            executor.shutdown();
             executor.awaitTermination(5, TimeUnit.SECONDS);
 
             //Só depois que todas as Threads do grupo terminarem, podemos exibir os resultados
