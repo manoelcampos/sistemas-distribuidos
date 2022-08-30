@@ -13,3 +13,6 @@
 [submodule "projects/01-socket-chat"]
 	path = projects/01-socket-chat
 	url = https://github.com/manoelcampos/sd-java-socket-chat.git
+[submodule "projects/05-vendas-rest-quarkus"]
+	path = projects/05-vendas-rest-quarkus
+	url = https://github.com/manoelcampos/vendas-rest-quarkus.git
