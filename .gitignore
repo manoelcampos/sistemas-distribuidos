@@ -19,6 +19,9 @@ test/
 nbproject/private/
 /aulas/
 projects/varios/random-words
+projects/sistemas-viagens
+projects/03-exemplo-nodejs-cluster
+projects/05-nodejs-redis
 provas
 
 #MacOS Files
