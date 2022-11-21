@@ -34,7 +34,7 @@ use concorrencia;
 
 # Cria a tabela se ela não existir e insere um registro nela.
 create table if not exists cidade as select 1 as id, CONVERT('Palmas', CHAR(512)) as nome;
-select '# Tentando selecionar dados (pode demorar por conta de lock em outra operação concorrente)' as '';
+\! echo '# Tentando selecionar dados (pode demorar por conta de lock em outra operação concorrente)'
 
 # Locks só funcionam dentro de transações
 start transaction;
@@ -72,7 +72,9 @@ if docker inspect --format '{{json .State.Running}}' "$CONTAINER_NAME" 1>/dev/nu
     echo "Container com o servidor MySQL já está rodando."
 else
     echo "Iniciando container com o servidor MySQL."
+    echo "Execute o script novamente em vários terminais para ver o lock em funcionamento."
     docker run --name "$CONTAINER_NAME" -e MYSQL_ROOT_PASSWORD=$SENHA_ROOT -d mysql  
+    exit 0
 fi
 
 # Copia o script SQL para o container com o servidor MySQL
