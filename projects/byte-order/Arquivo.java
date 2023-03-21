@@ -4,7 +4,7 @@ import java.io.*;
  * Cria e lê um arquivo binário armazenando um número inteiro nele.
  * O arquivo gerado usa o ByteOrder.BIG_ENDIAN padrão do Java.
  * Assim, ao tentar ler o arquivo no programa em C compilado
- * a partir do read.c, ele obtém um valor incorreto,
+ * a partir do ler.c, ele obtém um valor incorreto,
  * pois a linguagem C usa LITTLE_ENDIAN por padrão.
  */
 public class Arquivo {

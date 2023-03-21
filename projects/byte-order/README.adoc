@@ -9,7 +9,7 @@ Esta ordem é o que chamamos de https://en.wikipedia.org/wiki/Endianness[Byte Or
 
 Caso esteja lendo/gravando dados em um arquivo, o byte order pode importar. Por exemplo, se você tem:
 
-- um programa em uma linguagem como C que cria um arquivo binário;
+- um programa em uma linguagem como C que cria um arquivo;
 - e outro programa em uma linguagem como Java que lê o arquivo
 
 a forma como a ordem dos bytes deste arquivo binário são gravados vai mudar entre as linguagens.

@@ -5,7 +5,7 @@ import java.nio.ByteOrder;
 /**
  * Cria e lê um arquivo binário armazenando um número inteiro nele.
  * O arquivo gerado usa o ByteOrder.LITTLE_ENDIAN.
- * Assim, o programa em C compilado a partir do read.c pode ler o arquivo corretamente.
+ * Assim, o programa em C compilado a partir do ler.c pode ler o arquivo corretamente.
  */
 public class ArquivoByteOrder {
     private static final String FILE_NAME = "integer.bin";
