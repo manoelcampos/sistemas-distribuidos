@@ -1,12 +1,13 @@
+:numbered:
+
 = Projetos em Java e C mostrando as diferenças em relação ao Byte Order
 
-Como mostrado no capítulo sobre <<Transparência de Acesso, chapter01c-transparency>>,
+Como mostrado no capítulo sobre <<../../book/chapter01c-transparency#, Transparência de Acesso>>,
 a ordem de armazenamento de bytes em memória ou em arquivos pode mudar
 dependendo de alguns fatores como a linguagem de programação usada.
-Esta ordem é o que chamamos de https://en.wikipedia.org/wiki/Endianness[Byte Order ou Endianess].
+Esta ordem é o que chamamos de https://en.wikipedia.org/wiki/Endianness[Byte Order ou Endianness].
 
-Se você está lendo/gravando dados de forma binário, por exemplo em um arquivo,
-o byte order pode importar. Se você tem:
+Caso esteja lendo/gravando dados em um arquivo, o byte order pode importar. Por exemplo, se você tem:
 
 - um programa em uma linguagem como C que cria um arquivo binário;
 - e outro programa em uma linguagem como Java que lê o arquivo
@@ -16,14 +17,31 @@ Neste caso, Java usa por padrão o byte order Big Endian, onde um dado (como um 
 
 Assim, se você criar um arquivo binário em C e ler em um programa em Java, o programa em Java não vai interpretador o conteúdo do arquivo corretamente, obtendo valores completamente diferentes.
 
+== Pré-requisitos
+
+Instale o JDK 8 ou superior no seu sistema operacional.
+
+=== Linux
+
+Execute o comando abaixo para instalar o compilador GCC e outras ferramentas para compilação de programas em C:
+
+```bash
+sudo apt install build-essential
+```
+
+=== Windows
+
+Abra um arquivo .c no VS Code que ele solicita a instalação de plugin para linguagem C e de um compilador para a linguagem.
 
 == Estrutura do Projeto
 
 Este projeto é composto por vários programas em Java e C, como descrito abaixo:
 
-- gravar.c - Cria um arquivo binário integer.bin, gravando um número inteiro dentro dele.
+- gravar.c - Cria um arquivo integer.bin, gravando um número inteiro dentro dele.
 - Arquivo.java - Tenta ler o conteúdo do arquivo criado pelo programa gravar.c, 
   em seguida, sobrescreve o arquivo a partir do Java.
 - ler.c - Tenta ler o arquivo integer.bin, que pode ter sido criado a partir do gravar.c ou Arquivo.java
-- ArquivoByteOrder.java - Considera o Byte Order correto (LITTLE ENDIAN) da linguagem C e consegue ler e gravar o arquivo binário de forma que os programas em C e Java consigam ler corretamente
+- ArquivoByteOrder.java - Considera o Byte Order correto (LITTLE ENDIAN) da linguagem C e consegue ler e gravar o arquivo de forma que os programas em C e Java consigam ler corretamente
 - Makefile - compila todos os programas, para isto, basta digitar `make` no terminal
+
+
