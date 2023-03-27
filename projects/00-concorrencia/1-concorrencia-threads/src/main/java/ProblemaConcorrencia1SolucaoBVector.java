@@ -53,7 +53,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ProblemaConcorrencia1SolucaoB implements Runnable {
+public class ProblemaConcorrencia1SolucaoBVector implements Runnable {
     /**
      * Total de {@link Thread}s a serem criadas.
      */
@@ -71,10 +71,10 @@ public class ProblemaConcorrencia1SolucaoB implements Runnable {
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        new ProblemaConcorrencia1SolucaoB();
+        new ProblemaConcorrencia1SolucaoBVector();
     }
 
-    private ProblemaConcorrencia1SolucaoB(){
+    private ProblemaConcorrencia1SolucaoBVector(){
         this.rand = new Random();
         this.letras = new Vector<>();  //Lembrando que tal classe se tornou obsoleta
         final ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);

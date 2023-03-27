@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ProblemaConcorrencia1SolucaoC implements Runnable {
+public class ProblemaConcorrencia1SolucaoCSynchronizedList implements Runnable {
     /**
      * Total de {@link Thread}s a serem criadas.
      */
@@ -51,10 +51,10 @@ public class ProblemaConcorrencia1SolucaoC implements Runnable {
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        new ProblemaConcorrencia1SolucaoC();
+        new ProblemaConcorrencia1SolucaoCSynchronizedList();
     }
 
-    private ProblemaConcorrencia1SolucaoC(){
+    private ProblemaConcorrencia1SolucaoCSynchronizedList(){
         this.rand = new Random();
 
         //Cria uma lista sincronizada para os métodos de adição e remoção.

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * que faz acesso à variáveis comuns (os atributos que estão sendo acessados e modificados)
  * em um método específico, chamado {@link #registraLetraSorteada(char)}.</p>
  *
- * <p>Tal método foi marcado com a palavra reservada synchronized.
+ * <p>Tal método foi marcado com a palavra reservada <b>synchronized</b>.
  * Isto faz com que, quando uma Thread estiver acessando o método
  * {@link #registraLetraSorteada(char)}, outras Threads que tentem simultaneamente
  * acessar o mesmo método, terão que aguardar o método finalizar.</p>
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ProblemaConcorrencia1SolucaoA implements Runnable {
+public class ProblemaConcorrencia1SolucaoASynchronized implements Runnable {
     /**
      * Total de {@link Thread}s a serem criadas.
      */
@@ -54,10 +54,10 @@ public class ProblemaConcorrencia1SolucaoA implements Runnable {
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        new ProblemaConcorrencia1SolucaoA();
+        new ProblemaConcorrencia1SolucaoASynchronized();
     }
 
-    private ProblemaConcorrencia1SolucaoA(){
+    private ProblemaConcorrencia1SolucaoASynchronized(){
         this.rand = new Random();
         this.letras = new ArrayList<>();
         ExecutorService executor = Executors.newFixedThreadPool(TOTAL_THREADS);

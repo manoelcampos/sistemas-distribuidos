@@ -31,7 +31,7 @@ import java.util.stream.IntStream;
  * 
  * @author Manoel Campos da Silva Filho
  */
-public class ProblemaConcorrencia1SolucaoD {
+public class ProblemaConcorrencia1SolucaoDStreams {
     private static final int TOTAL_EXECUCOES = 10;
 
     /**
@@ -44,10 +44,10 @@ public class ProblemaConcorrencia1SolucaoD {
 
     public static void main(String[] args) {
         System.out.println("Iniciando...");
-        new ProblemaConcorrencia1SolucaoD();
+        new ProblemaConcorrencia1SolucaoDStreams();
     }
 
-    private ProblemaConcorrencia1SolucaoD(){
+    private ProblemaConcorrencia1SolucaoDStreams(){
         this.rand = new Random();
 
         /* 
