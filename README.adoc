@@ -29,6 +29,7 @@ Este repositório disponibiliza:
 
 1. https://manoelcampos.com/sistemas-distribuidos/[E-Book multimídia com conceitos e exemplos atuais de sistemas distribuídos].
 2. link:projects/[Projetos utilizando diferentes tecnologias e protocolos de sistemas distribuídos, desenvolvidos em Java e Node.js].
+3. https://drive.google.com/drive/folders/10JBPiANaV3jNtn29Ghc_qPwaFr2mE0xi?usp=sharing[Slides]
 endif::[]
 
 //----------------------------------------------------------------------------------------------------------
