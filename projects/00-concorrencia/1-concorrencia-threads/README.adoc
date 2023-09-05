@@ -14,4 +14,4 @@ o problema. Veja a documentação das classes para detalhes.
 
 == Requisitos
 
-- JDK 11 ou superior
+- JDK 17 ou superior
