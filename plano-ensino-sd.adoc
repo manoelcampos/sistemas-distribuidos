@@ -1,0 +1,64 @@
+# Plano de Ensino Sistemas Distribuídos
+
+## Ementa
+
+Introdução, definição e histórico dos Sistemas Distribuídos; Características de sistemas distribuídos: compartilhamento de recursos, escalabilidade, disponibilidade, transparência. Problemas e soluções de escalabilidade e disponibilidade.
+Arquitetura de sistemas distribuídos:
+● Estilos arquitetônicos: em camadas, baseado em objetos, baseados em eventos por meio de envio de mensagens (publish/subscribe). Estilo de entrega de mensagens: push/pull.
+● Arquitetura de Sistemas: centralizada, cliente/servidor, multicamadas (Camada de
+Apresentação, Camada de aplicação e Regras de Negócios, Camada de Dados).
+Middlewares; Protocolos; Pooling; Balanceamento de Carga; Interoperabilidade e Integração de aplicações; Sockets e WebSockets; Conceitos de Web Services W3C; Web Services RESTful; Web services SOAP e REST. Versionamento de serviços REST. Arquitetura de Microserviços.
+
+## Justificativa
+
+### Competências:
+Conhecer as arquiteturas de sistemas distribuídos, bem como suas tecnologias atuais e modelos de referência para projetos e implementação. Compreender as características que tornam um sistema distribuído. Conhecer os fundamentos de comunicação de sistemas distribuídos.
+Conhecer a hierarquia dos modelos Cliente-servidor, multi-camadas e microserviços; Compreender as diferenças entre serviços SOAP e REST. Escolher a arquitetura adequada para o desenvolvimento de diferentes sistemas distribuídos.
+
+### Habilidades:
+Aplicar técnicas para resolução de problemas de escalabilidade e disponibilidade. Implementar Comunicação entre processos utilizando Sockets e WebSockets. Implementação de rotinas remotas;
+Modelar e implementar Serviços Web SOAP e REST;
+Implantação de sistemas distribuídos seguindo arquitetura cliente/servidor, multi-camadas e de microserviços.
+Proposição de soluções com o uso das tecnologias estudadas.
+
+## Objetivo Geral
+Compreender a importância e conceitos de sistemas distribuídos, além do desenvolvimento de soluções utilizando tecnologias atuais.
+
+## Objetivos Específicos
+- Compreender a necessidade de se desenvolver sistemas distribuídos
+- Compreender técnicas para escalabilidade, disponibilidade, tolerância e recuperação de falhas.
+- Compreender problemas e soluções para escalabilidade de um sistema
+- Compreender diferentes tecnologias, protocolos e suas finalidades
+- Entender a arquitetura de diferentes sitemas distribuídos 
+- Entender como arquitetar sistemas distribuídos
+
+
+## Conteúdo Programático
+- #0 🎤 Apresentação da Disciplina e Materiais
+- #1 Introdução aos SD's 🕸
+- #2 Dimensões de Escalabilidade 📦
+- #3 Problemas de Escalabilidade 🔥
+- #4 Programação Funcional e Threads 👩🏽‍💻⚙️
+- #5 Transparência🥛, Disponibilidade 🙋🏽‍♂️ e Concorrência 🏃‍♀️
+- #6 Chat Bloqueante: Threads e Sockets 💬
+- #7 Web Sockets 🔌
+- #8 Balanceador de Carga ⚖️
+- #9 Introdução aos Web Services ☁️
+- #10 Web Services REST ⛅️
+- #11 Desenvolvimento de Projeto em Equipe
+
+
+## Metodologia
+
+Aulas expositivas e práticas em laboratório, com desenvolvimento de projetos em equipe.
+
+
+## Bibliografia Básica
+
+VAN STEEN, Maarten; Tanenbaum, Andrew; Sistemas Distribuídos - Princípios e Paradigmas; Pearson, 2015.
+✅ LECHETA, Ricardo; Web Services RESTful: Aprenda a criar Web services RESTful em java na nuvem do google; novatec, 2015.
+
+## Bibliografia Complementar
+
+✅ COULOURIS, George. Sistemas Distribuídos-: Conceitos e Projeto. Porto Alegre: Bookman Editora, 2007. - SAUDATE, Alexandre.
+SOA aplicado: integrando com Web services e além; Casa do Código, 2012.
