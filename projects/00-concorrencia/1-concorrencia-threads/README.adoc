@@ -1,4 +1,4 @@
-= Problemas de Concorrência com Threads (link:https://kinolien.github.io/gitzip/?download=/manoelcampos/sistemas-distribuidos/tree/master/projects/00-concorrencia/concorrencia-threads[zip])
+= Problemas de Concorrência com Threads (link:https://kinolien.github.io/gitzip/?download=/manoelcampos/sistemas-distribuidos/tree/master/projects/00-concorrencia/1-concorrencia-threads[zip])
 
 Este projeto mostra um exemplo de um simples algoritmo
 que gera caracteres aleatoriamente e depois conta quantas
@@ -14,4 +14,4 @@ o problema. Veja a documentação das classes para detalhes.
 
 == Requisitos
 
-- JDK 11 ou superior
+- JDK 17 ou superior
