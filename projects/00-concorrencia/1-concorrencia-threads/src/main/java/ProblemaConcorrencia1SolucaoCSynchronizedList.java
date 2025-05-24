@@ -6,8 +6,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Aplicação de exemplo que mostra outra forma de resolver os problemas de
  * concorrência apresentados na aplicação {@link ProblemaConcorrencia1}, visto que coleções como
- * {@link java.util.Vector} são consideradas <b>OBSOLETAS</b>, como explicado na
- * versão anterior.
+ * {@link java.util.Vector} são consideradas <b>legadas</b>.
  *
  * <p>
  * Quando coleções da Java Collections Framework (JCF), como List e Map,
@@ -17,18 +16,6 @@ import java.util.concurrent.TimeUnit;
  * objetos. Deste modo, a linguagem Java permitiu separar a implementação das
  * coleções do código responsável por sincronização, deixando a implementação
  * internamente mais simples.
- * </p>
- * 
- * <p>Usando os métodos citados, as operações de adição e remoção de elementos
- * em coleções como List e Map serão sincronizadas.
- * No entanto, o acesso (operações get()) aos elementos da lista não são.
- * Neste caso, se você tiver threads alterando a coleção e outras 
- * lendo os dados da mesma, é preciso:
- *
- * <ul>
- *     <li>sincronizar manualmente a leitura (para evitar possíveis resultados inesperados);</li>
- *     <li>ou evitar o compartilhamento de dados entre diferentes Threads.</li>
- * </ul>
  * </p>
  * 
  * @author Manoel Campos da Silva Filho
