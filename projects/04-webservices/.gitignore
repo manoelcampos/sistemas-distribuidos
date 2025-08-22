@@ -1,0 +1,17 @@
+*~$*
+
+loja-virtual-springboot-rest/
+
+#Java Projects
+*.class
+target/
+test/
+.idea
+*.iml
+#nbproject/
+nbactions.xml
+**/src/wsdl
+nb-configuration.xml
+
+#MacOS Files
+.DS_Store

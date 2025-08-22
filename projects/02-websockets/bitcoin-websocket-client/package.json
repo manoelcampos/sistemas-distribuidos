@@ -1,0 +1,21 @@
+{
+  "name": "bitfinex-websocket-backend",
+  "version": "1.0.0",
+  "description": "Acessa cotações de criptomoedas usando a API de WebSockets da bitfinex.com",
+  "main": "bitfinex.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bitfinex.js"
+  },
+  "keywords": [
+    "websockets",
+    "cryptocurrency",
+    "client",
+    "bitfinex"
+  ],
+  "author": "Manoel Campos da Silva Filho",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^7.1.2"
+  }
+}

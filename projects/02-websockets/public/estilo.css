@@ -1,0 +1,79 @@
+/* 
+CSS Adatado de https://github.com/Roger-Melo/lyrics-search/blob/master/style.css 
+@author Roger Melo 
+*/
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background-color: rgb(211, 211, 211);
+}
+
+ul {
+    list-style: none;
+    text-indent: -2em; 
+}
+
+ul li:before {
+    content: "\1F63A";
+    margin: 0 0.5em;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+input:focus, button:focus {
+  outline: none;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  position: relative;
+}
+
+header * {
+  z-index: 1;
+}
+
+header h1 {
+  margin: 0 0 30px;
+}
+
+form {
+  position: relative;
+  width: 500px;
+  max-width: 100%;
+}
+
+form input {
+  border: 0;
+  border-radius: 50px;
+  font-size: 16px;
+  padding: 15px 30px;
+  width: 100%;
+}
+
+form button {
+  position: absolute;
+  top: 2px;
+  right: 1px;
+  background-color: #10cce0;
+  border: 0;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 16px;
+  padding: 13px 30px;
+}

@@ -1,0 +1,23 @@
+https://github.com/theanalyst/awesome-distributed-systems
+https://www.distributed-systems.net/index.php/books/distributed-systems-3rd-edition-2017/
+
+Microservices vs SOA
+https://www.ibm.com/developerworks/websphere/library/techarticles/1601_clark-trs/1601_clark.html
+https://blogs.sap.com/2012/04/21/is-service-oriented-architecture-soa-still-relevant-do-we-need-to-use-middleware-systems-anymore/
+https://www.hpe.com/us/en/insights/articles/why-you-should-care-about-soa-again-1706.html
+https://en.wikipedia.org/wiki/Service-oriented_architecture
+
+
+Blocking/Non-Blockin vs Sync/Async
+- https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/
+- https://developer.ibm.com/technologies/linux/articles/l-async/
+- http://www.cs.unc.edu/~dewan/242/s07/notes/ipc/node9.html: 
+    Síncrona: uma tarefa inicia e bloqueia, precisando terminar pra iniciar outra.
+          Exemplo fila do cinema: vc só pega seu ticket após todos à sua frente pegarem
+    Assíncrona: uma tarefa inicia e não bloqueia, pois pode terminar só posteriormente. Enquanto isso, outra tarefa inicia em seguida.
+          Exemplo mesas de restaurante: vc não precisa esperar todo mundo fazer o pedido e receber a comida
+          pra vc fazer seu pedido.
+
+    "Note that synchronous/asynchronous implies blocking/not blocking but not vice versa, that is, not every blocking operation is synchronous and not every non blocking operation is asynchronous. "
+    Mas o link da IBM mostra que podemos ter sync block ou non-block e async block ou non-block.
+    Normalmente sync é blocking e async é non-blocking.

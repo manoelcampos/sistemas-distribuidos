@@ -1,0 +1,6 @@
+.DS_Store
+target/
+
+#Arquivos IntelliJ
+.idea/
+*.iml

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.manoelcampos.chat</OriginalElement>
+  <nodes>
+    <node x="398.0" y="306.0">com.manoelcampos.chat.BlockingChatClient</node>
+    <node x="-8.0" y="24.0">com.manoelcampos.chat.BlockingChatServer</node>
+    <node x="344.0" y="24.0">com.manoelcampos.chat.ClientSocket</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.manoelcampos.chat.BlockingChatClient" target="com.manoelcampos.chat.ClientSocket" relationship="TO_ONE">
+      <point x="102.0" y="0.0" />
+      <point x="736.0" y="400.0" />
+      <point x="736.0" y="178.5" />
+      <point x="656.0" y="178.5" />
+      <point x="156.0" y="0.0" />
+    </edge>
+    <edge source="com.manoelcampos.chat.BlockingChatServer" target="com.manoelcampos.chat.ClientSocket" relationship="TO_MANY">
+      <point x="148.0" y="0.0" />
+      <point x="-156.0" y="0.0" />
+    </edge>
+    <edge source="com.manoelcampos.chat.BlockingChatServer" target="com.manoelcampos.chat.ClientSocket" relationship="CREATE">
+      <point x="0.0" y="-116.0" />
+      <point x="226.25" y="24.0" />
+      <point x="226.25" y="-27.5" />
+      <point x="406.25" y="-27.5" />
+      <point x="406.25" y="24.0" />
+      <point x="0.0" y="-116.0" />
+    </edge>
+    <edge source="com.manoelcampos.chat.BlockingChatClient" target="com.manoelcampos.chat.ClientSocket" relationship="CREATE">
+      <point x="0.0" y="-94.0" />
+      <point x="0.0" y="116.0" />
+    </edge>
+    <edge source="com.manoelcampos.chat.BlockingChatClient" target="com.manoelcampos.chat.BlockingChatServer" relationship="DEPENDENCY">
+      <point x="-102.0" y="0.0" />
+      <point x="140.0" y="400.0" />
+      <point x="0.0" y="116.0" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="1.0" showDependencies="true" x="325.0" y="258.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

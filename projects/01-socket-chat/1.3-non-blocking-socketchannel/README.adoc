@@ -1,0 +1,53 @@
+= Chat cliente/servidor utilizando Sockets em Java 8
+
+Este é um projeto Java que mostra como criar uma aplicação de chat cliente/servidor utilizando as
+interfaces `ServerSocketChannel` e `SocketChannel` da https://docs.oracle.com/javase/8/docs/technotes/guides/io/[API NIO.2 do Java 7] e uma das formas mais atuais para a construção de aplicações de Socket.
+
+É mostrado como desenvolver a aplicação 
+utilizando chamadas não bloqueantes (non-blocking), 
+para permitir que o servidor possa aceitar conexões e receber mensagens de múltiplos usuários
+simultaneamente, *sem a obrigatoriedade* de utilizar threads para tratar tais requisições.
+
+A forma de implementação desta versão difere da link:../1.2-blocking-socketchannel[anterior] apenas pelo uso de requisições não bloqueantes.
+
+O projeto é composto por duas aplicações console:
+
+- link:src/main/java/com/manoelcampos/chat/NonBlockingChatClient.java[Cliente]
+- link:src/main/java/com/manoelcampos/chat/NonBlockingChatServer.java[Servidor]
+
+A apresentação link:non-blocking-chat.pptx[non-blocking-chat.pptx] mostra alguns detalhes do funcionamento deste projeto.
+
+== Servidor
+
+O servidor escuta numa porta configurada por meio de uma constante em sua classe.
+Tal constante é utilizada pelo cliente para saber qual porta se conectar ao servidor.
+O servidor inicia e fica em loop infinito, aguardando conexões de clientes em tal porta.
+Com uso da API não bloqueante NIO.2, conseguimos processar as conexões e recebimento de mensagens
+sem obrigatoriamente utilizarmos Threads. Veja a link:../04-non-blocking-chat-socketchannel-nio2-parallel[versão 04] que mostra como introduzir threads de uma maneira eficiente.
+
+== Cliente
+
+O cliente conecta na porta especificada na classe do servidor, no endereço definido em uma constante na classe do cliente. O usuário pode digitar mensagens que são enviadas ao servidor. 
+O cliente então aguarda a resposta do servidor e exibe na tela.
+A aplicação fica em loop até o usuário digitar "sair" para encerrar.
+
+== Executando as Aplicações
+
+O servidor deve ser iniciado a partir da classe link:src/main/java/com/manoelcampos/chat/ChatServer.java[Servidor].
+Isto pode ser feito no NetBeans, abrindo tal classe e pressionando `SHIFT+F6`.
+
+Depois de iniciado o servidor, pode-se executar várias instâncias do cliente para representar diversos usuários conectados ao chat. No NetBeans, basta abrir a classe link:src/main/java/com/manoelcampos/chat/ChatClient.java[Cliente] e pressionar `SHIFT+F6` para cada cliente que desejar executar.
+
+=== AVISO
+
+Durante o processo de desenvolvimento, após executar a aplicação múltiplas vezes,
+você pode se deparar com um erro como "Address already in use" (Endereço já em uso).
+Isto indica que há outra instância do servidor rodando (utilizando a porta indicada)
+ou que a porta escolhida já está sendo utilizada por outra aplicação.
+
+No primeiro caso, a forma mais fácil de resolver é fechar o seu IDE.
+Uma alternativa em Linux é matar os processos Java em execução
+digitando no terminal `sudo killall -9 java`.
+
+No último caso, precisa alterar o número da porta indicado na constante na classe
+ChatServer.

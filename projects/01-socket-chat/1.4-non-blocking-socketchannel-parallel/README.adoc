@@ -1,0 +1,61 @@
+= Chat cliente/servidor utilizando Sockets em Java 8
+
+Este é um projeto Java que mostra como criar uma aplicação de chat cliente/servidor utilizando as
+interfaces `ServerSocketChannel` e `SocketChannel` da https://docs.oracle.com/javase/8/docs/technotes/guides/io/[API NIO.2 do Java 7] e uma das formas mais atuais para a construção de aplicações de Socket.
+
+É mostrado como desenvolver a aplicação 
+utilizando chamadas não bloqueantes (non-blocking), 
+para permitir que o servidor possa aceitar conexões e receber mensagens de múltiplos usuários
+simultaneamente, *sem a obrigatoriedade* de utilizar Threads para tratar tais requisições.
+
+Apesar de não ser obrigado o uso de Threads, estas foram introduzidas no servidor
+de uma forma eficiente (diferente da link:1.1-blocking-socket[versão bloqueante]).
+Foi utilizado o recurso de link:http://blog.caelum.com.br/o-minimo-que-voce-deve-saber-de-java-8/[Streams do Java 8]
+(não confundir com InputStream e OutputStream utilizados na versão 01 do projeto)
+para permitir pegar um conjunto com requisições de múltiplos clientes 
+recebidas pelo servidor (como solicitações de conexão e envio de dados) e criar automaticamente
+um conjunto de Threads para processar tais dados.
+
+Utilizando tal recurso de Streams do Java 8, se tivermos um computador servidor com 4 núcleos de CPU,
+o recurso utilizado criará, por padrão, no máximo 3 Threads. Uma Thread é a principal da aplicação, automaticamente
+criada pela JVM quando a aplicação é executada, totalizando 4 Threads neste exemplo. Assim, se existirem 3000 requisições de clientes, estas são distribuídas uniformemente entre as 3 Threads, cada uma processando 1000 requisições.
+
+O projeto é composto por duas aplicações console:
+
+- link:src/main/java/com/manoelcampos/chat/NonBlockingChatClient.java[Cliente]
+- link:src/main/java/com/manoelcampos/chat/NonBlockingChatServer.java[Servidor]
+
+== Servidor
+
+O servidor escuta numa porta configurada por meio de uma constante em sua classe.
+Tal constante é utilizada pelo cliente para saber qual porta se conectar ao servidor.
+O servidor inicia e fica em loop infinito, aguardando conexões de clientes em tal porta.
+Com uso da API não bloqueante NIO.2, conseguimos processar as conexões e recebimento de mensagens
+sem obrigatoriamente utilizarmos Threads. 
+
+== Cliente
+
+O cliente conecta na porta especificada na classe do servidor, no endereço definido em uma constante na classe do cliente. O usuário pode digitar mensagens que são enviadas ao servidor. 
+O cliente então aguarda a resposta do servidor e exibe na tela.
+A aplicação fica em loop até o usuário digitar "sair" para encerrar.
+
+== Executando as Aplicações
+
+O servidor deve ser iniciado a partir da classe link:src/main/java/com/manoelcampos/chat/ChatServer.java[Servidor].
+Isto pode ser feito no NetBeans, abrindo tal classe e pressionando `SHIFT+F6`.
+
+Depois de iniciado o servidor, pode-se executar várias instâncias do cliente para representar diversos usuários conectados ao chat. No NetBeans, basta abrir a classe link:src/main/java/com/manoelcampos/chat/ChatClient.java[Cliente] e pressionar `SHIFT+F6` para cada cliente que desejar executar.
+
+=== AVISO
+
+Durante o processo de desenvolvimento, após executar a aplicação múltiplas vezes,
+você pode se deparar com um erro como "Address already in use" (Endereço já em uso).
+Isto indica que há outra instância do servidor rodando (utilizando a porta indicada)
+ou que a porta escolhida já está sendo utilizada por outra aplicação.
+
+No primeiro caso, a forma mais fácil de resolver é fechar o seu IDE.
+Uma alternativa em Linux é matar os processos Java em execução
+digitando no terminal `sudo killall -9 java`.
+
+No último caso, precisa alterar o número da porta indicado na constante na classe
+ChatServer.

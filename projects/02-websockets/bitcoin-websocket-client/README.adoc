@@ -1,0 +1,93 @@
+:source-highlighter: highlightjs
+:numbered:
+
+ifdef::env-github[]
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+= Cotação de Criptomoedas usando WebSockets e API da bitfinex (link:https://kinolien.github.io/gitzip/?download=/manoelcampos/sd-websockets/tree/master/2.3-bitcoin-websocket-api[zip])
+
+Aplicação que usa a API do serviço https://docs.bitfinex.com/reference/ws-public-ticker[bitfinex] para obter a cotação do BitCoin (e outroas criptomoedas)
+em tempo real. A aplicação envia um requisição para assinar um canal por onde receberá notificações sempre que o preço da criptomoeda solicitada mudar.
+
+== Estrutura do Projeto
+
+O projeto é composto de duas aplicações de exemplo independentes, para mostrar como obter a cotação de criptomoedas tanto no lado servidor quanto no lado cliente. Temos então:
+
+- um backend usando http://nodejs.org:[Node.js] e a biblioteca https://www.npmjs.com/package/ws[ws] para fazer acesso a serviços usando o protocolo WebSockets.
+- um frontend que não depende de nenhum backend, utilizando a classe WebSocket nativa do HTML5.
+
+=== Backend
+
+O backend é composto pelos arquivos:
+
+- link:bitfinex.js[bitfinex.js]: representa a aplicação Node.js que obterá a cotação de uma criptomoeda e imprimirá no terminal.
+- link:package.json[package.json]: representa o arquivo de configuração da aplicação servidora. Ele foi criando por meio de um assistante, digitando-se `npm init` no terminal. As dependências (bibliotecas utilizadas pela aplicação) foram baixadas e salvas em tal arquivo digitando-se `npm install ws`. No entanto, como o `package.json` já está configurado, não é preciso executar estes dois comandos.
+- link:Makefile[Makefile]: arquivo que pode ser executado com o comando `make` no Linux/macOS para instalar as ferramentas necessárias. Ver seção de instalação abaixo. É interessante abrir tal arquivo para descobrir quais comandos estão sendo executados ao realizar o processo de instalação (como descrito a seguir).
+
+=== Frontend
+
+O frontend é composto apenas pelo arquivo link:bitfinex.html[bitfinex.html]. Ele usa a biblioteca JQuery apenas para facilitar a manipulação dos campos HTML e exibir uma pequena animação quando a cotação da moeda é alterada. Basta dar dois cliques em tal arquivo para abrir o frontend.
+
+Você pode testar o frontend online http://manoelcampos.com/sd-websockets/2.3-bitcoin-websocket-api/bitfinex.html[aqui].
+
+=== Diferenças dos dois projetos
+
+Observe que apesar de ser usado JavaScript nos dois projetos, o código é levemente diferente.
+A implementação do WebSockets disponível no HTML5 é levemente diferente da implementação da biblioteca https://www.npmjs.com/package/ws[ws] que usamos no Node.js.
+
+== Servidor
+
+=== Instalação
+
+O projeto usa o http://nodejs.org:[Node.js] para rodar o servidor e o http://npmjs.com:[npm] para gerenciar pacotes utilizados pela aplicação (como por exemplo, para baixar tais pacotes diretamente pelo terminal). 
+
+Opcionalmente, pode-se usar o https://nodemon.io:[nodemon] para permitir monitorar alterações no código do servidor e reiniciá-lo automaticamente. Isto facilita muito o desenvolvimento pois não temos que parar o servidor manualmente cada vez que fizermos uma alteração no código.
+
+A seguir é mostrado como instalar tais ferramentas automaticamente no macOS, Linux e Windows.
+
+==== macOS
+
+Para instalar as ferramentas no macOS, pode-se baixar o gerenciador de pacotes homebrew.
+A https://brew.sh[página oficial] mostra logo no topo a única instrução necessária para isto.
+Após instalar o homebrew, basta abrir um terminal no diretório raiz do projeto e executar `make macos`.
+
+==== Linux
+
+Para instalar as ferramentas acima em Linux baseados em Debian (como Ubuntu e derivados), 
+basta abrir um terminal no diretório raiz do projeto e executar `make linux`.
+No entanto, se ao executar o comando ocorrer erro indicando que o programa make não foi encontrado,
+execute um `sudo apt-get install make`.
+
+==== Windows
+
+Os comandos acima são para Linux e macOS. 
+Se você usa Windows, pode baixar manualmente o http://nodejs.org[Node.js] que os comandos npm descritos anteriormente
+possivelmente vão funcionar sem precisar de configurações adicionais.
+
+Mas se você quiser usar os mesmos comandos Linux da seção anterior
+(e ter disponíveis vários outros comandos existentes em Linux),
+pode baixar o https://docs.microsoft.com/en-us/windows/wsl/install-win10[Windows Subsystem for Linux].
+Depois disso, basta seguir os passos da seção anterior.
+
+=== Dependências do Servidor
+
+Os pacotes (dependências) que são utilizados pela aplicação servidora são salvos na pasta `node_modules`. Esta pasta não é incluída e pode ser removida a qualquer momento (uma vez que podemos usar um comando para baixar os pacotes novamente). Assim, para baixar tais pacotes em tal pasta, basta executar `make install`.
+
+=== Executando o Servidor
+
+Para iniciar o servidor, podemos executar:
+
+[source, bash]
+----
+npm start
+----
+
+Porém, utilizando o nodemon, basta fazer `nodemon` que ele vai procurar um arquivo `index.js` e iniciá-lo automaticamente.
+
+Como não temos um frontend para tal aplicação, todas as informações são impressas no terminal.
